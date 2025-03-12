@@ -4,6 +4,7 @@ import type { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { loginSchema } from "@/lib/validation";
 import { jsonResponse, errorHandler } from "@/lib/utils";
+import { signIn } from "@/lib/auth";
 
 export async function POST(req: NextRequest) {
   try {
@@ -14,7 +15,7 @@ export async function POST(req: NextRequest) {
     if (!parseResult.success) {
       return jsonResponse(
         {
-          error: "Some fields are missing or incorrects",
+          error: "Certains champs sont manquants ou incorrects",
           errors: parseResult.error.issues.map((issue) => ({
             field: issue.path.join("."),
             message: issue.message,
@@ -27,13 +28,17 @@ export async function POST(req: NextRequest) {
 
     // Find user in DB
     const user = await prisma.user.findUnique({ where: { email } });
-    if (!user) return jsonResponse({ error: "User not found!" }, 400);
+    if (!user) return jsonResponse({ error: "Identifiants incorrects" }, 400);
 
     // Compare password
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return jsonResponse({ error: "Incorrect credentials!" }, 400);
+    if (!isMatch)
+      return jsonResponse({ error: "Identifiants incorrects" }, 400);
 
-    return jsonResponse({ message: "Login successful!" }, 200);
+    // Sign in user (create session)
+    await signIn("credentials", { email, password, redirect: false });
+
+    return jsonResponse({ message: "Connexion réussie" }, 200);
   } catch (error: unknown) {
     return errorHandler(error);
   }

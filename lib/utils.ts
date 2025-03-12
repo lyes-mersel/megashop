@@ -1,4 +1,10 @@
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 import { NextResponse } from "next/server";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
 
 export function jsonResponse(data: object, status: number = 200): NextResponse {
   return new NextResponse(JSON.stringify(data), {
@@ -10,11 +16,8 @@ export function jsonResponse(data: object, status: number = 200): NextResponse {
 export function errorHandler(err: unknown) {
   console.error("API Error : ", err);
 
-  if (err instanceof Error) {
-    return jsonResponse({ error: err.message }, 500);
-  }
   return jsonResponse(
-    { error: "Something went wrong. Please try again later!" },
+    { error: "Une erreur est survenue. Veuillez réessayer plus tard !" },
     500
   );
 }

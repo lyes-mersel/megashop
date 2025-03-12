@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { UserRole } from "@prisma/client";
 import { registerSchema } from "@/lib/validation";
 import { jsonResponse, errorHandler } from "@/lib/utils";
+import { signIn } from "@/lib/auth";
 
 export async function POST(req: NextRequest) {
   try {
@@ -15,7 +16,7 @@ export async function POST(req: NextRequest) {
     if (!parseResult.success) {
       return jsonResponse(
         {
-          error: "Some fields are missing or incorrect",
+          error: "Certains champs sont manquants ou incorrects",
           errors: parseResult.error.issues.map((issue) => ({
             field: issue.path.join("."),
             message: issue.message,
@@ -30,7 +31,10 @@ export async function POST(req: NextRequest) {
     // Check if user already exists
     const existingUser = await prisma.user.findUnique({ where: { email } });
     if (existingUser) {
-      return jsonResponse({ error: "User already exists" }, 409);
+      return jsonResponse(
+        { error: "Cet adresse email est déjà utilisée" },
+        409
+      );
     }
 
     // Hash password & create user
@@ -45,7 +49,10 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    return jsonResponse({ message: "User registered successfully!" }, 201);
+    // Sign in user (create session)
+    await signIn("credentials", { email, password, redirect: false });
+
+    return jsonResponse({ message: " Inscription réussie" }, 201);
   } catch (error: unknown) {
     return errorHandler(error);
   }
