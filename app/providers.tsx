@@ -9,7 +9,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { makeStore } from "@/redux/store";
 
 // UI components
-import SpinnerbLoader from "@/components/ui/SpinnerbLoader";
+import SpinnerbLoader from "@/components/ui/SpinnerLoader";
 
 type Props = {
   children: React.ReactNode;
