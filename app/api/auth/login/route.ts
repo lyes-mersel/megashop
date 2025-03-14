@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs";
 import type { NextRequest } from "next/server";
 
 import { prisma } from "@/lib/prisma";
-import { loginSchema } from "@/lib/validation";
+import { loginSchema } from "@/lib/utils/validation";
 import { jsonResponse, errorHandler } from "@/lib/utils";
 import { signIn } from "@/lib/auth";
 

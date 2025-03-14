@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 
 import { prisma } from "@/lib/prisma";
 import { UserRole } from "@prisma/client";
-import { registerSchema } from "@/lib/validation";
+import { registerSchema } from "@/lib/utils/validation";
 import { jsonResponse, errorHandler } from "@/lib/utils";
 import { signIn } from "@/lib/auth";
 
