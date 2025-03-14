@@ -1,5 +1,5 @@
 import React from "react";
-import s from "./SpinnerbLoader.module.css";
+import s from "./SpinnerLoader.module.css";
 import cn from "clsx";
 
 const SpinnerLoader = ({ className }: { className?: string }) => {
