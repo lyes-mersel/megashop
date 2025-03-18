@@ -7,8 +7,8 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 
 // redux
-import { RootState } from "@/redux/store";
-import { useAppSelector } from "@/redux/hooks";
+// import { RootState } from "@/redux/store";
+// import { useAppSelector } from "@/redux/hooks";
 
 const CartBtn = () => {
   // const { cart } = useAppSelector((state: RootState) => state.carts);

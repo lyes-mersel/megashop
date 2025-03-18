@@ -59,7 +59,7 @@ export const newArrivalsData: Product[] = [
   },
 ];
 
-export const topSellingData: Product[] = [
+const topSellingData: Product[] = [
   {
     id: 5,
     title: "Vertical Striped Shirt",
@@ -110,7 +110,7 @@ export const topSellingData: Product[] = [
   },
 ];
 
-export const relatedProductData: Product[] = [
+/* const relatedProductData: Product[] = [
   {
     id: 12,
     title: "Polo with Contrast Trims",
@@ -159,9 +159,9 @@ export const relatedProductData: Product[] = [
     },
     rating: 5.0,
   },
-];
+]; */
 
-export const reviewsData: Review[] = [
+const reviewsData: Review[] = [
   {
     id: 1,
     user: "Alex K.",

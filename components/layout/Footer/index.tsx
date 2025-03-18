@@ -1,9 +1,7 @@
-import { cn } from "@/lib/utils";
 import React from "react";
 import { SocialNetworks } from "@/lib/types/footer.types";
 import { FaGithub } from "react-icons/fa";
 import Link from "next/link";
-import LinksSection from "./LinksSection";
 import Image from "next/image";
 import NewsLetterSection from "./NewsLetterSection";
 import LayoutSpacing from "./LayoutSpacing";
