@@ -10,7 +10,7 @@ import AnimatedCounter from "@/components/ui/AnimatedCounter";
 import { cn } from "@/lib/utils";
 import { integralCF } from "@/styles/fonts";
 
-const HeroSection = () => {
+const HeroSec = () => {
   return (
     <section className="bg-[#F2F0F1] pt-10 md:pt-24 overflow-hidden">
       <div className="md:max-w-[77.5rem] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
@@ -25,7 +25,7 @@ const HeroSection = () => {
               "text-4xl lg:text-[64px] lg:leading-[64px] mb-5 lg:mb-8",
             ])}
           >
-            FIND CLOTHES THAT MATCHES YOUR STYLE
+            Votre look, votre choix
           </motion.h2>
           <motion.p
             initial={{ y: "100px", opacity: 0 }}
@@ -34,9 +34,8 @@ const HeroSection = () => {
             transition={{ delay: 0.5, duration: 0.6 }}
             className="text-black/60 text-sm lg:text-base mb-6 lg:mb-8 max-w-[545px]"
           >
-            Browse through our diverse range of meticulously crafted garments,
-            designed to bring out your individuality and cater to your sense of
-            style.
+            Découvrez notre large sélection de vêtements soigneusement conçus
+            pour révéler votre personnalité et sublimer votre style.
           </motion.p>
           <motion.div
             initial={{ y: "100px", opacity: 0 }}
@@ -45,10 +44,10 @@ const HeroSection = () => {
             transition={{ delay: 1, duration: 0.6 }}
           >
             <Link
-              href="/shop"
-              className="w-full md:w-52 mb-5 md:mb-12 inline-block text-center bg-black hover:bg-black/80 transition-all text-white px-14 py-4 rounded-full hover:animate-pulse"
+              href="/catalog"
+              className="w-full md:w-[18rem] mb-5 md:mb-12 inline-block text-center bg-black hover:bg-black/80 transition-all text-white px-14 py-4 rounded-full hover:animate-pulse"
             >
-              Shop Now
+              Commencer le Shopping
             </Link>
           </motion.div>
           <motion.div
@@ -56,14 +55,14 @@ const HeroSection = () => {
             whileInView={{ y: "0", opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 1.5, duration: 0.6 }}
-            className="flex md:h-full md:max-h-11 lg:max-h-[52px] xl:max-h-[68px] items-center justify-center md:justify-start flex-wrap sm:flex-nowrap md:space-x-3 lg:space-x-6 xl:space-x-8 md:mb-[116px]"
+            className="flex md:h-full md:max-h-11 lg:max-h-[52px] xl:max-h-[68px] items-center justify-center md:justify-start flex-wrap sm:flex-nowrap md:space-x-3 lg:space-x-6 xl:space-x-8 md:mt-8 md:mb-[116px]"
           >
             <div className="flex flex-col">
               <span className="font-bold text-2xl md:text-xl lg:text-3xl xl:text-[40px] xl:mb-2">
-                <AnimatedCounter from={0} to={200} />+
+                <AnimatedCounter from={0} to={2000} />+
               </span>
               <span className="text-xs xl:text-base text-black/60 text-nowrap">
-                International Brands
+                Produits de Qualité
               </span>
             </div>
             <Separator
@@ -72,10 +71,10 @@ const HeroSection = () => {
             />
             <div className="flex flex-col ml-6 md:ml-0">
               <span className="font-bold text-2xl md:text-xl lg:text-3xl xl:text-[40px] xl:mb-2">
-                <AnimatedCounter from={0} to={2000} />+
+                <AnimatedCounter from={0} to={1000} />+
               </span>
               <span className="text-xs xl:text-base text-black/60 text-nowrap">
-                High-Quality Products
+                Clients Satisfaits
               </span>
             </div>
             <Separator
@@ -84,10 +83,10 @@ const HeroSection = () => {
             />
             <div className="flex flex-col w-full text-center sm:w-auto sm:text-left mt-3 sm:mt-0 sm:ml-6 md:ml-0">
               <span className="font-bold text-2xl md:text-xl lg:text-3xl xl:text-[40px] xl:mb-2">
-                <AnimatedCounter from={0} to={3000} />+
+                <AnimatedCounter from={0} to={300} />+
               </span>
               <span className="text-xs xl:text-base text-black/60 text-nowrap">
-                Happy Customers
+                Vendeurs de Confiance
               </span>
             </div>
           </motion.div>
@@ -121,4 +120,4 @@ const HeroSection = () => {
   );
 };
 
-export default HeroSection;
+export default HeroSec;

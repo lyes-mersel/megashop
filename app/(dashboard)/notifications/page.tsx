@@ -1,7 +1,7 @@
 import getAuth from "@/lib/auth/getAuth";
 import { redirect } from "next/navigation";
 
-const DashoardPage = async () => {
+const NotificationPage = async () => {
   const session = await getAuth();
   if (!session) {
     redirect("/auth/login?redirect=/dashboard");
@@ -9,12 +9,13 @@ const DashoardPage = async () => {
 
   return (
     <main>
-      <h1>Dashboard Page</h1>
+      <h1>Notificatin Page</h1>
       <p>ID : {session?.user.id}</p>
       <p>Email : {session?.user.email}</p>
       <p>Role : {session?.user.role}</p>
+      <p>Image url : {session?.user.image || "null"}</p>
     </main>
   );
 };
 
-export default DashoardPage;
+export default NotificationPage;

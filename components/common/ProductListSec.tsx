@@ -41,7 +41,9 @@ const ProductListSec = ({
         transition={{ duration: 0.6 }}
         className={cn([
           integralCF.className,
-          "text-[32px] md:text-5xl mb-8 md:mb-14 capitalize",
+          `text-[32px] md:text-5xl capitalize ${
+            description ? "mb-2 md:mb-4" : "mb-8 md:mb-14"
+          }`,
         ])}
       >
         {title}
@@ -87,7 +89,7 @@ const ProductListSec = ({
               href={viewAllLink}
               className="w-full inline-block sm:w-[218px] px-[54px] py-4 border rounded-full hover:bg-black hover:text-white text-black transition-all font-medium text-sm sm:text-base border-black/10"
             >
-              View All
+              Voir tout
             </Link>
           </div>
         )}

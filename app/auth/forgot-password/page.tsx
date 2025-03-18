@@ -1,8 +1,15 @@
+import { redirect } from "next/navigation";
 
-const ForgotPasswordPage = () => {
+import getAuth from "@/lib/auth/getAuth";
+
+export default async function Page() {
+  const session = await getAuth();
+  if (session) {
+    redirect("/dashboard");
+  }
   return (
-    <div>ForgotPasswordPage</div>
-  )
+    <main className="flex min-h-[calc(100dvh-170px)]">
+      <div className="w-full max-w-sm">Forgot Password</div>
+    </main>
+  );
 }
-
-export default ForgotPasswordPage

@@ -1,3 +1,4 @@
+import AuthFooter from "@/components/layout/Footer/AuthFooter";
 import MainHeader from "@/components/layout/Header/MainHeader";
 
 export default function MainLayout({
@@ -9,6 +10,7 @@ export default function MainLayout({
     <>
       <MainHeader />
       {children}
+      <AuthFooter />
     </>
   );
 }

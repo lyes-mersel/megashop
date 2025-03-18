@@ -113,7 +113,7 @@ export function RegisterForm({
                 <Input
                   id="email"
                   type="email"
-                  placeholder="m@example.com"
+                  placeholder="exemple@email.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -129,6 +129,7 @@ export function RegisterForm({
                 <Input
                   id="password"
                   type="password"
+                  placeholder="********"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -144,6 +145,7 @@ export function RegisterForm({
                 <Input
                   id="nom"
                   type="text"
+                  placeholder="Doe"
                   value={nom}
                   onChange={(e) => setNom(e.target.value)}
                   required
@@ -159,6 +161,7 @@ export function RegisterForm({
                 <Input
                   id="prenom"
                   type="text"
+                  placeholder="John"
                   value={prenom}
                   onChange={(e) => setPrenom(e.target.value)}
                   required

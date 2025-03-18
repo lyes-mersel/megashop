@@ -76,7 +76,7 @@ const TestimonialsSec = ({ data }: ReviewsProps) => {
                 "text-[32px] leading-[36px] md:text-5xl capitalize mr-auto",
               ])}
             >
-              OUR HAPPY CUSTOMERS
+              Nos Clients Satisfaits
             </motion.h2>
             <div className="flex items-center space-x-1 ml-2">
               <CarouselPrevious variant="ghost" className="text-2xl">

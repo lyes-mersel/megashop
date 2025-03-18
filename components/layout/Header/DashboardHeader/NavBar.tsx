@@ -5,30 +5,6 @@ import Image from "next/image";
 import UserMenu from "@/components/layout/Header/DashboardHeader/UserMenu";
 import NotificationBtn from "@/components/layout/Header/DashboardHeader/NotificationBtn";
 
-// Utils & types
-import { cn } from "@/lib/utils";
-import { NavMenu } from "@/lib/types/navbar.types";
-
-// Styles
-import { integralCF } from "@/styles/fonts";
-
-const data: NavMenu = [
-  {
-    id: 1,
-    type: "MenuItem",
-    label: "Boutique",
-    url: "/shop",
-    children: [],
-  },
-  {
-    id: 2,
-    type: "MenuItem",
-    label: "Marketplace",
-    url: "/marketplace",
-    children: [],
-  },
-];
-
 const NavBar = () => {
   return (
     <nav className="md:px-10 lg:px-20 sticky top-0 bg-white z-20">
@@ -36,10 +12,7 @@ const NavBar = () => {
         <div className="flex items-center">
           {/* Logo */}
           <h1 className="hidden">Mega Shop</h1>
-          <Link
-            href="/"
-            className={cn([integralCF.className, "mr-3 lg:mr-10"])}
-          >
+          <Link href="/" className="mr-3 lg:mr-10">
             <Image
               priority
               src="/icons/logo.svg"

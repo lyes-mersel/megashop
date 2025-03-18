@@ -23,7 +23,7 @@ const brandsData: { id: string; srcUrl: string }[] = [
   },
 ];
 
-const Brands = () => {
+const BrandsSec = () => {
   return (
     <section className="bg-black">
       <div className="max-w-frame mx-auto flex flex-wrap items-center justify-center md:justify-between py-5 md:py-0 sm:px-4 xl:px-0 space-x-7">
@@ -43,4 +43,4 @@ const Brands = () => {
   );
 };
 
-export default Brands;
+export default BrandsSec;

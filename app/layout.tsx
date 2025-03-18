@@ -14,7 +14,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "MegaShop",
+  title: "Mega Shop",
   description: "Ecommerce store built with Next.js",
 };
 

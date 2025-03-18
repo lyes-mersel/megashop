@@ -2,7 +2,7 @@ import NavBar from "@/components/layout/Header/MainHeader/NavBar";
 
 const MainHeader = () => {
   return (
-    <header>
+    <header className="sticky top-0 bg-white z-20">
       <NavBar />
     </header>
   );
