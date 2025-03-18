@@ -3,28 +3,34 @@
 import Link from "next/link";
 import Image from "next/image";
 
+// UI Components
+import { Button } from "@/components/ui/button";
+
 // redux
 import { RootState } from "@/redux/store";
 import { useAppSelector } from "@/redux/hooks";
 
 const CartBtn = () => {
-  const { cart } = useAppSelector((state: RootState) => state.carts);
+  // const { cart } = useAppSelector((state: RootState) => state.carts);
+  const cart = { totalQuantities: 2 };
 
   return (
-    <Link href="/cart" className="relative mr-[14px] p-1">
-      <Image
-        priority
-        src="/icons/cart.svg"
-        height={100}
-        width={100}
-        alt="cart"
-        className="max-w-[22px] max-h-[22px]"
-      />
-      {cart && cart.totalQuantities > 0 && (
-        <span className="border bg-black text-white rounded-full w-fit-h-fit px-1 text-xs absolute -top-3 left-1/2 -translate-x-1/2">
-          {cart.totalQuantities}
-        </span>
-      )}
+    <Link href="/cart" className="relative">
+      <Button variant="ghost" className="p-2">
+        <Image
+          priority
+          src="/icons/cart.svg"
+          height={24}
+          width={24}
+          alt="cart"
+          className="cursor-pointer max-w-[24px] max-h-[24px]"
+        />
+        {cart && cart.totalQuantities > 0 && (
+          <span className="border bg-black text-white rounded-full w-fit-h-fit px-1 text-xs absolute -top-2 left-1/2 -translate-x-1/2">
+            {cart.totalQuantities}
+          </span>
+        )}
+      </Button>
     </Link>
   );
 };

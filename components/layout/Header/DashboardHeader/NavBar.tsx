@@ -33,7 +33,7 @@ const data: NavMenu = [
 const NavBar = () => {
   return (
     <nav className="md:px-10 lg:px-20 sticky top-0 bg-white z-20">
-      <div className="flex relative max-w-frame mx-auto items-center justify-between py-4 md:py-5 px-4 xl:px-0">
+      <div className="flex relative max-w-frame mx-auto items-center justify-between py-2 px-4 xl:px-0">
         <div className="flex items-center">
           {/* Responsive NavBar in sm screens */}
           <div className="block md:hidden mr-4">
@@ -51,12 +51,12 @@ const NavBar = () => {
               height={100}
               width={100}
               alt="logo"
-              className="max-w-[60px] max-h-[60px]"
+              className="h-[60px] md:h-[80px]"
             />
           </Link>
         </div>
 
-        <div className="flex gap-1">
+        <div className="flex gap-2">
           <NotificationBtn />
           <UserMenu />
         </div>

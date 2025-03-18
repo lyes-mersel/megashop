@@ -13,7 +13,7 @@ import { integralCF } from "@/styles/fonts";
 const HeroSection = () => {
   return (
     <section className="bg-[#F2F0F1] pt-10 md:pt-24 overflow-hidden">
-      <div className="md:max-w-frame mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
+      <div className="md:max-w-[77.5rem] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
         <div className="max-w-frame px-4">
           <motion.h2
             initial={{ y: "100px", opacity: 0, rotate: 10 }}
