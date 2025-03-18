@@ -8,7 +8,7 @@ import TestimonialsSec from "@/components/homepage/TestimonialsSec";
 import { Product } from "@/lib/types/product.types";
 import { Review } from "@/lib/types/review.types";
 
-export const newArrivalsData: Product[] = [
+const newArrivalsData: Product[] = [
   {
     id: 1,
     title: "T-shirt with Tape Details",
