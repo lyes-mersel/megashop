@@ -16,14 +16,14 @@ const CartBtn = () => {
 
   return (
     <Link href="/cart" className="relative">
-      <Button variant="ghost" className="p-2">
+      <Button variant="ghost" className="p-1 md:p-2">
         <Image
           priority
           src="/icons/cart.svg"
           height={24}
           width={24}
           alt="cart"
-          className="cursor-pointer max-w-[24px] max-h-[24px]"
+          className="cursor-pointer max-w-[20px] max-h-[20px] md:max-w-[24px] md:max-h-[24px]"
         />
         {cart && cart.totalQuantities > 0 && (
           <span className="border bg-black text-white rounded-full w-fit-h-fit px-1 text-xs absolute -top-2 left-1/2 -translate-x-1/2">

@@ -34,14 +34,14 @@ const UserMenu = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="p-2">
+        <Button variant="ghost" className="p-1 md:">
           <Image
             priority
             src="/icons/user.svg"
             height={24}
             width={24}
             alt="user"
-            className="cursor-pointer max-w-[24px] max-h-[24px]"
+            className="cursor-pointer max-w-[20px] max-h-[20px] md:max-w-[24px] md:max-h-[24px]]"
           />
         </Button>
       </DropdownMenuTrigger>

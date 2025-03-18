@@ -3,7 +3,6 @@ import Image from "next/image";
 
 // Components
 import UserMenu from "@/components/layout/Header/DashboardHeader/UserMenu";
-import ResNavbar from "@/components/layout/Header/DashboardHeader/ResNavbar";
 import NotificationBtn from "@/components/layout/Header/DashboardHeader/NotificationBtn";
 
 // Utils & types
@@ -35,12 +34,8 @@ const NavBar = () => {
     <nav className="md:px-10 lg:px-20 sticky top-0 bg-white z-20">
       <div className="flex relative max-w-frame mx-auto items-center justify-between py-2 px-4 xl:px-0">
         <div className="flex items-center">
-          {/* Responsive NavBar in sm screens */}
-          <div className="block md:hidden mr-4">
-            <ResNavbar data={data} />
-          </div>
-
           {/* Logo */}
+          <h1 className="hidden">Mega Shop</h1>
           <Link
             href="/"
             className={cn([integralCF.className, "mr-3 lg:mr-10"])}
@@ -48,10 +43,10 @@ const NavBar = () => {
             <Image
               priority
               src="/icons/logo.svg"
-              height={100}
-              width={100}
+              height={80}
+              width={140}
               alt="logo"
-              className="h-[60px] md:h-[80px]"
+              className="h-[60px] md:h-[70px] lg:h-[80px]"
             />
           </Link>
         </div>

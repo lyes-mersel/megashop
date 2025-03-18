@@ -50,8 +50,8 @@ const Footer = () => {
               <Image
                 priority
                 src="/icons/logo.svg"
-                height={150}
-                width={150}
+                height={100}
+                width={175}
                 alt="Mega Shop Logo"
               />
             </Link>

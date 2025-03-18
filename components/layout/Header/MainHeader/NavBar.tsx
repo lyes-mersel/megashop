@@ -24,6 +24,7 @@ import { NavMenu } from "@/lib/types/navbar.types";
 
 // Styles
 import { integralCF } from "@/styles/fonts";
+import { Button } from "@/components/ui/button";
 
 const data: NavMenu = [
   {
@@ -55,6 +56,7 @@ const NavBar = async () => {
           </div>
 
           {/* Logo */}
+          <h1 className="hidden">Mega Shop</h1>
           <Link
             href="/"
             className={cn([integralCF.className, "mr-3 lg:mr-10"])}
@@ -62,10 +64,10 @@ const NavBar = async () => {
             <Image
               priority
               src="/icons/logo.svg"
-              height={100}
-              width={100}
+              height={80}
+              width={140}
               alt="logo"
-              className="h-[60px] md:h-[80px]"
+              className="h-[60px] md:h-[70px] lg:h-[80px]"
             />
           </Link>
 
@@ -107,17 +109,19 @@ const NavBar = async () => {
         </InputGroup>
 
         {/* User Actions */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 md:gap-2">
           {/* Search Btn in small screens */}
-          <Link href="/search" className="block md:hidden mr-[14px] p-1">
-            <Image
-              priority
-              src="/icons/search-black.svg"
-              height={100}
-              width={100}
-              alt="search"
-              className="max-w-[22px] max-h-[22px]"
-            />
+          <Link href="/search" className="block md:hidden">
+            <Button variant="ghost" className="p-1 md:p-2">
+              <Image
+                priority
+                src="/icons/search-black.svg"
+                height={24}
+                width={24}
+                alt="search"
+                className="max-w-[20px] max-h-[20px] md:max-w-[24px] md:max-h-[24px]"
+              />
+            </Button>
           </Link>
 
           <CartBtn />
