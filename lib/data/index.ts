@@ -107,7 +107,7 @@ export const marketProductsData: Product[] = [
 ];
 
 // Data : Nos produits les plus vendus
-export const topSelllingData: Product[] = [
+export const topSellingData: Product[] = [
   {
     id: 9,
     title: "Vertical Striped Shirt",

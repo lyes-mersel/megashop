@@ -126,26 +126,31 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
-}
 
-.w-frame {
-  width: 77.5rem;
-}
+  button {
+    @apply cursor-pointer;
+  }
 
-.max-w-frame {
-  max-width: 77.5rem;
-}
+  .w-frame {
+    width: 77.5rem;
+  }
 
-.bg-gradient-radial {
-  background-image: radial-gradient(var(--tw-gradient-stops));
-}
+  .max-w-frame {
+    max-width: 77.5rem;
+  }
 
-.bg-gradient-conic {
-  background-image: conic-gradient(
-    from 180deg at 50% 50%,
-    var(--tw-gradient-stops)
-  );
+  .bg-gradient-radial {
+    background-image: radial-gradient(var(--tw-gradient-stops));
+  }
+
+  .bg-gradient-conic {
+    background-image: conic-gradient(
+      from 180deg at 50% 50%,
+      var(--tw-gradient-stops)
+    );
+  }
 }
