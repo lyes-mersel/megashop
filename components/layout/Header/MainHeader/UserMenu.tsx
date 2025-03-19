@@ -41,7 +41,7 @@ const UserMenu = () => {
             height={24}
             width={24}
             alt="user"
-            className="cursor-pointer max-w-[20px] max-h-[20px] md:max-w-[24px] md:max-h-[24px]]"
+            className="cursor-pointer max-w-[20px] max-h-[20px] md:max-w-[24px] md:max-h-[24px]"
           />
         </Button>
       </DropdownMenuTrigger>

@@ -59,7 +59,7 @@ const NavBar = async () => {
             height={80}
             width={140}
             alt="logo"
-            className="h-[60px] md:h-[70px] lg:h-[80px]"
+            className="h-[60px] md:h-[70px] lg:h-[80px] w-auto"
           />
         </Link>
 

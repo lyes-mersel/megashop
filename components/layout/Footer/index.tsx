@@ -26,6 +26,7 @@ const Footer = () => {
                 height={100}
                 width={175}
                 alt="Mega Shop Logo"
+                className="h-[100px] w-[175px]"
               />
             </Link>
             <p className="text-black/60 max-w-[430px] text-center md:text-start">

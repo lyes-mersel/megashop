@@ -27,7 +27,7 @@ const ResNavbar = ({ data }: { data: NavMenu }) => {
           height={24}
           width={24}
           alt="menu"
-          className="max-w-[24px] max-h-[24px]"
+          className="h-[24px] w-auto"
         />
       </SheetTrigger>
       <SheetContent side="left" className="overflow-y-auto">
@@ -41,7 +41,7 @@ const ResNavbar = ({ data }: { data: NavMenu }) => {
                   height={80}
                   width={140}
                   alt="logo"
-                  className="h-[60px] md:h-[80px]"
+                  className="h-[60px] md:h-[80px] w-auto"
                 />
               </Link>
             </SheetClose>
