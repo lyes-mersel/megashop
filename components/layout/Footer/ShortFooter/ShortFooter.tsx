@@ -1,5 +1,5 @@
 // Components
-import Attribution from "@/components/layout/Footer/Attribution";
+import Attribution from "@/components/layout/Footer/MainFooter/Attribution";
 
 const AuthFooter = () => {
   return (

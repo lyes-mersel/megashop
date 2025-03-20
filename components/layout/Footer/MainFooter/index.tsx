@@ -3,7 +3,7 @@ import Image from "next/image";
 
 // Components
 import NewsLetterSection from "./NewsLetterSection";
-import Attribution from "@/components/layout/Footer/Attribution";
+import Attribution from "@/components/layout/Footer/MainFooter/Attribution";
 import LayoutSpacing from "./LayoutSpacing";
 
 const Footer = () => {

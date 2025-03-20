@@ -1,5 +1,5 @@
 import React from "react";
-import { FooterLinks } from "../../../lib/types/footer.types";
+import { FooterLinks } from "../../../../lib/types/footer.types";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
