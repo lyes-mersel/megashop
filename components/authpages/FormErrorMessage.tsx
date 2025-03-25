@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-const FormErrorMessage = ({ message }: { message: string }) => {
+const FormErrorMessage = ({ message }: { message: string | null }) => {
   if (!message || message === "") {
     return null;
   }

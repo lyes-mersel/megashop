@@ -1,4 +1,4 @@
-import { RegisterForm } from "@/components/authpages/RegisterForm";
+import { RegisterForm } from "@/components/authpages/Register";
 
 export default async function Page() {
   return (

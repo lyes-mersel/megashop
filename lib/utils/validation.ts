@@ -1,29 +1,44 @@
 import { z } from "zod";
 
-export const loginSchema = z.object({
-  email: z
-    .string()
-    .email()
-    .transform((email) => email.toLowerCase()), // Convert email to lowercase
-  password: z.string(),
-});
-
 export const registerSchema = z.object({
   email: z
     .string()
-    .email()
-    .transform((email) => email.toLowerCase()), // Convert email to lowercase
-  password: z.string().min(6, "Password must be at least 6 characters"),
+    .email("Veuillez entrer une adresse e-mail valide.")
+    .transform((email) => email.toLowerCase()), // email en minuscules
+  password: z
+    .string()
+    .min(6, "Le mot de passe doit contenir au moins 6 caractères."),
   nom: z
     .string()
-    .min(2)
+    .min(2, "Le nom doit contenir au moins 2 caractères.")
     .transform(
       (nom) => nom.charAt(0).toUpperCase() + nom.slice(1).toLowerCase()
-    ), // Capitalize nom
+    ), // Capitaliser le nom
   prenom: z
     .string()
-    .min(2)
+    .min(2, "Le prénom doit contenir au moins 2 caractères.")
     .transform(
       (prenom) => prenom.charAt(0).toUpperCase() + prenom.slice(1).toLowerCase()
-    ), // Capitalize prenom
+    ), // Capitaliser le prénom
+});
+
+export const loginSchema = z.object({
+  email: z
+    .string()
+    .email("Veuillez entrer une adresse e-mail valide.")
+    .transform((email) => email.toLowerCase()),
+  password: z.string().min(1, "Le mot de passe est requis."),
+});
+
+export const resetPasswordSchema = z.object({
+  email: z
+    .string()
+    .email("Veuillez entrer une adresse e-mail valide.")
+    .transform((email) => email.toLowerCase()),
+  newPassword: z
+    .string()
+    .min(6, "Le mot de passe doit contenir au moins 6 caractères."),
+  code: z
+    .string()
+    .regex(/^\d{6}$/, "Le code doit contenir exactement 6 chiffres."),
 });

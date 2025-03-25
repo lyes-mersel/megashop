@@ -176,6 +176,7 @@ export function RegisterForm({
                 {isLoading ? "Inscription en cours..." : "S'inscrire"}
               </Button>
 
+              {/* Error Message */}
               <FormErrorMessage message={errorMessage} />
             </div>
 
