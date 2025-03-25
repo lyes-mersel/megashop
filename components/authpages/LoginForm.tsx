@@ -123,7 +123,7 @@ export function LoginForm({
                 <div className="flex items-center justify-between">
                   <Label htmlFor="password">Mot de passe</Label>
                   <Link
-                    href="/auth/forgot-password"
+                    href="/auth/reset-password"
                     className="text-sm underline-offset-4 hover:underline"
                   >
                     Mot de passe oublié ?

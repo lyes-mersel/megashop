@@ -15,6 +15,7 @@ async function main() {
       email: "client@email.com",
       password: hashedPassword,
       role: UserRole.CLIENT,
+      emailVerifie: true,
       client: {
         create: {},
       },
@@ -29,6 +30,7 @@ async function main() {
       email: "vendeur@email.com",
       password: hashedPassword,
       role: UserRole.VENDEUR,
+      emailVerifie: true,
       client: {
         create: {
           vendeur: {
@@ -47,6 +49,7 @@ async function main() {
       email: "admin@email.com",
       password: hashedPassword,
       role: UserRole.ADMIN,
+      emailVerifie: true,
       admin: {
         create: {},
       },

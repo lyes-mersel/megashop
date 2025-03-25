@@ -1,11 +1,7 @@
 import getAuth from "@/lib/auth/getAuth";
-import { redirect } from "next/navigation";
 
 const SettingsPage = async () => {
   const session = await getAuth();
-  if (!session) {
-    redirect("/auth/login?redirect=/dashboard");
-  }
 
   return (
     <main>

@@ -1,11 +1,7 @@
 import getAuth from "@/lib/auth/getAuth";
-import { redirect } from "next/navigation";
 
 const DashoardPage = async () => {
   const session = await getAuth();
-  if (!session) {
-    redirect("/auth/login?redirect=/dashboard");
-  }
 
   return (
     <main>
@@ -13,6 +9,7 @@ const DashoardPage = async () => {
       <p>ID : {session?.user.id}</p>
       <p>Email : {session?.user.email}</p>
       <p>Role : {session?.user.role}</p>
+      <p>EmailVerifie : {session?.user.emailVerifie ? "true" : "false"}</p>
     </main>
   );
 };

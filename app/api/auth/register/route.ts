@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import type { NextRequest } from "next/server";
 
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/utils/prisma";
 import { UserRole } from "@prisma/client";
 import { registerSchema } from "@/lib/utils/validation";
 import { jsonResponse, errorHandler } from "@/lib/utils";

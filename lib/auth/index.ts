@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/utils/prisma";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
@@ -33,6 +33,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           email: user.email,
           image: user.urlImage,
           role: user.role,
+          emailVerifie: user.emailVerifie ?? false,
         };
       },
     }),
@@ -43,13 +44,34 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
 
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
+    async jwt({ token, user, trigger, session }) {
+      if (trigger === "signIn" && user) {
         token.id = user.id!;
         token.email = user.email;
         token.picture = user.image;
         token.role = user.role;
+        token.emailVerifie = user.emailVerifie;
       }
+
+      if (trigger === "update" && session?.user?.id) {
+        const dbUser = await prisma.user.findUnique({
+          where: { id: session.user.id },
+          select: {
+            email: true,
+            urlImage: true,
+            role: true,
+            emailVerifie: true,
+          },
+        });
+
+        if (dbUser) {
+          token.email = dbUser.email;
+          token.picture = dbUser.urlImage;
+          token.role = dbUser.role;
+          token.emailVerifie = dbUser.emailVerifie;
+        }
+      }
+
       return token;
     },
 
@@ -58,6 +80,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       session.user.email = token.email!;
       session.user.image = token.picture;
       session.user.role = token.role;
+      session.user.emailVerifie = token.emailVerifie;
       return session;
     },
   },
