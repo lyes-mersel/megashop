@@ -21,6 +21,7 @@ const ProductHero = ({
   productId: string;
   data: Product;
 }) => {
+  console.log(productId);
   return (
     <section className="mb-11">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
