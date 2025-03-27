@@ -46,6 +46,9 @@ export async function POST(req: NextRequest) {
         nom,
         prenom,
         role: UserRole.CLIENT,
+        client: {
+          create: {},
+        },
       },
     });
 
