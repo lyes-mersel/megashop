@@ -35,6 +35,18 @@ model Categorie {
   @@map("categorie")
 }
 
+model Couleur {
+  id   String @id @default(cuid()) @db.VarChar(25)
+  nom  String @unique @db.VarChar(50)
+  code String @db.Char(7) // Code Hexadécimal
+
+  produits      Produit[]       @relation("ProduitCouleurs")
+  LigneCommande LigneCommande[]
+  LignePanier   LignePanier[]
+
+  @@map("couleur")
+}
+
 model Client {
   id           String        @id @db.VarChar(25)
   user         User          @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: NoAction)
@@ -80,58 +92,28 @@ model Evaluation {
   @@map("evaluation")
 }
 
-model Filtre {
-  id                     String                @id @default(cuid()) @db.VarChar(25)
-  nom                    String                @db.VarChar(100)
-  valeur                 String                @db.VarChar(100)
-  filtresProduits        FiltreProduit[]
-  filtresLignesPaniers   FiltreLignePanier[]
-  filtresLignesCommandes FiltreLigneCommande[]
+model Genre {
+  id       String    @id @default(cuid()) @db.VarChar(25)
+  nom      String    @unique @db.VarChar(50)
+  produits Produit[]
 
-  @@map("filtre")
-}
-
-model FiltreLigneCommande {
-  filtreId        String        @map("filtre_id") @db.VarChar(25)
-  ligneCommandeId String        @map("ligne_commande_id") @db.VarChar(25)
-  filtre          Filtre        @relation(fields: [filtreId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  ligneCommande   LigneCommande @relation(fields: [ligneCommandeId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-
-  @@id([filtreId, ligneCommandeId])
-  @@map("filtre_ligne_commande")
-}
-
-model FiltreLignePanier {
-  filtreId      String      @map("filtre_id") @db.VarChar(25)
-  lignePanierId String      @map("ligne_panier_id") @db.VarChar(25)
-  filtre        Filtre      @relation(fields: [filtreId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  lignePanier   LignePanier @relation(fields: [lignePanierId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-
-  @@id([filtreId, lignePanierId])
-  @@map("filtre_ligne_panier")
-}
-
-model FiltreProduit {
-  filtreId  String  @map("filtre_id") @db.VarChar(25)
-  produitId String  @map("produit_id") @db.VarChar(25)
-  filtre    Filtre  @relation(fields: [filtreId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  produit   Produit @relation(fields: [produitId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-
-  @@id([filtreId, produitId])
-  @@map("filtre_produit")
+  @@map("genre")
 }
 
 model LigneCommande {
-  id                     String                @id @default(cuid()) @db.VarChar(25)
-  nomProduit             String                @map("nom_produit") @db.VarChar(100)
-  quantite               Int
-  prixUnit               Decimal               @map("prix_unit") @db.Decimal(10, 2)
-  imageUrl               String?               @map("image_url") @db.VarChar(255)
-  commandeId             String                @map("commande_id") @db.VarChar(25)
-  produitId              String?               @map("produit_id") @db.VarChar(25)
-  commande               Commande              @relation(fields: [commandeId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  produit                Produit?              @relation(fields: [produitId], references: [id], onDelete: SetNull, onUpdate: NoAction)
-  filtresLignesCommandes FiltreLigneCommande[]
+  id         String   @id @default(cuid()) @db.VarChar(25)
+  nomProduit String   @map("nom_produit") @db.VarChar(100)
+  quantite   Int
+  prixUnit   Decimal  @map("prix_unit") @db.Decimal(10, 2)
+  imageUrl   String?  @map("image_url") @db.VarChar(255)
+  commandeId String   @map("commande_id") @db.VarChar(25)
+  produitId  String?  @map("produit_id") @db.VarChar(25)
+  couleurId  String?  @map("couleur_id") @db.VarChar(25)
+  tailleId   String?  @map("taille_id") @db.VarChar(25)
+  commande   Commande @relation(fields: [commandeId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  produit    Produit? @relation(fields: [produitId], references: [id], onDelete: SetNull, onUpdate: NoAction)
+  couleur    Couleur? @relation(fields: [couleurId], references: [id], onDelete: SetNull, onUpdate: NoAction)
+  taille     Taille?  @relation(fields: [tailleId], references: [id], onDelete: SetNull, onUpdate: NoAction)
 
   @@index([commandeId], map: "index_commande_id")
   @@index([produitId], map: "index_produit_id")
@@ -139,16 +121,19 @@ model LigneCommande {
 }
 
 model LignePanier {
-  id                   String              @id @default(cuid()) @db.VarChar(25)
-  nomProduit           String              @map("nom_produit") @db.VarChar(100)
-  quantite             Int
-  prixUnit             Decimal             @map("prix_unit") @db.Decimal(10, 2)
-  imageUrl             String?             @map("image_url") @db.VarChar(255)
-  panierId             String              @map("panier_id") @db.VarChar(25)
-  produitId            String?             @map("produit_id") @db.VarChar(25)
-  panier               Panier              @relation(fields: [panierId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  produit              Produit?            @relation(fields: [produitId], references: [id], onDelete: SetNull, onUpdate: NoAction)
-  filtresLignesPaniers FiltreLignePanier[]
+  id         String   @id @default(cuid()) @db.VarChar(25)
+  nomProduit String   @map("nom_produit") @db.VarChar(100)
+  quantite   Int
+  prixUnit   Decimal  @map("prix_unit") @db.Decimal(10, 2)
+  imageUrl   String?  @map("image_url") @db.VarChar(255)
+  panierId   String   @map("panier_id") @db.VarChar(25)
+  produitId  String?  @map("produit_id") @db.VarChar(25)
+  couleurId  String?  @map("couleur_id") @db.VarChar(25)
+  tailleId   String?  @map("taille_id") @db.VarChar(25)
+  panier     Panier   @relation(fields: [panierId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  produit    Produit? @relation(fields: [produitId], references: [id], onDelete: SetNull, onUpdate: NoAction)
+  couleur    Couleur? @relation(fields: [couleurId], references: [id], onDelete: SetNull, onUpdate: NoAction)
+  taille     Taille?  @relation(fields: [tailleId], references: [id], onDelete: SetNull, onUpdate: NoAction)
 
   @@index([panierId], map: "index_panier_id")
   @@index([produitId], map: "index_produit_id")
@@ -215,22 +200,35 @@ model Produit {
   qteStock           Int                 @map("qte_stock")
   noteMoyenne        Decimal?            @default(0.0) @map("note_moyenne") @db.Decimal(2, 1)
   totalNotations     Int?                @default(0) @map("total_notations")
-  imageUrl           String?             @map("image_url") @db.VarChar(255)
   dateCreation       DateTime?           @default(now()) @map("date_creation") @db.Timestamp(0)
   dateModification   DateTime?           @default(now()) @map("date_modification") @db.Timestamp(0)
   categorieId        String?             @map("categorie_id") @db.VarChar(25)
+  genreId            String?             @map("genre_id") @db.VarChar(25)
   produitBoutique    ProduitBoutique?
   produitMarketplace ProduitMarketplace?
   categorie          Categorie?          @relation(fields: [categorieId], references: [id], onUpdate: NoAction)
-  filtresProduit     FiltreProduit[]
+  genre              Genre?              @relation(fields: [genreId], references: [id], onUpdate: NoAction)
+  couleurs           Couleur[]           @relation("ProduitCouleurs")
+  tailles            Taille[]            @relation("ProduitTailles")
   lignesCommande     LigneCommande[]
   lignesPanier       LignePanier[]
   evaluations        Evaluation[]
   signalements       Signalement[]
+  images             ProduitImage[]
 
   @@index([categorieId], map: "index_categorie_id")
   @@index([qteStock], map: "index_qte_stock")
   @@map("produit")
+}
+
+model ProduitImage {
+  id        String  @id @default(cuid()) @db.VarChar(25)
+  imageUrl  String? @map("image_url") @db.VarChar(255)
+  produitId String  @map("produit_id") @db.VarChar(25)
+  produit   Produit @relation(fields: [produitId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@map("produit_image")
+  @@index([produitId], map: "index_produit_id")
 }
 
 model ProduitBoutique {
@@ -277,6 +275,17 @@ model Signalement {
   @@index([clientId], map: "index_client_id")
   @@index([produitId], map: "index_produit_id")
   @@map("signalement")
+}
+
+model Taille {
+  id  String @id @default(cuid()) @db.VarChar(25)
+  nom String @unique @db.VarChar(10)
+
+  produits      Produit[]       @relation("ProduitTailles")
+  LigneCommande LigneCommande[]
+  LignePanier   LignePanier[]
+
+  @@map("taille")
 }
 
 model TOTPSecret {
