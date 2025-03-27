@@ -4,7 +4,7 @@
 
 ```plaintext
 # Local Development
-BASE_URL="http://localhost:3000"
+NEXT_PUBLIC_BASE_URL="http://localhost:3000"
 DATABASE_URL="mysql://megashop_user:****@localhost:3306/megashop_db"
 
 # Production
