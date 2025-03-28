@@ -68,7 +68,13 @@ export async function POST(request: NextRequest) {
     );
 
     // Return response
-    return NextResponse.json({ publicId: result.public_id }, { status: 200 });
+    return NextResponse.json(
+      {
+        message: "Image téléversée avec succès",
+        data: { publicId: result.public_id },
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Upload failed:", error);
     return NextResponse.json(

@@ -1,8 +1,9 @@
-import { prisma } from "@/lib/utils/prisma";
-import { jsonResponse, errorHandler } from "@/lib/utils";
-import { verifyTOTPCode } from "@/lib/utils/totp";
 import bcrypt from "bcryptjs";
-import { resetPasswordSchema } from "@/lib/utils/validation";
+import { NextResponse } from "next/server";
+
+import { prisma } from "@/lib/utils/prisma";
+import { verifyTOTPCode } from "@/lib/utils/totp";
+import { resetPasswordSchema } from "@/lib/validations/auth";
 
 export async function POST(req: Request) {
   try {
@@ -11,7 +12,7 @@ export async function POST(req: Request) {
     // Validate input data
     const parseResult = resetPasswordSchema.safeParse(body);
     if (!parseResult.success) {
-      return jsonResponse(
+      return NextResponse.json(
         {
           error: "Certains champs sont manquants ou incorrects",
           errors: parseResult.error.issues.map((issue) => ({
@@ -19,7 +20,7 @@ export async function POST(req: Request) {
             message: issue.message,
           })),
         },
-        400
+        { status: 400 }
       );
     }
     const { email, code, newPassword } = parseResult.data;
@@ -39,24 +40,27 @@ export async function POST(req: Request) {
     });
 
     if (!user || !user.TOTPSecret) {
-      return jsonResponse(
+      return NextResponse.json(
         { error: "Utilisateur non trouvé ou code non généré" },
-        404
+        { status: 400 }
       );
     }
 
     // Check if TOTP code is expired
     if (user.TOTPSecret.expiresLe < new Date()) {
-      return jsonResponse(
+      return NextResponse.json(
         { error: "Le code a expiré. Veuillez en générer un nouveau." },
-        400
+        { status: 400 }
       );
     }
 
     // Validate TOTP code
     const isValid = verifyTOTPCode(code, user.TOTPSecret.secret);
     if (!isValid) {
-      return jsonResponse({ error: "Code de vérification invalide" }, 400);
+      return NextResponse.json(
+        { error: "Code de vérification invalide" },
+        { status: 400 }
+      );
     }
 
     // Hash the new password
@@ -71,11 +75,15 @@ export async function POST(req: Request) {
       prisma.tOTPSecret.delete({ where: { userId: user.id } }),
     ]);
 
-    return jsonResponse(
+    return NextResponse.json(
       { message: "Mot de passe réinitialisé avec succès" },
-      200
+      { status: 200 }
     );
-  } catch (error: unknown) {
-    return errorHandler(error);
+  } catch (error) {
+    console.error("API Error : ", error);
+    return NextResponse.json(
+      { error: "Une erreur est survenue. Veuillez réessayer plus tard !" },
+      { status: 500 }
+    );
   }
 }

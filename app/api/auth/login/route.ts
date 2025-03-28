@@ -1,10 +1,11 @@
 import bcrypt from "bcryptjs";
-import type { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 import { prisma } from "@/lib/utils/prisma";
-import { loginSchema } from "@/lib/utils/validation";
-import { jsonResponse, errorHandler } from "@/lib/utils";
 import { signIn } from "@/lib/auth";
+
+import { loginSchema } from "@/lib/validations/auth";
+import formatValidationErrors from "@/lib/validations/formatValidationErrors";
 
 export async function POST(req: NextRequest) {
   try {
@@ -13,33 +14,35 @@ export async function POST(req: NextRequest) {
     // Validate input data
     const parseResult = loginSchema.safeParse(body);
     if (!parseResult.success) {
-      return jsonResponse(
-        {
-          error: "Certains champs sont manquants ou incorrects",
-          errors: parseResult.error.issues.map((issue) => ({
-            field: issue.path.join("."),
-            message: issue.message,
-          })),
-        },
-        400
-      );
+      return formatValidationErrors(parseResult);
     }
     const { email, password } = parseResult.data;
 
     // Find user in DB
     const user = await prisma.user.findUnique({ where: { email } });
-    if (!user) return jsonResponse({ error: "Identifiants incorrects" }, 400);
+    if (!user)
+      return NextResponse.json(
+        { error: "Identifiants incorrects" },
+        { status: 400 }
+      );
 
     // Compare password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch)
-      return jsonResponse({ error: "Identifiants incorrects" }, 400);
+      return NextResponse.json(
+        { error: "Identifiants incorrects" },
+        { status: 400 }
+      );
 
     // Sign in user (create session)
     await signIn("credentials", { email, password, redirect: false });
 
-    return jsonResponse({ message: "Connexion réussie" }, 200);
-  } catch (error: unknown) {
-    return errorHandler(error);
+    return NextResponse.json({ message: "Connexion réussie" }, { status: 200 });
+  } catch (error) {
+    console.error("API Error : ", error);
+    return NextResponse.json(
+      { error: "Une erreur est survenue. Veuillez réessayer plus tard !" },
+      { status: 500 }
+    );
   }
 }

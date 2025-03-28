@@ -10,7 +10,7 @@ async function main() {
   // await insertGenders();
   // await insertColors();
   // await insertSizes();
-  // await insertProducts();
+  await insertProducts();
 }
 
 main()
@@ -243,6 +243,11 @@ async function insertProducts() {
           { imageUrl: "megashop/products/oysthz7eyefyaztd9zeg" },
         ],
       },
+      produitBoutique: {
+        create: {
+          fournisseur: "Marque Luxe Béjaia",
+        },
+      },
     },
     {
       nom: "Pull moderne",
@@ -264,6 +269,11 @@ async function insertProducts() {
           { imageUrl: "megashop/products/wfvxfviw1uildauhv8ri" },
         ],
       },
+      produitBoutique: {
+        create: {
+          fournisseur: "Marque Luxe Béjaia",
+        },
+      },
     },
     {
       nom: "Pull avec col",
@@ -281,6 +291,11 @@ async function insertProducts() {
           { imageUrl: "megashop/products/eymtw8ei2m7ar3lkc7o4" },
           { imageUrl: "megashop/products/tlhaqc8tk5usveg2ul1a" },
         ],
+      },
+      produitBoutique: {
+        create: {
+          fournisseur: "Marque Luxe Béjaia",
+        },
       },
     },
     {
@@ -300,6 +315,11 @@ async function insertProducts() {
           { imageUrl: "megashop/products/zjj4qgqc4lhbd0darhvj" },
         ],
       },
+      produitBoutique: {
+        create: {
+          fournisseur: "Marque Luxe Béjaia",
+        },
+      },
     },
     {
       nom: "Short en jean",
@@ -316,6 +336,11 @@ async function insertProducts() {
       },
       images: {
         create: [{ imageUrl: "megashop/products/picnxwvjhphzp9wyu177" }],
+      },
+      produitBoutique: {
+        create: {
+          fournisseur: "Marque Luxe Béjaia",
+        },
       },
     },
     {
@@ -339,6 +364,11 @@ async function insertProducts() {
           { imageUrl: "megashop/products/d7winzl1jb8psaygpdfj" },
         ],
       },
+      produitBoutique: {
+        create: {
+          fournisseur: "Marque Luxe Béjaia",
+        },
+      },
     },
     {
       nom: "Ensemble en jean garçon",
@@ -356,6 +386,11 @@ async function insertProducts() {
       },
       images: {
         create: [{ imageUrl: "megashop/products/uh5flh2dfd210k3wivmk" }],
+      },
+      produitBoutique: {
+        create: {
+          fournisseur: "Marque Luxe Béjaia",
+        },
       },
     },
     {
@@ -378,6 +413,11 @@ async function insertProducts() {
           { imageUrl: "megashop/products/v8kkh5mqpmih3psdd5tp" },
         ],
       },
+      produitBoutique: {
+        create: {
+          fournisseur: "Marque Luxe Béjaia",
+        },
+      },
     },
     {
       nom: "Robe d'été",
@@ -397,6 +437,11 @@ async function insertProducts() {
           { imageUrl: "megashop/products/ordmhtiy4dbvbks9sxtj" },
         ],
       },
+      produitBoutique: {
+        create: {
+          fournisseur: "Marque Luxe Béjaia",
+        },
+      },
     },
     {
       nom: "Veste en cuir",
@@ -415,6 +460,11 @@ async function insertProducts() {
           { imageUrl: "megashop/products/zig8munjwzzlmpl7pv7u" },
           { imageUrl: "megashop/products/fxv11weoijdb47rfrpgt" },
         ],
+      },
+      produitBoutique: {
+        create: {
+          fournisseur: "Marque Luxe Béjaia",
+        },
       },
     },
     {
@@ -448,6 +498,11 @@ async function insertProducts() {
           { imageUrl: "megashop/products/mlx9tn6fs6upd4cnctdl" },
         ],
       },
+      produitBoutique: {
+        create: {
+          fournisseur: "Marque Luxe Béjaia",
+        },
+      },
     },
     {
       nom: "Baskets blanches sportives",
@@ -473,6 +528,11 @@ async function insertProducts() {
       images: {
         create: [{ imageUrl: "megashop/products/kvjaxufxxrn5zm7gwd1l" }],
       },
+      produitBoutique: {
+        create: {
+          fournisseur: "Marque Luxe Béjaia",
+        },
+      },
     },
     {
       nom: "Manteau long",
@@ -491,6 +551,11 @@ async function insertProducts() {
           { imageUrl: "megashop/products/nkyrljzkjma4tarrcml8" },
         ],
       },
+      produitBoutique: {
+        create: {
+          fournisseur: "Marque Luxe Béjaia",
+        },
+      },
     },
     {
       nom: "Ceinture en cuir",
@@ -503,6 +568,11 @@ async function insertProducts() {
       couleurs: { connect: [{ nom: "Marron" }, { nom: "Noir" }] },
       images: {
         create: [{ imageUrl: "megashop/products/aucrct6rjtwwbuxbisah" }],
+      },
+      produitBoutique: {
+        create: {
+          fournisseur: "Marque Luxe Béjaia",
+        },
       },
     },
     {
@@ -522,7 +592,7 @@ async function insertProducts() {
       },
       produitBoutique: {
         create: {
-          fournisseur: "Marque Luxe Paris",
+          fournisseur: "Marque Luxe Béjaia",
         },
       },
     },

@@ -1,11 +1,11 @@
 import { prisma } from "@/lib/utils/prisma";
 import { sendPasswordResetEmail } from "@/lib/utils/sendEmail";
-import { errorHandler, jsonResponse } from "@/lib/utils";
 import {
   generateTOTPCode,
   generateTOTPSecret,
   TOTP_EXPIRATION_DURATION,
 } from "@/lib/utils/totp";
+import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
@@ -18,7 +18,10 @@ export async function POST(req: Request) {
     });
 
     if (!user) {
-      return jsonResponse({ error: "Aucun compte associé à cet email." }, 404);
+      return NextResponse.json(
+        { error: "Aucun compte associé à cet email." },
+        { status: 404 }
+      );
     }
 
     // Generate secret for password reset
@@ -42,14 +45,18 @@ export async function POST(req: Request) {
     // Send the password reset code via email
     await sendPasswordResetEmail(email, code);
 
-    return jsonResponse(
+    return NextResponse.json(
       {
         message:
           "Un code de réinitialisation a été envoyé à votre adresse e-mail.",
       },
-      200
+      { status: 200 }
     );
-  } catch (error: unknown) {
-    return errorHandler(error);
+  } catch (error) {
+    console.error("API Error : ", error);
+    return NextResponse.json(
+      { error: "Une erreur est survenue. Veuillez réessayer plus tard !" },
+      { status: 500 }
+    );
   }
 }

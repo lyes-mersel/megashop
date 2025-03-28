@@ -1,7 +1,6 @@
+import { NextResponse } from "next/server";
 import getAuth from "@/lib/auth/getAuth";
 import { prisma } from "@/lib/utils/prisma";
-import { jsonResponse } from "@/lib/utils";
-import { errorHandler } from "@/lib/utils";
 import { verifyTOTPCode } from "@/lib/utils/totp";
 
 export async function POST(req: Request) {
@@ -11,12 +10,15 @@ export async function POST(req: Request) {
 
     // Ensure the user is authenticated and owns the email
     if (!session || email !== session.user.email) {
-      return jsonResponse({ error: "Forbidden" }, 403);
+      return NextResponse.json({ error: "Non autorisé" }, { status: 403 });
     }
 
     // Check if email is already verified
     if (session.user.emailVerifie) {
-      return jsonResponse({ message: "Adresse e-mail déjà vérifiée" }, 200);
+      return NextResponse.json(
+        { message: "Adresse e-mail déjà vérifiée" },
+        { status: 200 }
+      );
     }
 
     // Fetch user with TOTP secret
@@ -35,37 +37,46 @@ export async function POST(req: Request) {
     });
 
     if (!user) {
-      return jsonResponse({ error: "Utilisateur non trouvé" }, 404);
+      return NextResponse.json(
+        { error: "Utilisateur non trouvé" },
+        { status: 404 }
+      );
     }
 
     if (user.emailVerifie) {
-      return jsonResponse({ message: "Adresse e-mail déjà vérifiée" }, 200);
+      return NextResponse.json(
+        { message: "Adresse e-mail déjà vérifiée" },
+        { status: 200 }
+      );
     }
 
     if (!user.TOTPSecret) {
-      return jsonResponse(
+      return NextResponse.json(
         {
           error: "La vérification n'a pas été initiée",
         },
-        400
+        { status: 400 }
       );
     }
 
     // Check if TOTP code is expired
     if (user.TOTPSecret.expiresLe < new Date()) {
-      return jsonResponse(
+      return NextResponse.json(
         {
           error:
             "Le code de vérification a expiré. Veuillez en générer un nouveau.",
         },
-        400
+        { status: 400 }
       );
     }
 
     // Validate the provided TOTP code
     const isValid = verifyTOTPCode(code, user.TOTPSecret.secret);
     if (!isValid) {
-      return jsonResponse({ error: "Code de vérification invalide" }, 400);
+      return NextResponse.json(
+        { error: "Code de vérification invalide" },
+        { status: 400 }
+      );
     }
 
     // Mark email as verified and delete TOTP secret
@@ -79,11 +90,15 @@ export async function POST(req: Request) {
       }),
     ]);
 
-    return jsonResponse(
+    return NextResponse.json(
       { message: "Adresse e-mail vérifiée avec succès" },
-      200
+      { status: 200 }
     );
-  } catch (error: unknown) {
-    errorHandler(error);
+  } catch (error) {
+    console.error("API Error : ", error);
+    return NextResponse.json(
+      { error: "Une erreur est survenue. Veuillez réessayer plus tard !" },
+      { status: 500 }
+    );
   }
 }

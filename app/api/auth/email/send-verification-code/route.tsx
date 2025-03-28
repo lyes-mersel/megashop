@@ -1,7 +1,7 @@
+import { NextResponse } from "next/server";
 import getAuth from "@/lib/auth/getAuth";
 import { prisma } from "@/lib/utils/prisma";
 import { sendVerificationEmail } from "@/lib/utils/sendEmail";
-import { errorHandler, jsonResponse } from "@/lib/utils";
 import {
   generateTOTPCode,
   generateTOTPSecret,
@@ -15,12 +15,15 @@ export async function POST(req: Request) {
 
     // Check if user is logged in
     if (!session || email !== session.user.email) {
-      return jsonResponse({ error: "Forbidden" }, 403);
+      return NextResponse.json({ error: "Non autorisé" }, { status: 403 });
     }
 
     // Check if email is already verified
     if (session.user.emailVerifie) {
-      return jsonResponse({ message: "Adresse e-mail déjà vérifiée" }, 200);
+      return NextResponse.json(
+        { message: "Adresse e-mail déjà vérifiée" },
+        { status: 200 }
+      );
     }
 
     // Generate secret for this user
@@ -44,8 +47,12 @@ export async function POST(req: Request) {
     // Send the code via email
     await sendVerificationEmail(email, code);
 
-    return jsonResponse({ message: "Code envoyé" }, 200);
-  } catch (error: unknown) {
-    return errorHandler(error);
+    return NextResponse.json({ message: "Code envoyé" }, { status: 200 });
+  } catch (error) {
+    console.error("API Error : ", error);
+    return NextResponse.json(
+      { error: "Une erreur est survenue. Veuillez réessayer plus tard !" },
+      { status: 500 }
+    );
   }
 }

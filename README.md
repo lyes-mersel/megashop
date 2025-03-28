@@ -1,6 +1,6 @@
 # megashop
 
-**.env**
+## .env
 
 ```plaintext
 # Local Development
@@ -27,9 +27,9 @@ EMAIL_APP_PASSWORD="****"
 DEFAULT_PASSWORD="****"
 ```
 
-# MegaShop API Documentation
+## MegaShop API Documentation
 
-## Authentication ✅
+### Authentication ✅
 
 - `POST   /api/auth/register` - Register a new user
 - `POST   /api/auth/login` - User login
@@ -39,23 +39,23 @@ DEFAULT_PASSWORD="****"
 - `POST   /api/auth/email/verify` - Verify user email
 - `POST   /api/auth/email/send-verification-code` - Send an email verification code
 
-## Uploads ✅
+### Uploads ✅
 
 - `POST   /api/uploads/image` - Upload an image
 
-## Search
-
-- `GET    /api/search` - Search for products
-
-## Testimonials
+### Testimonials
 
 - `GET    /api/testimonials` - Get testimonials
 - `GET    /api/testimonials/{testimonialId}` - Get a testimonial by ID
 
-## Products
+### Products
 
 - `GET    /api/products` - Get all products
 - `POST   /api/products` - Add a product
+
+---
+
+- `GET    /api/products/search` - Search for products
 
 ---
 
@@ -85,7 +85,7 @@ DEFAULT_PASSWORD="****"
 - `PUT    /api/products/{productId}/reviews/{reviewId}/responses/{responseId}` - Update a response
 - `DELETE /api/products/{productId}/reviews/{reviewId}/responses/{responseId}` - Delete a response
 
-## Users
+### Users
 
 - `GET    /api/users/{userId}` - Retrieve a user
 - `PATCH  /api/users/{userId}` - Update a user
@@ -135,7 +135,7 @@ DEFAULT_PASSWORD="****"
 - `GET    /api/users/{userId}/settings` - Retrieve user settings
 - `PATCH  /api/users/{userId}/settings` - Update user settings
 
-## Admin
+### Admin
 
 - `GET    /api/admin/analytics` - Get platform analytics
 
