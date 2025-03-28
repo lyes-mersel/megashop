@@ -50,8 +50,8 @@ DEFAULT_PASSWORD="****"
 
 ### Products
 
-- `GET    /api/products` - Get all products
-- `POST   /api/products` - Add a product
+- `GET    /api/products` - Get all products ✅
+- `POST   /api/products` - Add a product ✅
 
 ---
 
@@ -59,7 +59,7 @@ DEFAULT_PASSWORD="****"
 
 ---
 
-- `GET    /api/products/{productId}` - Get product by ID
+- `GET    /api/products/{productId}` - Get product by ID ✅
 - `PATCH  /api/products/{productId}` - Update product details
 - `DELETE /api/products/{productId}` - Delete a product
 
