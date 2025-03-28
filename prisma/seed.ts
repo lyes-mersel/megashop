@@ -312,12 +312,7 @@ async function insertProducts() {
       genreId: genres.find((g) => g.nom === "Homme")?.id ?? null,
       couleurs: { connect: [{ nom: "Bleu" }] },
       tailles: {
-        connect: [
-          { nom: "S" },
-          { nom: "M" },
-          { nom: "L" },
-          { nom: "XL" },
-        ],
+        connect: [{ nom: "S" }, { nom: "M" }, { nom: "L" }, { nom: "XL" }],
       },
       images: {
         create: [{ imageUrl: "megashop/products/picnxwvjhphzp9wyu177" }],
