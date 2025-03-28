@@ -52,6 +52,39 @@ DEFAULT_PASSWORD="****"
 - `GET    /api/testimonials` - Get testimonials
 - `GET    /api/testimonials/{testimonialId}` - Get a testimonial by ID
 
+## Products
+
+- `GET    /api/products` - Get all products
+- `POST   /api/products` - Add a product
+
+---
+
+- `GET    /api/products/{productId}` - Get product by ID
+- `PATCH  /api/products/{productId}` - Update product details
+- `DELETE /api/products/{productId}` - Delete a product
+
+---
+
+- `GET    /api/products/{productId}/reviews` - Retrieve product reviews
+- `POST   /api/products/{productId}/reviews` - Add a review
+
+---
+
+- `GET    /api/products/{productId}/reviews/{reviewId}` - Retrieve a specific review
+- `PUT    /api/products/{productId}/reviews/{reviewId}` - Update a review
+- `DELETE /api/products/{productId}/reviews/{reviewId}` - Delete a review
+
+---
+
+- `GET    /api/products/{productId}/reviews/{reviewId}/responses` - Retrieve responses to a review
+- `POST   /api/products/{productId}/reviews/{reviewId}/responses` - Respond to a review
+
+---
+
+- `GET    /api/products/{productId}/reviews/{reviewId}/responses/{responseId}` - Retrieve a specific response
+- `PUT    /api/products/{productId}/reviews/{reviewId}/responses/{responseId}` - Update a response
+- `DELETE /api/products/{productId}/reviews/{reviewId}/responses/{responseId}` - Delete a response
+
 ## Users
 
 - `GET    /api/users/{userId}` - Retrieve a user
@@ -101,39 +134,6 @@ DEFAULT_PASSWORD="****"
 
 - `GET    /api/users/{userId}/settings` - Retrieve user settings
 - `PATCH  /api/users/{userId}/settings` - Update user settings
-
-## Products
-
-- `GET    /api/products` - Get all products
-- `POST   /api/products` - Add a product
-
----
-
-- `GET    /api/products/{productId}` - Get product by ID
-- `PATCH  /api/products/{productId}` - Update product details
-- `DELETE /api/products/{productId}` - Delete a product
-
----
-
-- `GET    /api/products/{productId}/reviews` - Retrieve product reviews
-- `POST   /api/products/{productId}/reviews` - Add a review
-
----
-
-- `GET    /api/products/{productId}/reviews/{reviewId}` - Retrieve a specific review
-- `PUT    /api/products/{productId}/reviews/{reviewId}` - Update a review
-- `DELETE /api/products/{productId}/reviews/{reviewId}` - Delete a review
-
----
-
-- `GET    /api/products/{productId}/reviews/{reviewId}/responses` - Retrieve responses to a review
-- `POST   /api/products/{productId}/reviews/{reviewId}/responses` - Respond to a review
-
----
-
-- `GET    /api/products/{productId}/reviews/{reviewId}/responses/{responseId}` - Retrieve a specific response
-- `PUT    /api/products/{productId}/reviews/{reviewId}/responses/{responseId}` - Update a response
-- `DELETE /api/products/{productId}/reviews/{reviewId}/responses/{responseId}` - Delete a response
 
 ## Admin
 
