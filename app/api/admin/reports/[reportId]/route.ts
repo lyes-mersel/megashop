@@ -11,6 +11,18 @@ export async function GET(
   );
 }
 
+export async function PATCH(
+  _req: NextRequest,
+  { params }: { params: Promise<{ reportId: string }> }
+) {
+  const { reportId } = await params;
+  return NextResponse.json(
+    { message: `Patch report with ID: ${reportId}` },
+    { status: 201 }
+  );
+}
+
+
 export async function DELETE(
   _req: NextRequest,
   { params }: { params: Promise<{ reportId: string }> }

@@ -11,17 +11,6 @@ export async function GET(
   );
 }
 
-export async function PUT(
-  _req: NextRequest,
-  { params }: { params: Promise<{ reviewId: string }> }
-) {
-  const { reviewId } = await params;
-  return NextResponse.json(
-    { message: `Modify review ID: ${reviewId}` },
-    { status: 200 }
-  );
-}
-
 export async function DELETE(
   _req: NextRequest,
   { params }: { params: Promise<{ reviewId: string }> }
