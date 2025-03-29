@@ -11,12 +11,74 @@ import formatValidationErrors from "@/lib/validations/formatValidationErrors";
 
 export async function GET(_req: NextRequest) {
   try {
-    const products = await prisma.produit.findMany();
+    const products = await prisma.produit.findMany({
+      select: {
+        // Attributes
+        id: true,
+        nom: true,
+        objet: true,
+        description: true,
+        prix: true,
+        qteStock: true,
+        noteMoyenne: true,
+        totalNotations: true,
+        dateCreation: true,
+        dateModification: true,
+        // Relations
+        genre: true,
+        categorie: true,
+        couleurs: true,
+        tailles: true,
+        produitBoutique: {
+          select: { fournisseur: true },
+        },
+        produitMarketplace: {
+          select: {
+            vendeur: {
+              select: {
+                id: true,
+                nomAffichage: true,
+              },
+            },
+          },
+        },
+        images: {
+          select: {
+            id: true,
+            imageUrl: true,
+          },
+        },
+      },
+    });
 
-    return NextResponse.json(
-      { message: "OK", data: products },
-      { status: 200 }
-    );
+    // Format each product data
+    const data = products.map((product) => {
+      const { produitMarketplace, produitBoutique, id, ...rest } = product;
+      return {
+        id,
+        type: produitBoutique
+          ? "boutique"
+          : produitMarketplace
+          ? "marketplace"
+          : null,
+        ...rest,
+        // champ: fournisseur, si produit boutique
+        ...(produitBoutique
+          ? { fournisseur: { nomAffichage: produitBoutique.fournisseur } }
+          : {}),
+        // champ: vendeur, si produit marketplace
+        ...(produitMarketplace
+          ? {
+              vendeur: {
+                id: produitMarketplace.vendeur.id,
+                nomAffichage: produitMarketplace.vendeur.nomAffichage,
+              },
+            }
+          : {}),
+      };
+    });
+
+    return NextResponse.json({ message: "OK", data }, { status: 200 });
   } catch (error) {
     console.error("API Error : ", error);
     return NextResponse.json(
@@ -114,6 +176,5 @@ export async function POST(req: NextRequest) {
     );
   }
 }
-
 
 // TODO: PATCH (images will be added after creation of the product)

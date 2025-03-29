@@ -65,12 +65,12 @@ export async function GET(
         ? "marketplace"
         : null,
       ...rest,
-      // fournisseur, si produit boutique
-      ...(produitBoutique
-        ? { founisseur: { nomAffichage: produitBoutique.fournisseur } }
+        // champ: fournisseur, si produit boutique
+        ...(produitBoutique
+        ? { fournisseur: { nomAffichage: produitBoutique.fournisseur } }
         : {}),
-      // vendeur, si produit marketplace
-      ...(produitMarketplace
+        // champ: vendeur, si produit marketplace
+        ...(produitMarketplace
         ? {
             vendeur: {
               id: produitMarketplace.vendeur.id,
