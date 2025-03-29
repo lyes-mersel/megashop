@@ -10,6 +10,7 @@ export async function GET(
     const product = await prisma.produit.findUnique({
       where: { id: productId },
       select: {
+        // Attributes
         id: true,
         nom: true,
         objet: true,
@@ -20,15 +21,14 @@ export async function GET(
         totalNotations: true,
         dateCreation: true,
         dateModification: true,
-        categorieId: true,
-
-        images: { select: { id: true, imageUrl: true } },
-        categorie: { select: { id: true, nom: true } },
-        genre: { select: { id: true, nom: true } },
-        couleurs: { select: { id: true, nom: true } },
-        tailles: { select: { id: true, nom: true } },
-
-        produitBoutique: true,
+        // Relations
+        genre: true,
+        categorie: true,
+        couleurs: true,
+        tailles: true,
+        produitBoutique: {
+          select: { fournisseur: true },
+        },
         produitMarketplace: {
           select: {
             vendeur: {
@@ -37,6 +37,12 @@ export async function GET(
                 nomAffichage: true,
               },
             },
+          },
+        },
+        images: {
+          select: {
+            id: true,
+            imageUrl: true,
           },
         },
       },
@@ -59,8 +65,19 @@ export async function GET(
         ? "marketplace"
         : null,
       ...rest,
-      ...(produitBoutique ? { produitBoutique } : {}),
-      ...(produitMarketplace ? { produitMarketplace } : {}),
+      // fournisseur, si produit boutique
+      ...(produitBoutique
+        ? { founisseur: { nomAffichage: produitBoutique.fournisseur } }
+        : {}),
+      // vendeur, si produit marketplace
+      ...(produitMarketplace
+        ? {
+            vendeur: {
+              id: produitMarketplace.vendeur.id,
+              nomAffichage: produitMarketplace.vendeur.nomAffichage,
+            },
+          }
+        : {}),
     };
 
     return NextResponse.json({ message: "OK", data }, { status: 200 });
