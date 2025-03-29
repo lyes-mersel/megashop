@@ -4,8 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/utils/prisma";
 import { signIn } from "@/lib/auth";
 
-import { loginSchema } from "@/lib/validations/auth";
-import formatValidationErrors from "@/lib/validations/formatValidationErrors";
+import { loginSchema, formatValidationErrors } from "@/lib/validations";
 
 export async function POST(req: NextRequest) {
   try {

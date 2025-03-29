@@ -1,53 +1,22 @@
 import { prisma } from "@/lib/utils/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
+import { formatProductData, getProductSelect } from "@/lib/api/products";
+
 export async function GET(
   _req: NextRequest,
   { params }: { params: Promise<{ productId: string }> }
 ) {
   try {
     const { productId } = await params;
+
+    // Fetch product by ID
     const product = await prisma.produit.findUnique({
       where: { id: productId },
-      select: {
-        // Attributes
-        id: true,
-        nom: true,
-        objet: true,
-        description: true,
-        prix: true,
-        qteStock: true,
-        noteMoyenne: true,
-        totalNotations: true,
-        dateCreation: true,
-        dateModification: true,
-        // Relations
-        genre: true,
-        categorie: true,
-        couleurs: true,
-        tailles: true,
-        produitBoutique: {
-          select: { fournisseur: true },
-        },
-        produitMarketplace: {
-          select: {
-            vendeur: {
-              select: {
-                id: true,
-                nomAffichage: true,
-              },
-            },
-          },
-        },
-        images: {
-          select: {
-            id: true,
-            imageUrl: true,
-          },
-        },
-      },
+      select: getProductSelect(),
     });
 
+    // Check if product exists
     if (!product) {
       return NextResponse.json(
         { error: "Produit non trouvé" },
@@ -55,30 +24,8 @@ export async function GET(
       );
     }
 
-    // Format the product data
-    const { produitMarketplace, produitBoutique, id, ...rest } = product;
-    const data = {
-      id,
-      type: produitBoutique
-        ? "boutique"
-        : produitMarketplace
-        ? "marketplace"
-        : null,
-      ...rest,
-        // champ: fournisseur, si produit boutique
-        ...(produitBoutique
-        ? { fournisseur: { nomAffichage: produitBoutique.fournisseur } }
-        : {}),
-        // champ: vendeur, si produit marketplace
-        ...(produitMarketplace
-        ? {
-            vendeur: {
-              id: produitMarketplace.vendeur.id,
-              nomAffichage: produitMarketplace.vendeur.nomAffichage,
-            },
-          }
-        : {}),
-    };
+    // Format the response
+    const data = formatProductData(product);
 
     return NextResponse.json({ message: "OK", data }, { status: 200 });
   } catch (error) {

@@ -55,7 +55,7 @@ DEFAULT_PASSWORD="****"
 
 ---
 
-- `GET    /api/products/search` - Search for products
+- `GET    /api/products/search` - Search for products ✅
 
 ---
 

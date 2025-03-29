@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 import { prisma } from "@/lib/utils/prisma";
 import { verifyTOTPCode } from "@/lib/utils/totp";
-import { resetPasswordSchema } from "@/lib/validations/auth";
+import { resetPasswordSchema } from "@/lib/validations";
 
 export async function POST(req: Request) {
   try {

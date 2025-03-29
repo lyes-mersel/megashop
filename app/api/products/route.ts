@@ -1,82 +1,36 @@
 import { NextRequest, NextResponse } from "next/server";
-
-// prisma
 import { prisma } from "@/lib/utils/prisma";
 import { Prisma, UserRole } from "@prisma/client";
 
-// utils
 import { auth } from "@/lib/auth";
-import { productSchema } from "@/lib/validations/products";
-import formatValidationErrors from "@/lib/validations/formatValidationErrors";
+import {
+  allowedSortFields,
+  formatProductData,
+  getProductSelect,
+  validSortOrders,
+} from "@/lib/api/products";
+import { productSchema, formatValidationErrors } from "@/lib/validations";
 
-export async function GET(_req: NextRequest) {
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+
+  // Extract sorting parameters
+  let sortBy = searchParams.get("sortBy");
+  let sortOrder = searchParams.get("sortOrder");
+
+  // Ensure sortBy & sortOrder are valid
+  sortBy = allowedSortFields.includes(sortBy ?? "") ? sortBy : "nom";
+  sortOrder = validSortOrders.includes(sortOrder ?? "") ? sortOrder : "asc";
+
   try {
+    // Fetch all products
     const products = await prisma.produit.findMany({
-      select: {
-        // Attributes
-        id: true,
-        nom: true,
-        objet: true,
-        description: true,
-        prix: true,
-        qteStock: true,
-        noteMoyenne: true,
-        totalNotations: true,
-        dateCreation: true,
-        dateModification: true,
-        // Relations
-        genre: true,
-        categorie: true,
-        couleurs: true,
-        tailles: true,
-        produitBoutique: {
-          select: { fournisseur: true },
-        },
-        produitMarketplace: {
-          select: {
-            vendeur: {
-              select: {
-                id: true,
-                nomAffichage: true,
-              },
-            },
-          },
-        },
-        images: {
-          select: {
-            id: true,
-            imageUrl: true,
-          },
-        },
-      },
+      select: getProductSelect(),
+      orderBy: { [sortBy!]: sortOrder },
     });
 
-    // Format each product data
-    const data = products.map((product) => {
-      const { produitMarketplace, produitBoutique, id, ...rest } = product;
-      return {
-        id,
-        type: produitBoutique
-          ? "boutique"
-          : produitMarketplace
-          ? "marketplace"
-          : null,
-        ...rest,
-        // champ: fournisseur, si produit boutique
-        ...(produitBoutique
-          ? { fournisseur: { nomAffichage: produitBoutique.fournisseur } }
-          : {}),
-        // champ: vendeur, si produit marketplace
-        ...(produitMarketplace
-          ? {
-              vendeur: {
-                id: produitMarketplace.vendeur.id,
-                nomAffichage: produitMarketplace.vendeur.nomAffichage,
-              },
-            }
-          : {}),
-      };
-    });
+    // Format the response
+    const data = products.map((product) => formatProductData(product));
 
     return NextResponse.json({ message: "OK", data }, { status: 200 });
   } catch (error) {

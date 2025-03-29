@@ -5,8 +5,7 @@ import { prisma } from "@/lib/utils/prisma";
 import { UserRole } from "@prisma/client";
 import { signIn } from "@/lib/auth";
 
-import { registerSchema } from "@/lib/validations/auth";
-import formatValidationErrors from "@/lib/validations/formatValidationErrors";
+import { registerSchema, formatValidationErrors } from "@/lib/validations";
 
 export async function POST(req: NextRequest) {
   try {
