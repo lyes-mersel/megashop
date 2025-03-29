@@ -5,6 +5,16 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const compareArrays = (a: unknown[], b: unknown[]) => {
+export function compareArrays(a: unknown[], b: unknown[]) {
   return a.toString() === b.toString();
-};
+}
+
+export function isMySQL(): boolean {
+  return process.env.DATABASE_URL?.includes("mysql") ?? false;
+}
+
+export function containsFilter(value: string) {
+  return isMySQL()
+    ? { contains: value }
+    : { contains: value, mode: "insensitive" };
+}
