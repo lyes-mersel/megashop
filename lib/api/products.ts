@@ -1,8 +1,4 @@
-import { Prisma } from "@prisma/client";
-
-export const validSortOrders = ["asc", "desc"];
-
-export const allowedSortFields = ["nom", "prix", "noteMoyenne", "dateCreation"];
+import { ProductFromDB, ProductResponse } from "@/lib/types/product.types";
 
 export function getProductSelect() {
   return {
@@ -30,7 +26,7 @@ export function getProductSelect() {
         vendeur: {
           select: {
             id: true,
-            nomAffichage: true,
+            nomPublic: true,
           },
         },
       },
@@ -44,12 +40,16 @@ export function getProductSelect() {
   };
 }
 
-export type ProductWithDetails = Prisma.ProduitGetPayload<{
-  select: ReturnType<typeof getProductSelect>;
-}>;
+export function formatProductData(product: ProductFromDB): ProductResponse {
+  const {
+    produitMarketplace,
+    produitBoutique,
+    id,
+    prix,
+    noteMoyenne,
+    ...rest
+  } = product;
 
-export function formatProductData(product: ProductWithDetails) {
-  const { produitMarketplace, produitBoutique, id, ...rest } = product;
   return {
     id,
     type: produitBoutique
@@ -57,15 +57,17 @@ export function formatProductData(product: ProductWithDetails) {
       : produitMarketplace
       ? "marketplace"
       : null,
+    prix: prix.toNumber(),
+    noteMoyenne: noteMoyenne?.toNumber(),
     ...rest,
     ...(produitBoutique
-      ? { fournisseur: { nomAffichage: produitBoutique.fournisseur } }
+      ? { fournisseur: { nomPublic: produitBoutique.fournisseur } }
       : {}),
     ...(produitMarketplace
       ? {
           vendeur: {
             id: produitMarketplace.vendeur.id,
-            nomAffichage: produitMarketplace.vendeur.nomAffichage,
+            nomPublic: produitMarketplace.vendeur.nomPublic,
           },
         }
       : {}),

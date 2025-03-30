@@ -3,40 +3,45 @@ import { prisma } from "@/lib/utils/prisma";
 import { Prisma, UserRole } from "@prisma/client";
 
 import { auth } from "@/lib/auth";
-import {
-  allowedSortFields,
-  formatProductData,
-  getProductSelect,
-  validSortOrders,
-} from "@/lib/api/products";
+import { formatProductData, getProductSelect } from "@/lib/api/products";
 import { productSchema, formatValidationErrors } from "@/lib/validations";
+import { getPaginationParams, getSortingParams } from "@/lib/utils/params";
+import { INTERNAL_ERROR_MESSAGE } from "@/lib/constants/settings";
 
 export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-
-  // Extract sorting parameters
-  let sortBy = searchParams.get("sortBy");
-  let sortOrder = searchParams.get("sortOrder");
-
-  // Ensure sortBy & sortOrder are valid
-  sortBy = allowedSortFields.includes(sortBy ?? "") ? sortBy : "nom";
-  sortOrder = validSortOrders.includes(sortOrder ?? "") ? sortOrder : "asc";
+  const { page, pageSize, skip } = getPaginationParams(req);
+  const { sortBy, sortOrder } = getSortingParams(req);
 
   try {
-    // Fetch all products
+    // Fetch total products & count
+    const totalProducts = await prisma.produit.count();
     const products = await prisma.produit.findMany({
       select: getProductSelect(),
-      orderBy: { [sortBy!]: sortOrder },
+      orderBy: { [sortBy]: sortOrder },
+      skip,
+      take: pageSize,
     });
 
-    // Format the response
+    // Format products
     const data = products.map((product) => formatProductData(product));
 
-    return NextResponse.json({ message: "OK", data }, { status: 200 });
+    // Pagination response
+    const pagination = {
+      totalItems: totalProducts,
+      totalPages: Math.ceil(totalProducts / pageSize),
+      currentPage: page,
+      pageSize,
+    };
+
+    // Return response
+    return NextResponse.json(
+      { message: "OK", pagination, data },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("API Error : ", error);
     return NextResponse.json(
-      { error: "Une erreur est survenue. Veuillez réessayer plus tard !" },
+      { error: INTERNAL_ERROR_MESSAGE },
       { status: 500 }
     );
   }
@@ -125,7 +130,7 @@ export async function POST(req: NextRequest) {
 
     console.error("API Error : ", error);
     return NextResponse.json(
-      { error: "Une erreur est survenue. Veuillez réessayer plus tard !" },
+      { error: INTERNAL_ERROR_MESSAGE },
       { status: 500 }
     );
   }

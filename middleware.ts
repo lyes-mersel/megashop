@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import getAuth from "@/lib/auth/getAuth";
-import { ROOT, PUBLIC_ROUTES, AUTH_ROUTES, VERIFY_EMAIL } from "@/lib/routes";
+import { ROOT, PUBLIC_ROUTES, AUTH_ROUTES, VERIFY_EMAIL } from "@/lib/constants/routes";
 
 export async function middleware(req: NextRequest) {
   const session = await getAuth();

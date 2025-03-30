@@ -53,7 +53,11 @@ async function insertUsers() {
       client: {
         create: {
           vendeur: {
-            create: {},
+            create: {
+              nomPublic: "Marque Luxe Béjaia",
+              rib: "000999554283123",
+              description: "Description de la boutique",
+            },
           },
         },
       },

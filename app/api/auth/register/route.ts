@@ -4,7 +4,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/utils/prisma";
 import { UserRole } from "@prisma/client";
 import { signIn } from "@/lib/auth";
-
+import { INTERNAL_ERROR_MESSAGE } from "@/lib/constants/settings";
 import { registerSchema, formatValidationErrors } from "@/lib/validations";
 
 export async function POST(req: NextRequest) {
@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error("API Error : ", error);
     return NextResponse.json(
-      { error: "Une erreur est survenue. Veuillez réessayer plus tard !" },
+      { error: INTERNAL_ERROR_MESSAGE },
       { status: 500 }
     );
   }

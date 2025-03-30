@@ -198,10 +198,10 @@ model Produit {
   description        String?             @db.VarChar(1000)
   prix               Decimal             @db.Decimal(10, 2)
   qteStock           Int                 @map("qte_stock")
-  noteMoyenne        Decimal?            @default(0.0) @map("note_moyenne") @db.Decimal(2, 1)
-  totalNotations     Int?                @default(0) @map("total_notations")
-  dateCreation       DateTime?           @default(now()) @map("date_creation") @db.Timestamp(0)
-  dateModification   DateTime?           @default(now()) @map("date_modification") @db.Timestamp(0)
+  noteMoyenne        Decimal             @default(0.0) @map("note_moyenne") @db.Decimal(2, 1)
+  totalNotations     Int                 @default(0) @map("total_notations")
+  dateCreation       DateTime            @default(now()) @map("date_creation") @db.Timestamp(0)
+  dateModification   DateTime            @default(now()) @map("date_modification") @db.Timestamp(0)
   categorieId        String?             @map("categorie_id") @db.VarChar(25)
   genreId            String?             @map("genre_id") @db.VarChar(25)
   produitBoutique    ProduitBoutique?
@@ -223,12 +223,12 @@ model Produit {
 
 model ProduitImage {
   id        String  @id @default(cuid()) @db.VarChar(25)
-  imageUrl  String? @map("image_url") @db.VarChar(255)
+  imageUrl  String  @map("image_url") @db.VarChar(255)
   produitId String  @map("produit_id") @db.VarChar(25)
   produit   Produit @relation(fields: [produitId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
-  @@map("produit_image")
   @@index([produitId], map: "index_produit_id")
+  @@map("produit_image")
 }
 
 model ProduitBoutique {
@@ -303,13 +303,13 @@ model User {
   id                 String              @id @default(cuid()) @db.VarChar(25)
   email              String              @unique(map: "unique_email") @db.VarChar(255)
   password           String              @db.VarChar(255)
-  nom                String?             @db.VarChar(100)
-  prenom             String?             @db.VarChar(100)
+  nom                String              @db.VarChar(100)
+  prenom             String              @db.VarChar(100)
   tel                String?             @db.VarChar(20)
   adresseId          String?             @map("adresse_id") @db.VarChar(25)
   urlImage           String?             @map("url_image") @db.VarChar(255)
   emailVerifie       Boolean             @default(false) @map("email_verifie")
-  dateCreation       DateTime?           @default(now()) @map("date_creation") @db.DateTime(0)
+  dateCreation       DateTime            @default(now()) @map("date_creation") @db.DateTime(0)
   role               UserRole            @default(CLIENT)
   admin              Admin?
   client             Client?
@@ -326,8 +326,9 @@ model User {
 
 model Vendeur {
   id                 String               @id @db.VarChar(25)
-  nomAffichage       String?              @map("nom_affichage") @db.VarChar(100)
-  rib                String?              @db.VarChar(50)
+  nomPublic          String               @map("nom_public") @db.VarChar(100)
+  description        String?              @db.VarChar(1000)
+  rib                String               @db.VarChar(50)
   client             Client               @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: NoAction)
   paiementVendeur    PaiementVendeur[]
   produitMarketplace ProduitMarketplace[]

@@ -19,7 +19,7 @@ import ReviewCard from "@/components/common/ReviewCard";
 
 // Utils & Types
 import { cn } from "@/lib/utils";
-import { Review } from "@/lib/types/review.types";
+import { Review } from "@/lib/types/ui/review-ui.types";
 import { useIsClient, useMediaQuery } from "usehooks-ts";
 
 // Syles

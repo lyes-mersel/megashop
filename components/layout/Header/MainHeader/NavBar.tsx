@@ -20,7 +20,7 @@ import NotificationBtn from "@/components/layout/Header/MainHeader/NotificationB
 
 // Utils & Types
 import getAuth from "@/lib/auth/getAuth";
-import { NavMenu } from "@/lib/types/navbar.types";
+import { NavMenu } from "@/lib/types/ui/navbar.types";
 
 const data: NavMenu = [
   {
