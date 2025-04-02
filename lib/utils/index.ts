@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { Prisma } from "@prisma/client";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -16,5 +17,5 @@ export function isMySQL(): boolean {
 export function containsFilter(value: string) {
   return isMySQL()
     ? { contains: value }
-    : { contains: value, mode: "insensitive" };
+    : { contains: value, mode: Prisma.QueryMode.insensitive };
 }
