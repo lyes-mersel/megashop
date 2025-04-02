@@ -11,7 +11,7 @@ import {
 
 // Utils & Types
 import { cn } from "@/lib/utils";
-import { MenuListData } from "../../../../lib/types/navbar.types";
+import { MenuListData } from "../../../../lib/types/ui/navbar.types";
 
 export type MenuListProps = {
   data: MenuListData;

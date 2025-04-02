@@ -1,6 +1,6 @@
 // Types
 import { Product } from "@/lib/types/product.types";
-import { Review } from "@/lib/types/review.types";
+import { Review } from "@/lib/types/ui/review-ui.types";
 
 // Data : Nos produits boutique
 export const shopProductsData: Product[] = [

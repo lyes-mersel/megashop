@@ -2,7 +2,7 @@ import Link from "next/link";
 import { FaGithub } from "react-icons/fa";
 
 // Types
-import { SocialNetworks } from "@/lib/types/footer.types";
+import { SocialNetworks } from "@/lib/types/ui/footer.types";
 
 const githubLinks: SocialNetworks[] = [
   {

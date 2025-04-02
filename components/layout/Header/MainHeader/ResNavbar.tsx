@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/sheet";
 import Image from "next/image";
 import Link from "next/link";
-import { NavMenu } from "../../../../lib/types/navbar.types";
+import { NavMenu } from "../../../../lib/types/ui/navbar.types";
 import {
   Accordion,
   AccordionContent,

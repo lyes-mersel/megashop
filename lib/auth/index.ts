@@ -47,8 +47,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async jwt({ token, user, trigger, session }) {
       if (trigger === "signIn" && user) {
         token.id = user.id!;
-        token.email = user.email;
-        token.picture = user.image;
+        token.email = user.email!;
+        token.image = user.image!;
         token.role = user.role;
         token.emailVerifie = user.emailVerifie;
       }
@@ -76,9 +76,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
 
     async session({ session, token }) {
-      session.user.id = token.id!;
-      session.user.email = token.email!;
-      session.user.image = token.picture;
+      session.user.id = token.id;
+      session.user.email = token.email;
+      session.user.image = token.image;
       session.user.role = token.role;
       session.user.emailVerifie = token.emailVerifie;
       return session;
