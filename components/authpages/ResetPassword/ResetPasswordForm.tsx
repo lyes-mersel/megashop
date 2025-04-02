@@ -31,21 +31,23 @@ const ResetPasswordForm = ({ email }: { email: string }) => {
     setFieldErrors({});
 
     try {
-      const res = await fetch("/api/auth/reset-password", {
+      const res = await fetch("/api/auth/password/reset", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, code, newPassword: password }),
       });
 
-      const data = await res.json();
+      const responseJson = await res.json();
       if (!res.ok) {
-        setErrorMessage(data.error || "Erreur de réinitialisation.");
+        setErrorMessage(responseJson.error || "Erreur de réinitialisation.");
 
-        if (data.errors) {
+        if (responseJson?.data) {
           const errors: Record<string, string> = {};
-          data.errors.forEach((err: { field: string; message: string }) => {
-            errors[err.field] = err.message;
-          });
+          responseJson.data.forEach(
+            (err: { field: string; message: string }) => {
+              errors[err.field] = err.message;
+            }
+          );
           setFieldErrors(errors);
         }
         return;

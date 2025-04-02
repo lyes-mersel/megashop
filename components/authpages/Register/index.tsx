@@ -64,9 +64,9 @@ export function RegisterForm({
       const responseJson = await response.json();
       if (!response.ok) {
         setErrorMessage(responseJson?.error || "Une erreur est survenue.");
-        if (responseJson?.errors) {
+        if (responseJson?.data) {
           const errors: Record<string, string> = {};
-          responseJson.errors.forEach(
+          responseJson.data.forEach(
             (err: { field: string; message: string }) => {
               errors[err.field] = err.message;
             }

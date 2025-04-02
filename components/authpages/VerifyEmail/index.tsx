@@ -47,7 +47,7 @@ export default function VerifyEmail({ user }: VerifyEmailProps) {
     const verificationCode = formData.get("verification-code") as string;
 
     try {
-      const response = await fetch("/api/auth/verify-email", {
+      const response = await fetch("/api/auth/email/verify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: user.email, code: verificationCode }),
@@ -76,7 +76,7 @@ export default function VerifyEmail({ user }: VerifyEmailProps) {
     if (countdown > 0) return;
 
     try {
-      const response = await fetch("/api/auth/send-verification-code", {
+      const response = await fetch("/api/auth/email/send-verification-code", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: user.email }),

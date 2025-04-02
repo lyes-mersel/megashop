@@ -16,7 +16,7 @@ export async function POST(req: Request) {
       return NextResponse.json(
         {
           error: "Certains champs sont manquants ou incorrects",
-          errors: parseResult.error.issues.map((issue) => ({
+          data: parseResult.error.issues.map((issue) => ({
             field: issue.path.join("."),
             message: issue.message,
           })),

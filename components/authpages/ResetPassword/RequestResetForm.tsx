@@ -29,7 +29,7 @@ function RequestResetForm({
     setErrorMessage(null);
 
     try {
-      const res = await fetch("/api/auth/send-reset-password-code", {
+      const res = await fetch("/api/auth/password/send-reset-code", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
