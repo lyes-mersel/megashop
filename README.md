@@ -20,9 +20,13 @@
    In the root directory, create a `.env` file and add:
 
    ```plaintext
-    # Megashop Environment Variables
-    NEXT_PUBLIC_BASE_URL="http://localhost:3000"
-    PROD_BASE_URL="https://project-megashop.vercel.app"
+    # Local Development
+   NEXT_PUBLIC_BASE_URL="http://localhost:3000"
+   NEXT_PUBLIC_API_URL="http://localhost:3000/api"
+
+   # Production
+   PROD_API_URL="https://project-megashop.vercel.app"
+   PROD_BASE_URL="https://project-megashop.vercel.app/api"
 
     # Database Connection
     DATABASE_URL="postgresql://postgres.fallhpfxzcmhrvtticfn:[YOUR-PASSWORD]@aws-0-eu-central-1.pooler.supabase.com:6543/postgres?connection_limit=200&pool_timeout=10"
