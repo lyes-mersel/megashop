@@ -1,0 +1,9 @@
+{
+  "regions": ["fra1"],
+  "build": {
+    "env": {
+      "NEXT_PUBLIC_BASE_URL": "https://project-megashop.vercel.app",
+      "NEXT_PUBLIC_API_URL": "https://project-megashop.vercel.app"
+    }
+  }
+}
