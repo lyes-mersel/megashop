@@ -1,15 +1,14 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { PrismaClient, UserRole } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
 async function main() {
-  // await insertUsers();
-  // await insertCategories();
-  // await insertGenders();
-  // await insertColors();
-  // await insertSizes();
+  await insertUsers();
+  await insertCategories();
+  await insertGenders();
+  await insertColors();
+  await insertSizes();
   await insertProducts();
 }
 

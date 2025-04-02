@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_DIRECT_URL")
 }
 
 model Admin {
@@ -59,7 +60,7 @@ model Client {
 
 model Commande {
   id                String             @id @default(cuid()) @db.VarChar(25)
-  date              DateTime?          @default(now()) @db.DateTime(0)
+  date              DateTime?          @default(now())
   montant           Decimal            @db.Decimal(10, 2)
   statut            CommandeStatut?    @default(EN_ATTENTE)
   adresseId         String?            @map("adresse_id") @db.VarChar(25)
@@ -71,8 +72,8 @@ model Commande {
   lignesCommande    LigneCommande[]
   paiementsCommande PaiementCommande[]
 
-  @@index([clientId], map: "index_client_id")
-  @@index([panierId], map: "index_panier_id")
+  @@index([clientId], map: "index_commande_client_id")
+  @@index([panierId], map: "index_commande_panier_id")
   @@map("commande")
 }
 
@@ -80,15 +81,15 @@ model Evaluation {
   id                 String              @id @default(cuid()) @db.VarChar(25)
   note               Decimal             @db.Decimal(2, 1)
   text               String              @db.VarChar(500)
-  date               DateTime?           @default(now()) @db.DateTime(0)
+  date               DateTime?           @default(now())
   userId             String              @map("user_id") @db.VarChar(25)
   produitId          String              @map("produit_id") @db.VarChar(25)
   user               User                @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
   produit            Produit             @relation(fields: [produitId], references: [id], onDelete: Cascade, onUpdate: NoAction)
   reponsesEvaluation ReponseEvaluation[]
 
-  @@index([produitId], map: "index_produit_id")
-  @@index([userId], map: "index_user_id")
+  @@index([produitId], map: "index_evaluation_produit_id")
+  @@index([userId], map: "index_evaluation_user_id")
   @@map("evaluation")
 }
 
@@ -115,8 +116,8 @@ model LigneCommande {
   couleur    Couleur? @relation(fields: [couleurId], references: [id], onDelete: SetNull, onUpdate: NoAction)
   taille     Taille?  @relation(fields: [tailleId], references: [id], onDelete: SetNull, onUpdate: NoAction)
 
-  @@index([commandeId], map: "index_commande_id")
-  @@index([produitId], map: "index_produit_id")
+  @@index([commandeId], map: "index_ligne_commande_commande_id")
+  @@index([produitId], map: "index_ligne_commande_produit_id")
   @@map("ligne_commande")
 }
 
@@ -135,8 +136,8 @@ model LignePanier {
   couleur    Couleur? @relation(fields: [couleurId], references: [id], onDelete: SetNull, onUpdate: NoAction)
   taille     Taille?  @relation(fields: [tailleId], references: [id], onDelete: SetNull, onUpdate: NoAction)
 
-  @@index([panierId], map: "index_panier_id")
-  @@index([produitId], map: "index_produit_id")
+  @@index([panierId], map: "index_ligne_panier_panier_id")
+  @@index([produitId], map: "index_ligne_panier_produit_id")
   @@map("ligne_panier")
 }
 
@@ -144,19 +145,19 @@ model Notification {
   id             String    @id @default(cuid()) @db.VarChar(25)
   objet          String?   @db.VarChar(255)
   text           String?   @db.VarChar(1000)
-  date           DateTime? @default(now()) @db.DateTime(0)
+  date           DateTime? @default(now())
   urlRedirection String?   @map("url_redirection") @db.VarChar(255)
   estLu          Boolean?  @default(false) @map("est_lu")
   userId         String?   @map("user_id") @db.VarChar(25)
   user           User?     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
-  @@index([userId], map: "index_user_id")
+  @@index([userId], map: "index_notification_user_id")
   @@map("notification")
 }
 
 model PaiementCommande {
   id         String          @id @default(cuid()) @db.VarChar(25)
-  date       DateTime?       @default(now()) @db.DateTime(0)
+  date       DateTime?       @default(now())
   statut     PaiementStatut? @default(EN_ATTENTE)
   commandeId String          @map("commande_id") @db.VarChar(25)
   commande   Commande        @relation(fields: [commandeId], references: [id], onDelete: Cascade, onUpdate: NoAction)
@@ -168,26 +169,26 @@ model PaiementCommande {
 model PaiementVendeur {
   id        String          @id @default(cuid()) @db.VarChar(25)
   montant   Decimal         @db.Decimal(10, 2)
-  date      DateTime?       @default(now()) @db.DateTime(0)
+  date      DateTime?       @default(now())
   statut    PaiementStatut? @default(EN_ATTENTE)
   vendeurId String          @map("vendeur_id") @db.VarChar(25)
   vendeur   Vendeur         @relation(fields: [vendeurId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
-  @@index([vendeurId], map: "index_vendeur_id")
+  @@index([vendeurId], map: "index_paiement_vendeur_vendeur_id")
   @@map("paiement_vendeur")
 }
 
 model Panier {
   id               String        @id @default(cuid()) @db.VarChar(25)
   statut           PanierStatut? @default(EN_COURS)
-  dateCreation     DateTime?     @default(now()) @map("date_creation") @db.DateTime(0)
-  dateModification DateTime?     @map("date_modification") @db.DateTime(0)
+  dateCreation     DateTime?     @default(now()) @map("date_creation")
+  dateModification DateTime?     @map("date_modification")
   userId           String        @map("user_id") @db.VarChar(25)
   user             User          @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
   commandes        Commande[]
   lignesPanier     LignePanier[]
 
-  @@index([userId], map: "index_user_id")
+  @@index([userId], map: "index_panier_user_id")
   @@map("panier")
 }
 
@@ -227,7 +228,7 @@ model ProduitImage {
   produitId String  @map("produit_id") @db.VarChar(25)
   produit   Produit @relation(fields: [produitId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
-  @@index([produitId], map: "index_produit_id")
+  @@index([produitId], map: "index_produit_image_produit_id")
   @@map("produit_image")
 }
 
@@ -252,7 +253,7 @@ model ProduitMarketplace {
 model ReponseEvaluation {
   id           String     @id @default(cuid()) @db.VarChar(25)
   text         String     @db.VarChar(500)
-  date         DateTime?  @default(now()) @db.DateTime(0)
+  date         DateTime?  @default(now())
   userId       String     @map("user_id") @db.VarChar(25)
   evaluationId String     @map("evaluation_id") @db.VarChar(25)
   user         User       @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
@@ -266,7 +267,7 @@ model Signalement {
   objet     String?            @db.VarChar(255)
   text      String?            @db.VarChar(1000)
   statut    SignalementStatut? @default(EN_ATTENTE)
-  date      DateTime?          @default(now()) @db.DateTime(0)
+  date      DateTime?          @default(now())
   clientId  String?            @map("client_id") @db.VarChar(25)
   produitId String?            @map("produit_id") @db.VarChar(25)
   client    Client?            @relation(fields: [clientId], references: [id], onDelete: SetNull, onUpdate: NoAction)
@@ -309,7 +310,7 @@ model User {
   adresseId          String?             @map("adresse_id") @db.VarChar(25)
   urlImage           String?             @map("url_image") @db.VarChar(255)
   emailVerifie       Boolean             @default(false) @map("email_verifie")
-  dateCreation       DateTime            @default(now()) @map("date_creation") @db.DateTime(0)
+  dateCreation       DateTime            @default(now()) @map("date_creation")
   role               UserRole            @default(CLIENT)
   admin              Admin?
   client             Client?

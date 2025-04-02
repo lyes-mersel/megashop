@@ -3,13 +3,13 @@
 ## .env
 
 ```plaintext
-# Local Development
+# Megashop Environment Variables
 NEXT_PUBLIC_BASE_URL="http://localhost:3000"
-DATABASE_URL="mysql://megashop_user:****@localhost:3306/megashop_db"
-
-# Production
 PROD_BASE_URL="https://project-megashop.vercel.app"
-PROD_DATABASE_URL="mysql://root:****@shortline.proxy.rlwy.net:48484/railway"
+
+# Database Connection
+DATABASE_URL="postgresql://postgres.fallhpfxzcmhrvtticfn:[YOUR-PASSWORD]@aws-0-eu-central-1.pooler.supabase.com:6543/postgres?pgbouncer=true"
+DATABASE_DIRECT_URL="postgresql://postgres.fallhpfxzcmhrvtticfn:[YOUR-PASSWORD]@aws-0-eu-central-1.pooler.supabase.com:5432/postgres"
 
 # Cloudinary Configuration
 NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME="dzmbj5d0b"
