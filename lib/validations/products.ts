@@ -1,3 +1,7 @@
+import {
+  ALLOWED_IMAGE_FORMATS,
+  MAX_UPLOAD_SIZE_MB,
+} from "@/lib/constants/settings";
 import { z } from "zod";
 
 // Définition du schéma de validation Zod pour un produit
@@ -26,4 +30,29 @@ export const productSchema = z.object({
   tailles: z
     .array(z.string().max(25, "L'ID de la taille est invalide"))
     .optional(),
+  images: z
+    .array(
+      z.instanceof(File).refine((file) => file.type.startsWith("image/"), {
+        message: "Le fichier doit être une image",
+      })
+    )
+    .refine(
+      (files) =>
+        files.every((file) => file.size <= MAX_UPLOAD_SIZE_MB * 1024 * 1024),
+      {
+        message: `La taille des images ne peut pas dépasser ${MAX_UPLOAD_SIZE_MB} Mo`,
+      }
+    )
+    .refine(
+      (files) =>
+        files.every((file) => ALLOWED_IMAGE_FORMATS.includes(file.type)),
+      {
+        message: `Les formats autorisés sont : ${ALLOWED_IMAGE_FORMATS.join(
+          ", "
+        )}`,
+      }
+    )
+    .refine((files) => files.length >= 1 && files.length <= 4, {
+      message: "Vous devez télécharger entre 1 et 4 images",
+    }),
 });

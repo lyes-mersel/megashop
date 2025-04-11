@@ -34,3 +34,12 @@ export async function uploadToCloudinary(
     uploadStream.end(buffer);
   });
 }
+
+export async function deleteFromCloudinary(publicId: string) {
+  try {
+    await cloudinary.uploader.destroy(publicId);
+    console.log(`Deleted image: ${publicId}`);
+  } catch (error) {
+    console.error(`Failed to delete image ${publicId}:`, error);
+  }
+}

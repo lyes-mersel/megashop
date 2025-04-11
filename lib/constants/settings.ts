@@ -7,7 +7,7 @@ export const MAX_PAGE_SIZE = 100;
 export const ALLOWED_FOLDERS = ["products", "profiles"];
 
 // File Upload Limits
-export const MAX_UPLOAD_SIZE_MB = 5;
+export const MAX_UPLOAD_SIZE_MB = 1;
 export const ALLOWED_IMAGE_FORMATS = ["image/jpeg", "image/png", "image/webp"];
 
 // Error Messages
