@@ -1,27 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
-import { v2 as cloudinary } from "cloudinary";
+
 import { auth } from "@/lib/auth";
-
-// Liste des dossiers autorisés
-const ALLOWED_FOLDERS = ["products", "profiles"];
-
-// Cloudinary Configuration
-cloudinary.config({
-  cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
-
-interface CloudinaryUploadResult {
-  public_id: string;
-  [key: string]: unknown;
-}
+import { ALLOWED_FOLDERS, ERROR_MESSAGES } from "@/lib/constants/settings";
+import { uploadToCloudinary } from "@/lib/helpers/cloudinary";
+import { UserRole } from "@prisma/client";
 
 export async function POST(request: NextRequest) {
-  // Authentication Check
   const session = await auth();
+  // Authentication Check
   if (!session) {
-    return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
+    return NextResponse.json(
+      { error: ERROR_MESSAGES.UNAUTHORIZED },
+      { status: 401 }
+    );
+  }
+  // Role Check
+  if (session.user.role !== UserRole.ADMIN) {
+    return NextResponse.json(
+      { error: ERROR_MESSAGES.FORBIDDEN },
+      { status: 403 }
+    );
   }
 
   try {
@@ -40,32 +38,13 @@ export async function POST(request: NextRequest) {
     // Validate folder
     if (!folder || !ALLOWED_FOLDERS.includes(folder)) {
       return NextResponse.json(
-        { erreur: "Nom de dossier invalide" },
+        { error: "Nom de dossier invalide" },
         { status: 400 }
       );
     }
 
-    // Convert file to Buffer
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-
     // Upload to Cloudinary
-    const result = await new Promise<CloudinaryUploadResult>(
-      (resolve, reject) => {
-        const uploadStream = cloudinary.uploader.upload_stream(
-          { folder: `megashop/${folder}` },
-          (error, result) => {
-            if (error) {
-              console.error("Cloudinary Upload Error:", error);
-              reject(error);
-            } else {
-              resolve(result as CloudinaryUploadResult);
-            }
-          }
-        );
-        uploadStream.end(buffer);
-      }
-    );
+    const result = await uploadToCloudinary(file, folder);
 
     // Return response
     return NextResponse.json(
@@ -78,7 +57,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("Upload failed:", error);
     return NextResponse.json(
-      { error: "Échec du téléversement de l'image" },
+      { error: ERROR_MESSAGES.INTERNAL_ERROR },
       { status: 500 }
     );
   }

@@ -3,10 +3,10 @@ import { prisma } from "@/lib/utils/prisma";
 import { Prisma, UserRole } from "@prisma/client";
 
 import { auth } from "@/lib/auth";
-import { formatProductData, getProductSelect } from "@/lib/api/products";
+import { formatProductData, getProductSelect } from "@/lib/helpers/products";
 import { productSchema, formatValidationErrors } from "@/lib/validations";
 import { getPaginationParams, getSortingParams } from "@/lib/utils/params";
-import { INTERNAL_ERROR_MESSAGE } from "@/lib/constants/settings";
+import { ERROR_MESSAGES } from "@/lib/constants/settings";
 
 export async function GET(req: NextRequest) {
   const { page, pageSize, skip } = getPaginationParams(req);
@@ -41,7 +41,7 @@ export async function GET(req: NextRequest) {
   } catch (error) {
     console.error("API Error : ", error);
     return NextResponse.json(
-      { error: INTERNAL_ERROR_MESSAGE },
+      { error: ERROR_MESSAGES },
       { status: 500 }
     );
   }
@@ -130,10 +130,8 @@ export async function POST(req: NextRequest) {
 
     console.error("API Error : ", error);
     return NextResponse.json(
-      { error: INTERNAL_ERROR_MESSAGE },
+      { error: ERROR_MESSAGES.INTERNAL_ERROR },
       { status: 500 }
     );
   }
 }
-
-// TODO: PATCH (images will be added after creation of the product)

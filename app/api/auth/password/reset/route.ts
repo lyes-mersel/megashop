@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/utils/prisma";
 import { verifyTOTPCode } from "@/lib/utils/totp";
 import { resetPasswordSchema } from "@/lib/validations";
-import { INTERNAL_ERROR_MESSAGE } from "@/lib/constants/settings";
+import { ERROR_MESSAGES } from "@/lib/constants/settings";
 
 export async function POST(req: Request) {
   try {
@@ -83,7 +83,7 @@ export async function POST(req: Request) {
   } catch (error) {
     console.error("API Error : ", error);
     return NextResponse.json(
-      { error: INTERNAL_ERROR_MESSAGE },
+      { error: ERROR_MESSAGES.INTERNAL_ERROR },
       { status: 500 }
     );
   }

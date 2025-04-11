@@ -1,5 +1,5 @@
 import { Prisma } from "@prisma/client";
-import { getProductSelect } from "@/lib/api/products";
+import { getProductSelect } from "@/lib/helpers/products";
 
 // Used in old frontend
 export type Discount = {
