@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { prisma } from "@/lib/utils/prisma";
-import { INTERNAL_ERROR_MESSAGE } from "@/lib/constants/settings";
+import { ERROR_MESSAGES } from "@/lib/constants/settings";
 
-import { formatProductData, getProductSelect } from "@/lib/api/products";
+import { formatProductData, getProductSelect } from "@/lib/helpers/products";
 
 export async function GET(
   _req: NextRequest,
@@ -33,7 +33,7 @@ export async function GET(
   } catch (error) {
     console.error("API Error : ", error);
     return NextResponse.json(
-      { error: INTERNAL_ERROR_MESSAGE },
+      { error: ERROR_MESSAGES.INTERNAL_ERROR },
       { status: 500 }
     );
   }

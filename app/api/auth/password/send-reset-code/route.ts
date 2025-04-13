@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server";
 
 import { prisma } from "@/lib/utils/prisma";
-import { sendPasswordResetEmail } from "@/lib/api/sendEmail";
+import { sendPasswordResetEmail } from "@/lib/helpers/sendEmail";
 import {
   generateTOTPCode,
   generateTOTPSecret,
   TOTP_EXPIRATION_DURATION,
 } from "@/lib/utils/totp";
-import { INTERNAL_ERROR_MESSAGE } from "@/lib/constants/settings";
+import { ERROR_MESSAGES } from "@/lib/constants/settings";
 
 
 export async function POST(req: Request) {
@@ -58,7 +58,7 @@ export async function POST(req: Request) {
   } catch (error) {
     console.error("API Error : ", error);
     return NextResponse.json(
-      { error: INTERNAL_ERROR_MESSAGE },
+      { error: ERROR_MESSAGES.INTERNAL_ERROR },
       { status: 500 }
     );
   }

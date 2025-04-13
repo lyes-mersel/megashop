@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { signOut } from "@/lib/auth";
-import { INTERNAL_ERROR_MESSAGE } from "@/lib/constants/settings";
+import { ERROR_MESSAGES } from "@/lib/constants/settings";
 
 export async function POST() {
   try {
@@ -14,7 +14,7 @@ export async function POST() {
   } catch (error) {
     console.error("API Error : ", error);
     return NextResponse.json(
-      { error: INTERNAL_ERROR_MESSAGE },
+      { error: ERROR_MESSAGES.INTERNAL_ERROR },
       { status: 500 }
     );
   }

@@ -3,8 +3,7 @@ import { NextResponse } from "next/server";
 import getAuth from "@/lib/auth/getAuth";
 import { prisma } from "@/lib/utils/prisma";
 import { verifyTOTPCode } from "@/lib/utils/totp";
-import { INTERNAL_ERROR_MESSAGE } from "@/lib/constants/settings";
-
+import { ERROR_MESSAGES } from "@/lib/constants/settings";
 
 export async function POST(req: Request) {
   try {
@@ -12,8 +11,19 @@ export async function POST(req: Request) {
     const session = await getAuth();
 
     // Ensure the user is authenticated and owns the email
-    if (!session || email !== session.user.email) {
-      return NextResponse.json({ error: "Non autorisé" }, { status: 403 });
+    if (!session) {
+      return NextResponse.json(
+        { error: ERROR_MESSAGES.UNAUTHORIZED },
+        { status: 401 }
+      );
+    }
+    if (email !== session.user.email) {
+      return NextResponse.json(
+        {
+          error: "L'adresse e-mail ne correspond pas à l'utilisateur connecté",
+        },
+        { status: 403 }
+      );
     }
 
     // Check if email is already verified
@@ -100,7 +110,7 @@ export async function POST(req: Request) {
   } catch (error) {
     console.error("API Error : ", error);
     return NextResponse.json(
-      { error: INTERNAL_ERROR_MESSAGE },
+      { error: ERROR_MESSAGES.INTERNAL_ERROR },
       { status: 500 }
     );
   }

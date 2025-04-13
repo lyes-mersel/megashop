@@ -3,8 +3,8 @@ import { Prisma } from "@prisma/client";
 
 import { prisma } from "@/lib/utils/prisma";
 import { containsFilter } from "@/lib/utils";
-import { formatProductData, getProductSelect } from "@/lib/api/products";
-import { INTERNAL_ERROR_MESSAGE } from "@/lib/constants/settings";
+import { formatProductData, getProductSelect } from "@/lib/helpers/products";
+import { ERROR_MESSAGES } from "@/lib/constants/settings";
 import { getPaginationParams, getSortingParams } from "@/lib/utils/params";
 
 export async function GET(req: NextRequest) {
@@ -76,7 +76,7 @@ export async function GET(req: NextRequest) {
   } catch (error) {
     console.error("API Error:", error);
     return NextResponse.json(
-      { error: INTERNAL_ERROR_MESSAGE },
+      { error: ERROR_MESSAGES.INTERNAL_ERROR },
       { status: 500 }
     );
   }
