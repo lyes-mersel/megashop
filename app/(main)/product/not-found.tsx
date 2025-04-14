@@ -1,5 +1,3 @@
-// TODO: A ameliorer
-
 import Link from "next/link";
 
 export default function NotFound() {
@@ -14,7 +12,9 @@ export default function NotFound() {
         </div>
 
         {/* Titre */}
-        <h2 className="text-4xl font-bold text-gray-900">Oups ! Page non trouvée</h2>
+        <h2 className="text-4xl font-bold text-gray-900">
+          Oups ! Page non trouvée
+        </h2>
 
         {/* Message d'erreur */}
         <p className="text-lg text-gray-600">
