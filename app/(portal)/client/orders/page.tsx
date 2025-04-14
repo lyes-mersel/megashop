@@ -32,6 +32,7 @@ interface Order {
 }
 
 export default function OrderHistoryPage() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [orders, setOrders] = useState<Order[]>([
     {
       id: 1,
