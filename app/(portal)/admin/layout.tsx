@@ -1,4 +1,5 @@
 "use client";
+
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -9,9 +10,10 @@ import {
   DollarSign,
   Settings,
   LogOut,
+  ShieldAlert,
   Bell,
+  Briefcase,
   Package,
-  Mail,
   Menu,
   X,
 } from "lucide-react";
@@ -24,14 +26,14 @@ const montserrat = Montserrat({
   display: "swap",
 });
 
-export default function VendeurLayout({
+export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
   // Détecter si l'écran est mobile
@@ -57,20 +59,22 @@ export default function VendeurLayout({
     }
   }, [pathname, isMobile]);
 
-  // Information du vendeur
-  const vendeurInfo = {
-    name: "Jean Dupont",
-    email: "jean.dupont@example.com",
+  // Information de l'administrateur
+  const adminInfo = {
+    name: "Admin",
+    email: "admin@example.com",
     photoUrl: null, // null pour utiliser l'icône par défaut
   };
 
   const navItems = [
-    { name: "Tableau de bord", href: "/seller/dashboard", icon: BarChart2 },
-    { name: "Boutique", href: "/seller/shop", icon: ShoppingBag },
-    { name: "Ventes", href: "/seller/sells", icon: DollarSign },
-    { name: "Commandes", href: "/seller/orders", icon: Package },
-    { name: "Notifications", href: "/seller/notifications", icon: Bell },
-    { name: "Paramètres", href: "/seller/settings", icon: Settings },
+    { name: "Tableau de bord", href: "/admin/dashboard", icon: BarChart2 },
+    { name: "Gestion", href: "/admin/management", icon: Briefcase },
+    { name: "Boutique", href: "/admin/store", icon: ShoppingBag },
+    { name: "Ventes", href: "/admin/sells", icon: DollarSign },
+    { name: "Commandes", href: "/admin/orders", icon: Package },
+    { name: "Signalements", href: "/admin/reports", icon: ShieldAlert },
+    { name: "Notifications", href: "/admin/notifications", icon: Bell },
+    { name: "Paramètres", href: "/admin/settings", icon: Settings },
   ];
 
   // Fonction pour gérer le clic sur la sidebar
@@ -110,7 +114,7 @@ export default function VendeurLayout({
 
           <div className="flex items-center gap-4">
             {/* Notification badge pour mobile */}
-            <Link href="/seller/notifications" className="relative">
+            <Link href="/admin/notifications" className="relative">
               <Bell className="h-6 w-6 text-gray-700" />
               <span className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
                 3
@@ -202,7 +206,7 @@ export default function VendeurLayout({
           </div>
         )}
 
-        {/* Profil Vendeur - Version déployée ou mobile */}
+        {/* Profil Admin - Version déployée ou mobile */}
         {isMobile || !isCollapsed ? (
           <div className="mx-3 my-4 bg-gradient-to-r from-gray-100 to-gray-50 rounded-lg p-3 shadow-sm border border-gray-200 transition-all duration-300">
             <div className="flex items-start">
@@ -214,11 +218,11 @@ export default function VendeurLayout({
                   } rounded-full overflow-hidden shadow-lg p-0.5 bg-white`}
                 >
                   <div className="w-full h-full rounded-full overflow-hidden">
-                    {vendeurInfo.photoUrl ? (
+                    {adminInfo.photoUrl ? (
                       <Image
                         fill
-                        src={vendeurInfo.photoUrl}
-                        alt="Photo du vendeur"
+                        src={adminInfo.photoUrl}
+                        alt="Admin"
                         className="w-full h-full object-cover rounded-full"
                       />
                     ) : (
@@ -239,17 +243,17 @@ export default function VendeurLayout({
                 <h3
                   className={`${montserrat.className} text-sm font-bold text-gray-900 truncate`}
                 >
-                  {vendeurInfo.name}
+                  {adminInfo.name}
                 </h3>
                 <div className="flex items-center mt-1 text-xs text-gray-500 w-full pr-1">
-                  <Mail className="h-3 w-3 mr-1 flex-shrink-0" />
-                  <p className="truncate w-full" title={vendeurInfo.email}>
-                    {vendeurInfo.email}
+                  <Bell className="h-3 w-3 mr-1 flex-shrink-0" />
+                  <p className="truncate w-full" title={adminInfo.email}>
+                    {adminInfo.email}
                   </p>
                 </div>
                 <div className="mt-1">
-                  <span className="px-2 py-0.5 bg-green-100 text-green-800 text-xs rounded-full font-medium">
-                    Vendeur
+                  <span className="px-2 py-0.5 bg-blue-100 text-blue-800 text-xs rounded-full font-medium">
+                    Administrateur
                   </span>
                 </div>
               </div>
