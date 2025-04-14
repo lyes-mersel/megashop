@@ -1,7 +1,7 @@
-import AuthFooter from "@/components/layout/Footer/ShortFooter";
 import MainHeader from "@/components/layout/Header/MainHeader";
+import ShortFooter from "@/components/layout/Footer/ShortFooter";
 
-export default function MainLayout({
+export default function ClientLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -10,7 +10,7 @@ export default function MainLayout({
     <>
       <MainHeader />
       {children}
-      <AuthFooter />
+      <ShortFooter />
     </>
   );
 }

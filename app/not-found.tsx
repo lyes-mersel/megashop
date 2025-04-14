@@ -1,6 +1,6 @@
 // TODO: A ameliorer
 
-import AuthFooter from "@/components/layout/Footer/ShortFooter/ShortFooter";
+import AuthFooter from "@/components/layout/Footer/ShortFooter";
 import MainHeader from "@/components/layout/Header/MainHeader";
 import Link from "next/link";
 
