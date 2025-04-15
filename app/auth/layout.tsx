@@ -1,5 +1,5 @@
-import AuthFooter from "@/components/layout/Footer/ShortFooter";
-import MainHeader from "@/components/layout/Header/MainHeader";
+import AuthFooter from "@/components/layout/auth/Footer";
+import MainHeader from "@/components/layout/store/Header";
 
 export default function MainLayout({
   children,

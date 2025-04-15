@@ -1,7 +1,7 @@
 import MainHeader from "@/components/layout/store/Header";
-import ShortFooter from "@/components/layout/auth/Footer";
+import Footer from "@/components/layout/store/Footer";
 
-export default function ClientLayout({
+export default function MainLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -10,7 +10,7 @@ export default function ClientLayout({
     <>
       <MainHeader />
       {children}
-      <ShortFooter />
+      <Footer />
     </>
   );
 }

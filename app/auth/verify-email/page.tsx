@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 
 import getAuth from "@/lib/auth/getAuth";
-import VerifyEmail from "@/components/authpages/VerifyEmail";
+import VerifyEmail from "@/components/auth/VerifyEmail";
 
 const VerifyEmailPage = async () => {
   const session = await getAuth();
