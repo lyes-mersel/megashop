@@ -1,336 +1,39 @@
-"use client";
-
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import {
-  BarChart2,
-  ShoppingBag,
-  User,
-  DollarSign,
-  Settings,
-  LogOut,
-  ShieldAlert,
-  Bell,
-  Briefcase,
-  Package,
-  Menu,
-  X,
-} from "lucide-react";
-import { Montserrat } from "next/font/google";
-import Image from "next/image";
-
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  weight: "800",
-  display: "swap",
-});
+import SidebarLayout from "@/components/layout/portal/Sidebar";
+import { NavItem } from "@/lib/types/ui/portalSideBar.types";
 
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const pathname = usePathname();
-  const [isCollapsed, setIsCollapsed] = useState(true);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-
-  // Détecter si l'écran est mobile
-  useEffect(() => {
-    const checkIfMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    // Vérifier au chargement
-    checkIfMobile();
-
-    // Ajouter un écouteur d'événement pour les changements de taille
-    window.addEventListener("resize", checkIfMobile);
-
-    // Nettoyer l'écouteur
-    return () => window.removeEventListener("resize", checkIfMobile);
-  }, []);
-
-  // Fermer le menu mobile au changement de route
-  useEffect(() => {
-    if (isMobile) {
-      setIsMobileMenuOpen(false);
-    }
-  }, [pathname, isMobile]);
-
-  // Information de l'administrateur
+  // Admin user information
   const adminInfo = {
     name: "Admin",
     email: "admin@example.com",
-    photoUrl: null, // null pour utiliser l'icône par défaut
+    photoUrl: null,
+    role: "Administrateur" as const,
+    badgeColor: "bg-blue-100 text-blue-800",
   };
 
-  const navItems = [
-    { name: "Tableau de bord", href: "/admin/dashboard", icon: BarChart2 },
-    { name: "Gestion", href: "/admin/management", icon: Briefcase },
-    { name: "Boutique", href: "/admin/store", icon: ShoppingBag },
-    { name: "Ventes", href: "/admin/sells", icon: DollarSign },
-    { name: "Commandes", href: "/admin/orders", icon: Package },
-    { name: "Signalements", href: "/admin/reports", icon: ShieldAlert },
-    { name: "Notifications", href: "/admin/notifications", icon: Bell },
-    { name: "Paramètres", href: "/admin/settings", icon: Settings },
+  // Navigation items
+  const navItems: NavItem[] = [
+    {
+      name: "Tableau de bord",
+      href: "/admin/dashboard",
+      iconName: "BarChart2",
+    },
+    { name: "Gestion", href: "/admin/management", iconName: "Briefcase" },
+    { name: "Boutique", href: "/admin/store", iconName: "ShoppingBag" },
+    { name: "Ventes", href: "/admin/sells", iconName: "DollarSign" },
+    { name: "Commandes", href: "/admin/orders", iconName: "Package" },
+    { name: "Signalements", href: "/admin/reports", iconName: "ShieldAlert" },
+    { name: "Notifications", href: "/admin/notifications", iconName: "Bell" },
+    { name: "Paramètres", href: "/admin/settings", iconName: "Settings" },
   ];
 
-  // Fonction pour gérer le clic sur la sidebar
-  interface SidebarClickEvent extends React.MouseEvent<HTMLDivElement> {
-    target: HTMLElement;
-  }
-
-  const handleSidebarClick = (e: SidebarClickEvent) => {
-    // Sur mobile, ne pas changer l'état collapsed en cliquant sur la sidebar
-    if (!isMobile && !e.target.closest("a") && !e.target.closest("button")) {
-      setIsCollapsed(!isCollapsed);
-    }
-  };
-
-  // Fonction pour basculer le menu mobile
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
-
   return (
-    <div className="flex h-screen w-full overflow-hidden">
-      {/* Header mobile avec bouton hamburger */}
-      {isMobile && (
-        <div className="fixed top-0 left-0 right-0 h-16 bg-white z-50 border-b border-gray-200 flex items-center justify-between px-4 shadow-sm">
-          <div className="flex items-center">
-            <Link href="/">
-              <Image
-                src="/manifest/favicon.svg"
-                alt="Logo de l'application"
-                width={50}
-                height={50}
-                className="object-contain"
-                priority
-              />
-            </Link>
-          </div>
-
-          <div className="flex items-center gap-4">
-            {/* Notification badge pour mobile */}
-            <Link href="/admin/notifications" className="relative">
-              <Bell className="h-6 w-6 text-gray-700" />
-              <span className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
-                3
-              </span>
-            </Link>
-
-            {/* Bouton hamburger */}
-            <button
-              className="p-1 rounded-md hover:bg-gray-100"
-              onClick={toggleMobileMenu}
-            >
-              {isMobileMenuOpen ? (
-                <X className="h-6 w-6 text-gray-700" />
-              ) : (
-                <Menu className="h-6 w-6 text-gray-700" />
-              )}
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Overlay sombre pour le mode mobile quand le menu est ouvert */}
-      {isMobile && isMobileMenuOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-40"
-          onClick={toggleMobileMenu}
-        />
-      )}
-
-      {/* Sidebar - fixe en desktop, slide-in en mobile */}
-      <div
-        className={`h-full bg-white flex flex-col shadow-lg z-50 border-r border-gray-200 transition-all duration-300 ${
-          isMobile
-            ? `fixed right-0 top-0 bottom-0 ${
-                isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
-              } w-3/4 max-w-xs`
-            : `${isCollapsed ? "w-20" : "w-64"} fixed cursor-pointer`
-        }`}
-        onClick={isMobile ? undefined : handleSidebarClick}
-      >
-        {/* Entête de la sidebar - visible seulement en mobile ou en mode déployé sur desktop */}
-        {(isMobile || !isCollapsed) && (
-          <div
-            className={`${
-              isMobile ? "h-16" : ""
-            } flex items-center justify-between px-4 py-3 border-b border-gray-200`}
-          >
-            {isMobile ? (
-              <h2 className={`${montserrat.className} text-lg font-bold`}>
-                Menu
-              </h2>
-            ) : (
-              <div className="h-12 w-full flex items-center justify-center">
-                <Link href="/">
-                  <Image
-                    src="/manifest/favicon.svg"
-                    alt="Logo de l'application"
-                    width={50}
-                    height={50}
-                    className="object-contain hover:opacity-80 transition-opacity"
-                    priority
-                  />
-                </Link>
-              </div>
-            )}
-            {isMobile && (
-              <button onClick={toggleMobileMenu}>
-                <X className="h-6 w-6 text-gray-700" />
-              </button>
-            )}
-          </div>
-        )}
-
-        {/* Logo pour mode collapsé desktop uniquement */}
-        {!isMobile && isCollapsed && (
-          <div className="flex justify-center items-center py-4 border-b border-gray-200">
-            <div className="w-50 h-12 flex items-center justify-center">
-              <Link href="/">
-                <Image
-                  src="/manifest/favicon.svg"
-                  alt="Logo de l'application"
-                  width={50}
-                  height={50}
-                  className="object-contain hover:opacity-80 transition-opacity"
-                  priority
-                />
-              </Link>
-            </div>
-          </div>
-        )}
-
-        {/* Profil Admin - Version déployée ou mobile */}
-        {isMobile || !isCollapsed ? (
-          <div className="mx-3 my-4 bg-gradient-to-r from-gray-100 to-gray-50 rounded-lg p-3 shadow-sm border border-gray-200 transition-all duration-300">
-            <div className="flex items-start">
-              {/* Avatar à gauche */}
-              <div className="relative flex-shrink-0">
-                <div
-                  className={`${
-                    isMobile ? "w-12 h-12" : "w-14 h-14"
-                  } rounded-full overflow-hidden shadow-lg p-0.5 bg-white`}
-                >
-                  <div className="w-full h-full rounded-full overflow-hidden">
-                    {adminInfo.photoUrl ? (
-                      <Image
-                        fill
-                        src={adminInfo.photoUrl}
-                        alt="Admin"
-                        className="w-full h-full object-cover rounded-full"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-black flex items-center justify-center">
-                        <User
-                          className={`${
-                            isMobile ? "h-6 w-6" : "h-7 w-7"
-                          } text-white`}
-                        />
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              {/* Informations à droite */}
-              <div className="ml-3 flex-1 overflow-hidden">
-                <h3
-                  className={`${montserrat.className} text-sm font-bold text-gray-900 truncate`}
-                >
-                  {adminInfo.name}
-                </h3>
-                <div className="flex items-center mt-1 text-xs text-gray-500 w-full pr-1">
-                  <Bell className="h-3 w-3 mr-1 flex-shrink-0" />
-                  <p className="truncate w-full" title={adminInfo.email}>
-                    {adminInfo.email}
-                  </p>
-                </div>
-                <div className="mt-1">
-                  <span className="px-2 py-0.5 bg-blue-100 text-blue-800 text-xs rounded-full font-medium">
-                    Administrateur
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        ) : (
-          // Profil simplifié quand replié sur desktop
-          <div className="py-4 flex flex-col items-center border-b border-gray-200">
-            <div className="w-12 h-12 rounded-full overflow-hidden shadow-md p-0.5 bg-white">
-              <div className="w-full h-full bg-black flex items-center justify-center rounded-full">
-                <User className="h-6 w-6 text-white" />
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Navigation */}
-        <nav className="flex-1 py-4 overflow-y-auto">
-          {navItems.map((item) => {
-            const isActive =
-              pathname === item.href || pathname.startsWith(item.href + "/");
-            return (
-              <Link
-                key={item.name}
-                href={item.href}
-                className={`flex items-center ${
-                  isMobile ? "px-6 py-4" : "gap-4 py-3 px-6"
-                } ${
-                  isActive
-                    ? "bg-gray-100 text-black font-medium" +
-                      (isMobile ? "" : " border-r-4 border-black")
-                    : "text-gray-700 hover:bg-gray-50"
-                } transition-all duration-200`}
-                onClick={isMobile ? toggleMobileMenu : undefined}
-              >
-                <item.icon
-                  className={`${isMobile ? "h-6 w-6 mr-3" : "h-5 w-5"} ${
-                    isActive ? "text-black" : "text-gray-500"
-                  }`}
-                />
-                {(!isCollapsed || isMobile) && <span>{item.name}</span>}
-              </Link>
-            );
-          })}
-        </nav>
-
-        {/* Bouton de déconnexion - toujours visible */}
-        <div className="p-4 border-t border-gray-200">
-          <button
-            className={`flex items-center ${
-              isMobile
-                ? "px-6 py-4 gap-3"
-                : `${isCollapsed ? "justify-center px-2" : "gap-4 px-6"} py-3`
-            } w-full text-gray-700 hover:bg-red-50 hover:text-red-600 transition-all duration-200 rounded-lg`}
-            onClick={(e) => {
-              e.stopPropagation();
-              // Logique de déconnexion
-            }}
-          >
-            <LogOut className={`${isMobile ? "h-6 w-6" : "h-5 w-5"}`} />
-            {(!isCollapsed || isMobile) && <span>Déconnexion</span>}
-          </button>
-        </div>
-      </div>
-
-      {/* Contenu principal en pleine largeur */}
-      <div
-        className={`w-full transition-all duration-300 h-screen overflow-auto ${
-          isMobile
-            ? "pt-16" // Espace pour le header mobile
-            : isCollapsed
-            ? "ml-20"
-            : "ml-64"
-        }`}
-      >
-        {children}
-      </div>
-    </div>
+    <SidebarLayout navItems={navItems} userInfo={adminInfo}>
+      {children}
+    </SidebarLayout>
   );
 }

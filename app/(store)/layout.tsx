@@ -1,4 +1,4 @@
-import MainHeader from "@/components/layout/store/Header";
+import Header from "@/components/layout/store/Header";
 import Footer from "@/components/layout/store/Footer";
 
 export default function MainLayout({
@@ -8,7 +8,7 @@ export default function MainLayout({
 }>) {
   return (
     <>
-      <MainHeader />
+      <Header />
       {children}
       <Footer />
     </>
