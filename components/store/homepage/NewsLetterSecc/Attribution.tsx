@@ -34,9 +34,9 @@ const githubLinks: SocialNetworks[] = [
 const Attribution = () => {
   return (
     <>
-      <hr className="h-[1px] border-t-black/10 mb-6" />
+      <hr className="h-[1px] border-t-black/10 mb-3" />
 
-      <div className="flex flex-col sm:flex-row justify-between items-center">
+      <div className="flex flex-col sm:flex-row justify-between items-center pb-3">
         <p className="text-sm text-black/60 text-center sm:text-left mb-4 sm:mb-0">
           Mega Shop © 2025 – Projet académique réalisé par des étudiants en
           Master 1 Génie Logiciel de l&apos;Université de Béjaïa.

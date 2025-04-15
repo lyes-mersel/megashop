@@ -81,10 +81,10 @@ export function RegisterForm({
       toast(responseJson.message || "Inscription réussie.");
 
       // Valider l'URL de redirection (interne uniquement)
-      const urlCallback = searchParams.get("urlCallback");
+      const callbackUrl = searchParams.get("callbackUrl");
       const redirectUrl =
-        urlCallback?.startsWith("/") && !urlCallback.startsWith("//")
-          ? urlCallback
+        callbackUrl?.startsWith("/") && !callbackUrl.startsWith("//")
+          ? callbackUrl
           : "/dashboard";
       router.push(redirectUrl);
       router.refresh();

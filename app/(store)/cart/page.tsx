@@ -30,7 +30,7 @@ export default function CartPage() {
   );
 
   return (
-    <main className="pb-20">
+    <main className="min-h-[calc(100dvh-130px)] py-10">
       <div className="max-w-frame mx-auto px-4 xl:px-0">
         {cart && cart.items.length > 0 ? (
           <>

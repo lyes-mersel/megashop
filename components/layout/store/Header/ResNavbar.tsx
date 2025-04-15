@@ -37,11 +37,11 @@ const ResNavbar = ({ data }: { data: NavMenu }) => {
               <Link href="/" className="">
                 <Image
                   priority
-                  src="/icons/logo.svg"
+                  src="/manifest/favicon.svg"
                   height={80}
                   width={140}
                   alt="logo"
-                  className="h-[60px] md:h-[80px] w-auto"
+                  className="h-[50px] w-auto"
                 />
               </Link>
             </SheetClose>

@@ -1,5 +1,5 @@
-import MainHeader from "@/components/layout/store/Header";
-import ShortFooter from "@/components/layout/auth/Footer";
+import StoreHeader from "@/components/layout/store/Header";
+import AuthFooter from "@/components/layout/store/Footer";
 
 export default function ClientLayout({
   children,
@@ -8,9 +8,9 @@ export default function ClientLayout({
 }>) {
   return (
     <>
-      <MainHeader />
+      <StoreHeader />
       {children}
-      <ShortFooter />
+      <AuthFooter />
     </>
   );
 }

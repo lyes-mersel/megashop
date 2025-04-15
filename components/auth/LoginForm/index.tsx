@@ -75,11 +75,11 @@ export function LoginForm({
       toast(responseJson.message || "Connexion réussie.");
 
       // Valider l'URL de redirection (interne uniquement)
-      const urlCallback = searchParams.get("urlCallback");
+      const callbackUrl = searchParams.get("callbackUrl");
       const redirectUrl =
-        urlCallback?.startsWith("/") && !urlCallback.startsWith("//")
-          ? urlCallback
-          : "/dashboard";
+        callbackUrl?.startsWith("/") && !callbackUrl.startsWith("//")
+          ? callbackUrl
+          : "/";
       router.push(redirectUrl);
       router.refresh();
     } catch {

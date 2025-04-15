@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 
 const NotificationBtn = () => {
   return (
-    <Link href="/notifications" passHref>
+    <Link href="/client/notifications" passHref>
       <Button variant="ghost" className="p-1 md:p-2">
         <Image
           priority

@@ -2,86 +2,43 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+// Utils & Fonts
+import { cn } from "@/lib/utils";
+import { integralCF } from "@/styles/fonts";
+
 // UI Components
-import {
-  NavigationMenu,
-  NavigationMenuList,
-} from "@/components/ui/navigation-menu";
 import InputGroup from "@/components/ui/input-group";
 
 // Components
 import { Button } from "@/components/ui/button";
-import { MenuList } from "./MenuList";
-import { MenuItem } from "./MenuItem";
-import ResMainNavbar from "./ResNavbar";
 import CartBtn from "./CartBtn";
 import UserMenu from "./UserMenu";
-import NotificationBtn from "@/components/layout/store/Header/NotificationBtn";
-
-// Utils & Types
-import getAuth from "@/lib/auth/getAuth";
-import { NavMenu } from "@/lib/types/ui/navbar.types";
-
-const data: NavMenu = [
-  {
-    id: 1,
-    type: "MenuItem",
-    label: "Boutique",
-    url: "/catalog?type=boutique",
-    children: [],
-  },
-  {
-    id: 2,
-    type: "MenuItem",
-    label: "Marketplace",
-    url: "/catalog?type=marketplace",
-    children: [],
-  },
-];
 
 const NavBar = async () => {
-  const session = await getAuth();
-
   return (
-    <nav className="flex relative max-w-frame mx-auto items-center justify-between py-2 px-4 xl:px-0">
+    <nav className="flex max-w-frame mx-auto items-center justify-between py-2 px-4 xl:px-0">
       <div className="flex items-center">
-        {/* Responsive NavBar in sm screens */}
-        <div className="block md:hidden mr-4">
-          <ResMainNavbar data={data} />
-        </div>
-
         {/* Logo */}
-        <h1 className="hidden">Mega Shop</h1>
-        <Link href="/" className="mr-3 lg:mr-10">
+        <Link href="/" className="mr-3 lg:mr-10 flex items-center gap-2">
           <Image
             priority
-            src="/icons/logo.svg"
+            src="/manifest/favicon.svg"
             height={80}
             width={140}
             alt="logo"
-            className="h-[60px] md:h-[70px] lg:h-[80px] w-auto"
+            className="h-[50px] md:h-[60px] w-auto"
           />
+          <span className="hidden sm:block bg-black w-[5px] mt-2 h-[28px]"></span>
+          <h1
+            className={cn([integralCF.className, "hidden sm:block text-3xl"])}
+          >
+            Mega Shop
+          </h1>
         </Link>
-
-        {/* Navigation Menu */}
-        <NavigationMenu className="hidden md:flex mr-2 lg:mr-7">
-          <NavigationMenuList>
-            {data.map((item) => (
-              <React.Fragment key={item.id}>
-                {item.type === "MenuItem" && (
-                  <MenuItem label={item.label} url={item.url} />
-                )}
-                {item.type === "MenuList" && (
-                  <MenuList data={item.children} label={item.label} />
-                )}
-              </React.Fragment>
-            ))}
-          </NavigationMenuList>
-        </NavigationMenu>
       </div>
 
       {/* Search Bar */}
-      <InputGroup className="hidden md:flex flex-1 bg-[#F0F0F0] mr-3 lg:mr-10 max-w-[600px]">
+      <InputGroup className="hidden md:flex max-w-[300px] lg:max-w-[500px] flex-1 mr-3 lg:mr-10 h-10 bg-[#F0F0F0]">
         <InputGroup.Text>
           <Image
             priority
@@ -117,7 +74,6 @@ const NavBar = async () => {
         </Link>
 
         <CartBtn />
-        {session && <NotificationBtn />}
         <UserMenu />
       </div>
     </nav>

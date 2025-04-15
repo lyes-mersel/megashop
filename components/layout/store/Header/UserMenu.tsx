@@ -48,17 +48,40 @@ const UserMenu = () => {
 
       <DropdownMenuContent align="end">
         {session ? (
-          <>
-            <DropdownMenuItem asChild>
-              <Link href="/dashboard">Tableau de bord</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href="/settings">Paramètres</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={handleLogout}>
-              Se déconnecter
-            </DropdownMenuItem>
-          </>
+          session.user.role === "ADMIN" ? (
+            <>
+              <DropdownMenuItem asChild>
+                <Link href="/admin/dashboard">Portail Admin</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={handleLogout}>
+                Se déconnecter
+              </DropdownMenuItem>
+            </>
+          ) : session.user.role === "VENDEUR" ? (
+            <>
+              <DropdownMenuItem asChild>
+                <Link href="/seller/dashboard">Portail Vendeur</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={handleLogout}>
+                Se déconnecter
+              </DropdownMenuItem>
+            </>
+          ) : (
+            <>
+              <DropdownMenuItem asChild>
+                <Link href="/client/settings">Paramètres</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/client/orders">Commandes</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/client/notifications">Notifications</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={handleLogout}>
+                Se déconnecter
+              </DropdownMenuItem>
+            </>
+          )
         ) : (
           <>
             <DropdownMenuItem asChild>

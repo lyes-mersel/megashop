@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function NotFound() {
   return (
     <>
-      <main className="min-h-[calc(100dvh-600px)] flex flex-col items-center justify-center space-y-5 bg-gray-50 py-12">
+      <main className="min-h-[calc(100dvh-130px)] flex flex-col items-center justify-center space-y-5 bg-gray-50 py-12">
         {/* Illustration ou icône */}
         <div className="text-9xl text-gray-300 animate-bounce">
           <span role="img" aria-label="Sad face">
