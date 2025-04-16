@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/utils/prisma";
 import { ERROR_MESSAGES } from "@/lib/constants/settings";
 import { getUserSelect, formatUserData } from "@/lib/helpers/users";
-import { auth } from "@/lib/auth";
 
 export async function GET(
   _req: NextRequest,
@@ -19,7 +19,7 @@ export async function GET(
       { status: 401 }
     );
   }
-  
+
   // Check if the user is trying to access their own data
   if (session.user.id !== userId) {
     return NextResponse.json(
@@ -72,8 +72,39 @@ export async function DELETE(
   { params }: { params: Promise<{ userId: string }> }
 ) {
   const { userId } = await params;
-  return NextResponse.json(
-    { message: `Delete user with ID: ${userId}` },
-    { status: 200 }
-  );
+  const session = await auth();
+
+  // Authentication Check
+  if (!session) {
+    return NextResponse.json(
+      { error: ERROR_MESSAGES.UNAUTHORIZED },
+      { status: 401 }
+    );
+  }
+
+  // Authorization Check
+  if (session.user.id !== userId) {
+    return NextResponse.json(
+      { error: ERROR_MESSAGES.FORBIDDEN },
+      { status: 403 }
+    );
+  }
+
+  try {
+    // Try to delete the user
+    await prisma.user.delete({
+      where: { id: userId },
+    });
+
+    return NextResponse.json(
+      { message: `L'utilisateur avec l'ID ${userId} a été supprimé.` },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("API Error [DELETE USER BY ID]:", error);
+    return NextResponse.json(
+      { error: ERROR_MESSAGES.INTERNAL_ERROR },
+      { status: 500 }
+    );
+  }
 }
