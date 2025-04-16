@@ -53,7 +53,8 @@ async function insertUsers() {
         create: {
           vendeur: {
             create: {
-              nomPublic: "Marque Luxe Béjaia",
+              nomBoutique: "Marque Luxe Béjaia",
+              NomBanque: "Algérie Poste",
               rib: "000999554283123",
               description: "Description de la boutique",
             },

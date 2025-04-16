@@ -39,6 +39,6 @@ export type ProductResponse = {
   couleurs: { id: string; nom: string; code: string }[];
   tailles: { id: string; nom: string }[];
   fournisseur?: { nomPublic: string | null };
-  vendeur?: { id: string; nomPublic: string };
+  vendeur?: { id: string; nomBoutique: string };
   images: { id: string; imageUrl: string }[];
 };

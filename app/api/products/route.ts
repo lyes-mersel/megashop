@@ -43,7 +43,7 @@ export async function GET(req: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
-    console.error("API Error : ", error);
+    console.error("API Error [GET ALL PRODUCTS] : ", error);
     return NextResponse.json({ error: ERROR_MESSAGES }, { status: 500 });
   }
 }
@@ -185,7 +185,7 @@ export async function POST(req: NextRequest) {
       );
     }
   } catch (error) {
-    console.error("API Error:", error);
+    console.error("API Error [POST NEW PRODUCT] :", error);
     return NextResponse.json(
       { error: ERROR_MESSAGES.INTERNAL_ERROR },
       { status: 500 }
