@@ -31,13 +31,18 @@ export function LoginForm({
 }: React.ComponentProps<"div">) {
   const { update } = useSession();
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl");
+  const registerHref = callbackUrl
+    ? `/auth/register?callbackUrl=${encodeURIComponent(callbackUrl)}`
+    : "/auth/register";
 
   // Handle the form submission
   const handleSubmitForm = async (e: FormEvent) => {
@@ -155,7 +160,7 @@ export function LoginForm({
             <div className="mt-4 text-center text-sm">
               Vous n&apos;avez pas de compte ?{" "}
               <Link
-                href="/auth/register"
+                href={registerHref}
                 className="underline underline-offset-4"
               >
                 Inscrivez-vous

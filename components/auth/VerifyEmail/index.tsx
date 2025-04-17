@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, FormEvent } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { User } from "next-auth";
 import { toast } from "sonner";
@@ -24,6 +24,7 @@ interface VerifyEmailProps {
 export default function VerifyEmail({ user }: VerifyEmailProps) {
   const { data: session, update } = useSession();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [emailSent, setEmailSent] = useState<boolean>(false);
   const [countdown, setCountdown] = useState<number>(0);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -61,7 +62,17 @@ export default function VerifyEmail({ user }: VerifyEmailProps) {
       const { message } = await response.json();
       await update({ ...session });
       toast(message || "Vérification réussie");
-      router.push("/dashboard");
+
+      // Valider l'URL de redirection (interne uniquement)
+      const callbackUrl = searchParams.get("callbackUrl");
+      const safeCallbackUrl =
+        callbackUrl?.startsWith("/") && !callbackUrl.startsWith("//")
+          ? callbackUrl
+          : "/";
+
+      // Redirect to email verification page, preserving callback
+      router.push(safeCallbackUrl);
+      router.refresh();
     } catch (error) {
       console.error("Error verifying email:", error);
       setErrorMessage(

@@ -23,15 +23,13 @@ import FieldErrorMessage from "@/components/auth/FieldErrorMessage";
 
 // Utils
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 export function RegisterForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
   const { update } = useSession();
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [nom, setNom] = useState("");
@@ -39,6 +37,13 @@ export function RegisterForm({
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl");
+  const loginHref = callbackUrl
+    ? `/auth/login?callbackUrl=${encodeURIComponent(callbackUrl)}`
+    : "/auth/login";
 
   // Handle the form submission
   const handleSubmitForm = async (e: FormEvent) => {
@@ -82,11 +87,15 @@ export function RegisterForm({
 
       // Valider l'URL de redirection (interne uniquement)
       const callbackUrl = searchParams.get("callbackUrl");
-      const redirectUrl =
+      const safeCallbackUrl =
         callbackUrl?.startsWith("/") && !callbackUrl.startsWith("//")
           ? callbackUrl
-          : "/dashboard";
-      router.push(redirectUrl);
+          : "/";
+
+      // Redirect to email verification page, preserving callback
+      router.push(
+        `/auth/verify-email?callbackUrl=${encodeURIComponent(safeCallbackUrl)}`
+      );
       router.refresh();
     } catch {
       setErrorMessage("Erreur réseau. Veuillez réessayer.");
@@ -183,9 +192,9 @@ export function RegisterForm({
             {/* link to register page  */}
             <div className="mt-4 text-center text-sm">
               Vous avez déjà un compte ?{" "}
-              <a href="/auth/login" className="underline underline-offset-4">
+              <Link href={loginHref} className="underline underline-offset-4">
                 Connectez-vous
-              </a>
+              </Link>
             </div>
           </form>
         </CardContent>
