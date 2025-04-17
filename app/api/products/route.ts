@@ -142,8 +142,8 @@ export async function POST(req: NextRequest) {
             },
           },
           images: {
-            create: uploadedImages.map((imageUrl) => ({
-              imageUrl,
+            create: uploadedImages.map((imagePublicId) => ({
+              imagePublicId,
             })),
           },
         },

@@ -40,5 +40,5 @@ export type ProductResponse = {
   tailles: { id: string; nom: string }[];
   fournisseur?: { nomPublic: string | null };
   vendeur?: { id: string; nomBoutique: string };
-  images: { id: string; imageUrl: string }[];
+  images: { id: string; imagePublicId: string }[];
 };

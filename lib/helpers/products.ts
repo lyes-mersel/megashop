@@ -34,7 +34,7 @@ export function getProductSelect() {
     images: {
       select: {
         id: true,
-        imageUrl: true,
+        imagePublicId: true,
       },
     },
   };

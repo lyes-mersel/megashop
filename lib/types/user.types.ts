@@ -11,7 +11,7 @@ export type UserResponse = {
   nom: string;
   prenom: string;
   tel?: string | null;
-  urlImage?: string | null;
+  imagePublicId: string | null;
   emailVerifie: boolean;
   dateCreation: Date;
   role: "CLIENT" | "VENDEUR" | "ADMIN";

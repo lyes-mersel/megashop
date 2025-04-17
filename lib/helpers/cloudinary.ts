@@ -28,6 +28,7 @@ export async function uploadToCloudinary(
           reject(error);
         } else {
           resolve(result as CloudinaryUploadResult);
+          console.log(`Cloudinary ---> Uploaded image: ${result?.public_id}`);
         }
       }
     );
@@ -38,7 +39,7 @@ export async function uploadToCloudinary(
 export async function deleteFromCloudinary(publicId: string) {
   try {
     await cloudinary.uploader.destroy(publicId);
-    console.log(`Deleted image: ${publicId}`);
+    console.log(`Cloudinary ---> Deleted image: ${publicId}`);
   } catch (error) {
     console.error(`Failed to delete image ${publicId}:`, error);
   }
