@@ -53,7 +53,8 @@ async function insertUsers() {
         create: {
           vendeur: {
             create: {
-              nomPublic: "Marque Luxe Béjaia",
+              nomBoutique: "Marque Luxe Béjaia",
+              NomBanque: "Algérie Poste",
               rib: "000999554283123",
               description: "Description de la boutique",
             },
@@ -241,9 +242,9 @@ async function insertProducts() {
       tailles: { connect: [{ nom: "M" }, { nom: "L" }, { nom: "XL" }] },
       images: {
         create: [
-          { imageUrl: "megashop/products/vb4cs0y36cy0qv8srg4l" },
-          { imageUrl: "megashop/products/bbzxa6ymi8zjvzjhbhir" },
-          { imageUrl: "megashop/products/oysthz7eyefyaztd9zeg" },
+          { imagePublicId: "megashop/products/vb4cs0y36cy0qv8srg4l" },
+          { imagePublicId: "megashop/products/bbzxa6ymi8zjvzjhbhir" },
+          { imagePublicId: "megashop/products/oysthz7eyefyaztd9zeg" },
         ],
       },
       produitBoutique: {
@@ -267,9 +268,9 @@ async function insertProducts() {
       tailles: { connect: [{ nom: "S" }, { nom: "M" }, { nom: "L" }] },
       images: {
         create: [
-          { imageUrl: "megashop/products/qbjwniev3juy4d2ncurl" },
-          { imageUrl: "megashop/products/nhoafrtbgiugboe3heqc" },
-          { imageUrl: "megashop/products/wfvxfviw1uildauhv8ri" },
+          { imagePublicId: "megashop/products/qbjwniev3juy4d2ncurl" },
+          { imagePublicId: "megashop/products/nhoafrtbgiugboe3heqc" },
+          { imagePublicId: "megashop/products/wfvxfviw1uildauhv8ri" },
         ],
       },
       produitBoutique: {
@@ -291,8 +292,8 @@ async function insertProducts() {
       tailles: { connect: [{ nom: "M" }, { nom: "L" }, { nom: "XL" }] },
       images: {
         create: [
-          { imageUrl: "megashop/products/eymtw8ei2m7ar3lkc7o4" },
-          { imageUrl: "megashop/products/tlhaqc8tk5usveg2ul1a" },
+          { imagePublicId: "megashop/products/eymtw8ei2m7ar3lkc7o4" },
+          { imagePublicId: "megashop/products/tlhaqc8tk5usveg2ul1a" },
         ],
       },
       produitBoutique: {
@@ -314,8 +315,8 @@ async function insertProducts() {
       tailles: { connect: [{ nom: "S" }, { nom: "M" }, { nom: "L" }] },
       images: {
         create: [
-          { imageUrl: "megashop/products/kqwugy39a6fp80a5jelb" },
-          { imageUrl: "megashop/products/zjj4qgqc4lhbd0darhvj" },
+          { imagePublicId: "megashop/products/kqwugy39a6fp80a5jelb" },
+          { imagePublicId: "megashop/products/zjj4qgqc4lhbd0darhvj" },
         ],
       },
       produitBoutique: {
@@ -338,7 +339,7 @@ async function insertProducts() {
         connect: [{ nom: "S" }, { nom: "M" }, { nom: "L" }, { nom: "XL" }],
       },
       images: {
-        create: [{ imageUrl: "megashop/products/picnxwvjhphzp9wyu177" }],
+        create: [{ imagePublicId: "megashop/products/picnxwvjhphzp9wyu177" }],
       },
       produitBoutique: {
         create: {
@@ -363,8 +364,8 @@ async function insertProducts() {
       },
       images: {
         create: [
-          { imageUrl: "megashop/products/ziwjsx7fai6wvdkw8mu4" },
-          { imageUrl: "megashop/products/d7winzl1jb8psaygpdfj" },
+          { imagePublicId: "megashop/products/ziwjsx7fai6wvdkw8mu4" },
+          { imagePublicId: "megashop/products/d7winzl1jb8psaygpdfj" },
         ],
       },
       produitBoutique: {
@@ -388,7 +389,7 @@ async function insertProducts() {
         connect: [{ nom: "S" }, { nom: "6T" }, { nom: "5T" }, { nom: "4T" }],
       },
       images: {
-        create: [{ imageUrl: "megashop/products/uh5flh2dfd210k3wivmk" }],
+        create: [{ imagePublicId: "megashop/products/uh5flh2dfd210k3wivmk" }],
       },
       produitBoutique: {
         create: {
@@ -412,8 +413,8 @@ async function insertProducts() {
       },
       images: {
         create: [
-          { imageUrl: "megashop/products/lx1tdbokig0umlq01vaa" },
-          { imageUrl: "megashop/products/v8kkh5mqpmih3psdd5tp" },
+          { imagePublicId: "megashop/products/lx1tdbokig0umlq01vaa" },
+          { imagePublicId: "megashop/products/v8kkh5mqpmih3psdd5tp" },
         ],
       },
       produitBoutique: {
@@ -436,8 +437,8 @@ async function insertProducts() {
       tailles: { connect: [{ nom: "S" }, { nom: "M" }] },
       images: {
         create: [
-          { imageUrl: "megashop/products/z4q7qrsxfgtq8b93ina0" },
-          { imageUrl: "megashop/products/ordmhtiy4dbvbks9sxtj" },
+          { imagePublicId: "megashop/products/z4q7qrsxfgtq8b93ina0" },
+          { imagePublicId: "megashop/products/ordmhtiy4dbvbks9sxtj" },
         ],
       },
       produitBoutique: {
@@ -460,8 +461,8 @@ async function insertProducts() {
       tailles: { connect: [{ nom: "M" }, { nom: "L" }, { nom: "XL" }] },
       images: {
         create: [
-          { imageUrl: "megashop/products/zig8munjwzzlmpl7pv7u" },
-          { imageUrl: "megashop/products/fxv11weoijdb47rfrpgt" },
+          { imagePublicId: "megashop/products/zig8munjwzzlmpl7pv7u" },
+          { imagePublicId: "megashop/products/fxv11weoijdb47rfrpgt" },
         ],
       },
       produitBoutique: {
@@ -496,9 +497,9 @@ async function insertProducts() {
       },
       images: {
         create: [
-          { imageUrl: "megashop/products/vpan4ziol2swrceu2jhq" },
-          { imageUrl: "megashop/products/gbyaknytn3tjjmovxgv2" },
-          { imageUrl: "megashop/products/mlx9tn6fs6upd4cnctdl" },
+          { imagePublicId: "megashop/products/vpan4ziol2swrceu2jhq" },
+          { imagePublicId: "megashop/products/gbyaknytn3tjjmovxgv2" },
+          { imagePublicId: "megashop/products/mlx9tn6fs6upd4cnctdl" },
         ],
       },
       produitBoutique: {
@@ -529,7 +530,7 @@ async function insertProducts() {
         ],
       },
       images: {
-        create: [{ imageUrl: "megashop/products/kvjaxufxxrn5zm7gwd1l" }],
+        create: [{ imagePublicId: "megashop/products/kvjaxufxxrn5zm7gwd1l" }],
       },
       produitBoutique: {
         create: {
@@ -550,8 +551,8 @@ async function insertProducts() {
       tailles: { connect: [{ nom: "S" }, { nom: "M" }, { nom: "L" }] },
       images: {
         create: [
-          { imageUrl: "megashop/products/mdveukyrre9rdyur5ll5" },
-          { imageUrl: "megashop/products/nkyrljzkjma4tarrcml8" },
+          { imagePublicId: "megashop/products/mdveukyrre9rdyur5ll5" },
+          { imagePublicId: "megashop/products/nkyrljzkjma4tarrcml8" },
         ],
       },
       produitBoutique: {
@@ -570,7 +571,7 @@ async function insertProducts() {
       genreId: genres.find((g) => g.nom === "Unisexe")?.id ?? null,
       couleurs: { connect: [{ nom: "Marron" }, { nom: "Noir" }] },
       images: {
-        create: [{ imageUrl: "megashop/products/aucrct6rjtwwbuxbisah" }],
+        create: [{ imagePublicId: "megashop/products/aucrct6rjtwwbuxbisah" }],
       },
       produitBoutique: {
         create: {
@@ -589,8 +590,8 @@ async function insertProducts() {
       couleurs: { connect: [{ nom: "Marron" }, { nom: "Noir" }] },
       images: {
         create: [
-          { imageUrl: "megashop/products/zndfbcbh5tzpav3kwvbp" },
-          { imageUrl: "megashop/products/k3pxwto8yx1hfk31daxy" },
+          { imagePublicId: "megashop/products/zndfbcbh5tzpav3kwvbp" },
+          { imagePublicId: "megashop/products/k3pxwto8yx1hfk31daxy" },
         ],
       },
       produitBoutique: {

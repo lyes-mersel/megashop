@@ -31,7 +31,7 @@ export async function GET(
 
     return NextResponse.json({ message: "OK", data }, { status: 200 });
   } catch (error) {
-    console.error("API Error : ", error);
+    console.error("API Error [GET PRODUCT BY ID] : ", error);
     return NextResponse.json(
       { error: ERROR_MESSAGES.INTERNAL_ERROR },
       { status: 500 }

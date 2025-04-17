@@ -26,7 +26,7 @@ export function getProductSelect() {
         vendeur: {
           select: {
             id: true,
-            nomPublic: true,
+            nomBoutique: true,
           },
         },
       },
@@ -34,7 +34,7 @@ export function getProductSelect() {
     images: {
       select: {
         id: true,
-        imageUrl: true,
+        imagePublicId: true,
       },
     },
   };
@@ -67,7 +67,7 @@ export function formatProductData(product: ProductFromDB): ProductResponse {
       ? {
           vendeur: {
             id: produitMarketplace.vendeur.id,
-            nomPublic: produitMarketplace.vendeur.nomPublic,
+            nomBoutique: produitMarketplace.vendeur.nomBoutique,
           },
         }
       : {}),
