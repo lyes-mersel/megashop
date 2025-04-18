@@ -1,11 +1,11 @@
 import bcrypt from "bcryptjs";
-import type { NextRequest } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 
 import { prisma } from "@/lib/utils/prisma";
 import { UserRole } from "@prisma/client";
-import { registerSchema } from "@/lib/utils/validation";
-import { jsonResponse, errorHandler } from "@/lib/utils";
 import { signIn } from "@/lib/auth";
+import { ERROR_MESSAGES } from "@/lib/constants/settings";
+import { registerSchema, formatValidationErrors } from "@/lib/validations";
 
 export async function POST(req: NextRequest) {
   try {
@@ -14,16 +14,7 @@ export async function POST(req: NextRequest) {
     // Parse input data
     const parseResult = registerSchema.safeParse(body);
     if (!parseResult.success) {
-      return jsonResponse(
-        {
-          error: "Certains champs sont manquants ou incorrects",
-          errors: parseResult.error.issues.map((issue) => ({
-            field: issue.path.join("."),
-            message: issue.message,
-          })),
-        },
-        400
-      );
+      return formatValidationErrors(parseResult);
     }
 
     const { email, password, nom, prenom } = parseResult.data;
@@ -31,9 +22,9 @@ export async function POST(req: NextRequest) {
     // Check if user already exists
     const existingUser = await prisma.user.findUnique({ where: { email } });
     if (existingUser) {
-      return jsonResponse(
+      return NextResponse.json(
         { error: "Cet adresse email est déjà utilisée" },
-        409
+        { status: 409 }
       );
     }
 
@@ -46,14 +37,24 @@ export async function POST(req: NextRequest) {
         nom,
         prenom,
         role: UserRole.CLIENT,
+        client: {
+          create: {},
+        },
       },
     });
 
     // Sign in user (create session)
     await signIn("credentials", { email, password, redirect: false });
 
-    return jsonResponse({ message: " Inscription réussie" }, 201);
-  } catch (error: unknown) {
-    return errorHandler(error);
+    return NextResponse.json(
+      { message: " Inscription réussie" },
+      { status: 201 }
+    );
+  } catch (error) {
+    console.error("API Error : ", error);
+    return NextResponse.json(
+      { error: ERROR_MESSAGES.INTERNAL_ERROR },
+      { status: 500 }
+    );
   }
 }

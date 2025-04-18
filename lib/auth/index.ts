@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
-import NextAuth from "next-auth";
+import type { JWT } from "next-auth/jwt";
+import NextAuth, { type Session, type User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 import { prisma } from "@/lib/utils/prisma";
@@ -12,7 +13,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials) {
+      async authorize(credentials): Promise<User | null> {
         // Find user by email
         const user = await prisma.user.findUnique({
           where: { email: credentials.email as string },
@@ -31,9 +32,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         return {
           id: user.id,
           email: user.email,
-          image: user.urlImage,
           role: user.role,
-          emailVerifie: user.emailVerifie ?? false,
+          emailVerifie: user.emailVerifie,
+          imagePublicId: user.imagePublicId,
         };
       },
     }),
@@ -44,31 +45,45 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
 
   callbacks: {
-    async jwt({ token, user, trigger, session }) {
+    async jwt({
+      token,
+      user,
+      session,
+      trigger,
+    }: {
+      token: JWT;
+      user: User;
+      session?: Session;
+      trigger?: "signIn" | "signUp" | "update";
+    }): Promise<JWT> {
+      // If the user is signing in, add user data to the token
       if (trigger === "signIn" && user) {
         token.id = user.id!;
-        token.email = user.email;
-        token.picture = user.image;
+        token.email = user.email!;
         token.role = user.role;
         token.emailVerifie = user.emailVerifie;
+        token.imagePublicId = user.imagePublicId;
       }
 
-      if (trigger === "update" && session?.user?.id) {
+      // If the user is updating their session, fetch the latest user data
+      if (trigger === "update" && session?.user) {
         const dbUser = await prisma.user.findUnique({
           where: { id: session.user.id },
           select: {
+            id: true,
             email: true,
-            urlImage: true,
             role: true,
             emailVerifie: true,
+            imagePublicId: true,
           },
         });
 
         if (dbUser) {
+          token.id = dbUser.id;
           token.email = dbUser.email;
-          token.picture = dbUser.urlImage;
           token.role = dbUser.role;
           token.emailVerifie = dbUser.emailVerifie;
+          token.imagePublicId = dbUser.imagePublicId;
         }
       }
 
@@ -76,11 +91,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
 
     async session({ session, token }) {
-      session.user.id = token.id!;
-      session.user.email = token.email!;
-      session.user.image = token.picture;
+      session.user.id = token.id;
+      session.user.email = token.email;
       session.user.role = token.role;
       session.user.emailVerifie = token.emailVerifie;
+      session.user.imagePublicId = token.imagePublicId;
       return session;
     },
   },

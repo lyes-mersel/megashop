@@ -8,7 +8,7 @@ import { IoEllipsisHorizontal } from "react-icons/io5";
 
 // Utils & Types
 import { cn } from "@/lib/utils";
-import { Review } from "@/lib/types/review.types";
+import { Review } from "@/lib/types/ui/review-ui.types";
 
 type ReviewCardProps = {
   blurChild?: React.ReactNode;
