@@ -61,7 +61,10 @@ export async function GET(
       { status: 200 }
     );
   } catch (error) {
-    console.error("API Error [GET /users/:userId/adresse]:", error);
+    console.error(
+      "API Error [GET /api/users/:userId/settings/adresse]:",
+      error
+    );
     return NextResponse.json(
       { error: "Erreur interne du serveur." },
       { status: 500 }
@@ -140,7 +143,10 @@ export async function PUT(
       { status: 200 }
     );
   } catch (error) {
-    console.error("API Error [PUT /users/:userId/adresse]:", error);
+    console.error(
+      "API Error [PUT /api/users/:userId/settings/adresse]:",
+      error
+    );
     return NextResponse.json(
       { error: ERROR_MESSAGES.INTERNAL_ERROR },
       { status: 500 }
@@ -205,7 +211,10 @@ export async function DELETE(
       { status: 200 }
     );
   } catch (error) {
-    console.error("API Error [DELETE /users/:userId/adresse]:", error);
+    console.error(
+      "API Error [DELETE /api/users/:userId/settings/adresse]:",
+      error
+    );
     return NextResponse.json(
       { error: "Erreur interne du serveur." },
       { status: 500 }

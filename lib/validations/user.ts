@@ -1,3 +1,7 @@
+import {
+  ALLOWED_IMAGE_FORMATS,
+  MAX_UPLOAD_SIZE_MB,
+} from "@/lib/constants/settings";
 import { z } from "zod";
 
 export const updateUserSchema = z
@@ -21,4 +25,15 @@ export const updateAddressSchema = z.object({
   ville: z.string().min(1, "La ville est requise."),
   wilaya: z.string().min(1, "La wilaya est requise."),
   codePostal: z.string().min(4, "Code postal invalide."),
+});
+
+export const updateUserAvatarSchema = z.object({
+  file: z
+    .instanceof(File)
+    .refine((file) => ALLOWED_IMAGE_FORMATS.includes(file.type), {
+      message: "Format d'image non supporté.",
+    })
+    .refine((file) => file.size <= MAX_UPLOAD_SIZE_MB * 1024 * 1024, {
+      message: `L'image ne doit pas dépasser ${MAX_UPLOAD_SIZE_MB} Mo.`,
+    }),
 });

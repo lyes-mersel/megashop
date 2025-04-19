@@ -48,13 +48,7 @@
     DEFAULT_PASSWORD="****"
    ```
 
-4. **Generate Prisma Client**
-
-   ```bash
-   npx prisma generate
-   ```
-
-5. **Run the Development Server**
+4. **Run the Development Server**
 
    ```bash
    npm run dev
@@ -70,16 +64,12 @@
 - `POST   /api/auth/password/reset` - Reset user password
 - `POST   /api/auth/password/send-reset-code` - Send a password reset code via email
 - `POST   /api/auth/email/verify` - Verify user email
+- `POST   /api/auth/email/update` - Verify user email after an update request
 - `POST   /api/auth/email/send-verification-code` - Send an email verification code
 
 ### Uploads ✅
 
 - `POST   /api/uploads/image` - Upload an image
-
-### Testimonials
-
-- `GET    /api/testimonials` - Get testimonials
-- `GET    /api/testimonials/{testimonialId}` - Get a testimonial by ID
 
 ### Products
 
@@ -129,6 +119,12 @@
 - `GET    /api/users/{userId}/settings/address` - Retrieve a user address✅
 - `PUT    /api/users/{userId}/settings/address` - Update a user address ✅
 - `DELETE /api/users/{userId}/settings/address` - Delete a user address ✅
+
+---
+
+- `GET    /api/users/{userId}/settings/avatar` - Retrieve a user avatar ✅
+- `PUT    /api/users/{userId}/settings/avatar` - Update a user avatar ✅
+- `DELETE /api/users/{userId}/settings/avatar` - Delete a user avatar ✅
 
 ---
 
@@ -246,3 +242,8 @@
 
 - `GET    /api/admin/settings` - Get platform settings
 - `PATCH  /api/admin/settings` - Update platform settings
+
+### Testimonials
+
+- `GET    /api/testimonials` - Get testimonials
+- `GET    /api/testimonials/{testimonialId}` - Get a testimonial by ID
