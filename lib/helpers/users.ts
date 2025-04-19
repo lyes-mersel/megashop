@@ -9,6 +9,7 @@ export function getUserSelect() {
     tel: true,
     imagePublicId: true,
     emailVerifie: true,
+    emailEnAttente: true,
     dateCreation: true,
     role: true,
     adresse: true,
@@ -19,10 +20,8 @@ export function getUserSelect() {
     },
     client: {
       select: {
-        id: true,
         vendeur: {
           select: {
-            id: true,
             nomBoutique: true,
             description: true,
             NomBanque: true,
@@ -38,13 +37,14 @@ export function formatUserData(user: UserFromDB): UserResponse {
   const {
     id,
     email,
+    role,
     nom,
     prenom,
     tel,
     imagePublicId,
     emailVerifie,
+    emailEnAttente,
     dateCreation,
-    role,
     adresse,
     client,
   } = user;
@@ -52,13 +52,14 @@ export function formatUserData(user: UserFromDB): UserResponse {
   const baseData = {
     id,
     email,
+    role,
     nom,
     prenom,
     tel,
     imagePublicId,
     emailVerifie,
+    emailEnAttente,
     dateCreation,
-    role,
     adresse,
   };
 

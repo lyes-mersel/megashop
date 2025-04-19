@@ -1,13 +1,7 @@
 import { NextResponse } from "next/server";
 
 import getAuth from "@/lib/auth/getAuth";
-import { prisma } from "@/lib/utils/prisma";
-import {
-  generateTOTPCode,
-  generateTOTPSecret,
-  TOTP_EXPIRATION_DURATION,
-} from "@/lib/utils/totp";
-import { sendVerificationEmail } from "@/lib/helpers/sendEmail";
+import { triggerEmailVerification } from "@/lib/helpers/emailService";
 import { ERROR_MESSAGES } from "@/lib/constants/settings";
 
 export async function POST(req: Request) {
@@ -41,26 +35,8 @@ export async function POST(req: Request) {
       );
     }
 
-    // Generate secret for this user
-    const secret = generateTOTPSecret();
-    const code = generateTOTPCode(secret);
-
-    // Store secret in db
-    await prisma.tOTPSecret.upsert({
-      where: { userId: session?.user.id },
-      update: {
-        secret,
-        expiresLe: new Date(Date.now() + TOTP_EXPIRATION_DURATION * 1000),
-      },
-      create: {
-        userId: session?.user.id as string,
-        secret,
-        expiresLe: new Date(Date.now() + TOTP_EXPIRATION_DURATION * 1000),
-      },
-    });
-
-    // Send the code via email
-    await sendVerificationEmail(email, code);
+    // Generate and send verification code
+    await triggerEmailVerification(session.user.id, email, false);
 
     return NextResponse.json({ message: "Code envoyé" }, { status: 200 });
   } catch (error) {

@@ -4,7 +4,7 @@ export const DEFAULT_PAGE_SIZE = 10;
 export const MAX_PAGE_SIZE = 100;
 
 // Cloud folder names
-export const ALLOWED_FOLDERS = ["products", "profiles"];
+export const ALLOWED_FOLDERS = ["products", "avatars"];
 
 // File Upload Limits
 export const MAX_UPLOAD_SIZE_MB = 1;

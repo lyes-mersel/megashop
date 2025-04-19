@@ -309,6 +309,7 @@ model User {
   tel                String?             @db.VarChar(20)
   adresseId          String?             @map("adresse_id") @db.VarChar(25)
   imagePublicId      String?             @map("image_public_id") @db.VarChar(255)
+  emailEnAttente     String?             @map("email_en_attente") @db.VarChar(255)
   emailVerifie       Boolean             @default(false) @map("email_verifie")
   dateCreation       DateTime            @default(now()) @map("date_creation")
   role               UserRole            @default(CLIENT)

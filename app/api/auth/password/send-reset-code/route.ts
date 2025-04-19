@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { prisma } from "@/lib/utils/prisma";
-import { sendPasswordResetEmail } from "@/lib/helpers/sendEmail";
+import { sendPasswordResetEmail } from "@/lib/helpers/emailService";
 import {
   generateTOTPCode,
   generateTOTPSecret,

@@ -121,8 +121,8 @@
 ### Users
 
 - `GET    /api/users/{userId}` - Retrieve a user ✅
-- `PATCH  /api/users/{userId}` - Update a user
-- `DELETE /api/users/{userId}` - Delete a user
+- `PATCH  /api/users/{userId}` - Update a user ✅
+- `DELETE /api/users/{userId}` - Delete a user ✅
 
 ---
 
