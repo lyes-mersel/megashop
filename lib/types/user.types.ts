@@ -22,7 +22,7 @@ export type UserResponse = {
   vendeur?: {
     nomBoutique: string;
     description?: string | null;
-    NomBanque: string;
+    nomBanque: string;
     rib: string;
   } | null;
 };

@@ -128,6 +128,12 @@
 
 ---
 
+- `GET    /api/users/{userId}/settings/vendor-status` - Retrieve a vendor status details ✅
+- `POST   /api/users/{userId}/settings/vendor-status` - Client becomes a vendor ✅
+- `PUT    /api/users/{userId}/settings/vendor-status` - Update a vendor infos ✅
+
+---
+
 - `GET    /api/users/{userId}/profile` - Get user profile (for vendors)
 - `PATCH  /api/users/{userId}/profile` - Update user profile (for vendors)
 

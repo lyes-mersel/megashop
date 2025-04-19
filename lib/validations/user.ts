@@ -4,6 +4,7 @@ import {
 } from "@/lib/constants/settings";
 import { z } from "zod";
 
+// Schema for updating user information (Patch request)
 export const updateUserSchema = z
   .object({
     email: z.string().email("Email invalide").optional(),
@@ -20,6 +21,7 @@ export const updateUserSchema = z
   })
   .strict();
 
+// Schema for updating user address
 export const updateAddressSchema = z.object({
   rue: z.string().min(1, "La rue est requise."),
   ville: z.string().min(1, "La ville est requise."),
@@ -27,6 +29,7 @@ export const updateAddressSchema = z.object({
   codePostal: z.string().min(4, "Code postal invalide."),
 });
 
+// Schema for updating user avatar
 export const updateUserAvatarSchema = z.object({
   file: z
     .instanceof(File)
@@ -37,3 +40,23 @@ export const updateUserAvatarSchema = z.object({
       message: `L'image ne doit pas dépasser ${MAX_UPLOAD_SIZE_MB} Mo.`,
     }),
 });
+
+// Schema for becoming a vendor
+export const becomeVendorSchema = z.object({
+  nomBoutique: z.string().min(1, "Nom boutique requis"),
+  description: z.string().optional(),
+  nomBanque: z.string().min(1, "Nom banque requis"),
+  rib: z.string().min(1, "RIB requis"),
+});
+
+// Partial update schema for PATCH
+export const updateVendorSchema = z
+  .object({
+    nomBoutique: z.string().max(100).optional(),
+    description: z.string().max(1000).optional(),
+    nomBanque: z.string().max(50).optional(),
+    rib: z.string().max(50).optional(),
+  })
+  .refine((data) => Object.keys(data).length > 0, {
+    message: "Au moins un champ doit être renseigné.",
+  });

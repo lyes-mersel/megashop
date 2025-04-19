@@ -4,6 +4,8 @@ import {
   updateUserSchema,
   updateAddressSchema,
   updateUserAvatarSchema,
+  becomeVendorSchema,
+  updateVendorSchema,
 } from "./user";
 import formatValidationErrors from "./formatValidationErrors";
 
@@ -20,6 +22,8 @@ export {
   updateUserSchema,
   updateAddressSchema,
   updateUserAvatarSchema,
+  becomeVendorSchema,
+  updateVendorSchema,
 
   // Format validation errors
   formatValidationErrors,

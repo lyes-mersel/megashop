@@ -24,7 +24,7 @@ export function getUserSelect() {
           select: {
             nomBoutique: true,
             description: true,
-            NomBanque: true,
+            nomBanque: true,
             rib: true,
           },
         },
@@ -70,7 +70,7 @@ export function formatUserData(user: UserFromDB): UserResponse {
         ? {
             nomBoutique: client.vendeur.nomBoutique,
             description: client.vendeur.description,
-            NomBanque: client.vendeur.NomBanque,
+            nomBanque: client.vendeur.nomBanque,
             rib: client.vendeur.rib,
           }
         : undefined,
