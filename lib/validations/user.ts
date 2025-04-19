@@ -15,3 +15,10 @@ export const updateUserSchema = z
       .optional(),
   })
   .strict();
+
+export const updateAddressSchema = z.object({
+  rue: z.string().min(1, "La rue est requise."),
+  ville: z.string().min(1, "La ville est requise."),
+  wilaya: z.string().min(1, "La wilaya est requise."),
+  codePostal: z.string().min(4, "Code postal invalide."),
+});

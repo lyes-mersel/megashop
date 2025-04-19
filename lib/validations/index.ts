@@ -1,6 +1,6 @@
 import { registerSchema, loginSchema, resetPasswordSchema } from "./auth";
 import { productSchema } from "./product";
-import { updateUserSchema } from "./user";
+import { updateUserSchema, updateAddressSchema } from "./user";
 import formatValidationErrors from "./formatValidationErrors";
 
 export {
@@ -14,6 +14,7 @@ export {
 
   // User
   updateUserSchema,
+  updateAddressSchema,
 
   // Format validation errors
   formatValidationErrors,

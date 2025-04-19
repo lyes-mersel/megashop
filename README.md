@@ -126,6 +126,12 @@
 
 ---
 
+- `GET    /api/users/{userId}/settings/address` - Retrieve a user address✅
+- `PUT    /api/users/{userId}/settings/address` - Update a user address ✅
+- `DELETE /api/users/{userId}/settings/address` - Delete a user address ✅
+
+---
+
 - `GET    /api/users/{userId}/profile` - Get user profile (for vendors)
 - `PATCH  /api/users/{userId}/profile` - Update user profile (for vendors)
 
