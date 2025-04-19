@@ -5,11 +5,12 @@ import { ZodError, SafeParseReturnType } from "zod";
  * Returns a standardized JSON response for Zod validation errors.
  */
 export default function formatValidationErrors<T>(
-  parseResult: SafeParseReturnType<T, T>
+  parseResult: SafeParseReturnType<T, T>,
+  customMessage = "Certains champs sont manquants ou incorrects"
 ) {
   return NextResponse.json(
     {
-      error: "Certains champs sont manquants ou incorrects",
+      error: customMessage,
       data: (parseResult.error as ZodError).issues.map((issue) => ({
         field: issue.path.join("."),
         message: issue.message,

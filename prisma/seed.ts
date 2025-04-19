@@ -54,7 +54,7 @@ async function insertUsers() {
           vendeur: {
             create: {
               nomBoutique: "Marque Luxe Béjaia",
-              NomBanque: "Algérie Poste",
+              nomBanque: "Algérie Poste",
               rib: "000999554283123",
               description: "Description de la boutique",
             },
@@ -602,9 +602,9 @@ async function insertProducts() {
     },
   ];
 
-  for (const produit of produits) {
-    await prisma.produit.create({ data: produit });
-  }
+  await Promise.all(
+    produits.map((produit) => prisma.produit.create({ data: produit }))
+  );
 
   console.log("Produits insérés avec succès !");
 }

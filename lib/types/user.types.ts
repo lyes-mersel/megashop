@@ -8,20 +8,21 @@ export type UserFromDB = Prisma.UserGetPayload<{
 export type UserResponse = {
   id: string;
   email: string;
+  role: "CLIENT" | "VENDEUR" | "ADMIN";
   nom: string;
   prenom: string;
   tel?: string | null;
   imagePublicId: string | null;
   emailVerifie: boolean;
+  emailEnAttente?: string | null;
   dateCreation: Date;
-  role: "CLIENT" | "VENDEUR" | "ADMIN";
   adresse?: Adresse | null;
   // admin?: { userId: string } | null;
   // client?: { id?: string } | null;
   vendeur?: {
     nomBoutique: string;
     description?: string | null;
-    NomBanque: string;
+    nomBanque: string;
     rib: string;
   } | null;
 };

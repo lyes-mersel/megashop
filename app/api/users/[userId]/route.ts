@@ -1,3 +1,4 @@
+import bcrypt from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
 
 import { auth, signOut } from "@/lib/auth";
@@ -5,6 +6,8 @@ import { prisma } from "@/lib/utils/prisma";
 import { ERROR_MESSAGES } from "@/lib/constants/settings";
 import { deleteFromCloudinary } from "@/lib/helpers/cloudinary";
 import { getUserSelect, formatUserData } from "@/lib/helpers/users";
+import { triggerEmailVerification } from "@/lib/helpers/emailService";
+import { formatValidationErrors, updateUserSchema } from "@/lib/validations";
 
 export async function GET(
   _req: NextRequest,
@@ -160,12 +163,107 @@ export async function DELETE(
 }
 
 export async function PATCH(
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: Promise<{ userId: string }> }
 ) {
-  const { userId } = await params;
-  return NextResponse.json(
-    { message: `Update user with ID: ${userId}` },
-    { status: 200 }
-  );
+  try {
+    const session = await auth();
+    const { userId } = await params;
+
+    // Authentication Check
+    if (!session) {
+      return NextResponse.json(
+        { error: ERROR_MESSAGES.UNAUTHORIZED },
+        { status: 401 }
+      );
+    }
+
+    // Only allow users to update their own data
+    if (session.user.id !== userId) {
+      return NextResponse.json(
+        { error: ERROR_MESSAGES.FORBIDDEN },
+        { status: 403 }
+      );
+    }
+
+    // Parse and validate request body
+    const body = await req.json();
+    const parsedData = updateUserSchema.safeParse(body);
+
+    if (!parsedData.success) {
+      return formatValidationErrors(
+        parsedData,
+        "Certains champs fournis sont incorrects"
+      );
+    }
+
+    const { email, password, nom, prenom, tel } = parsedData.data;
+
+    // Hash password if provided
+    let hashedPassword: string | undefined = undefined;
+    if (password) {
+      hashedPassword = await bcrypt.hash(password, 10);
+    }
+
+    // Fetch current user to compare emails
+    const currentUser = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { email: true },
+    });
+
+    if (!currentUser) {
+      return NextResponse.json(
+        { error: "Utilisateur introuvable." },
+        { status: 404 }
+      );
+    }
+
+    const updateData: Partial<{
+      nom: string;
+      prenom: string;
+      tel: string;
+      password: string;
+      emailEnAttente: string;
+      emailVerifie: boolean;
+    }> = {
+      nom,
+      prenom,
+      tel,
+      ...(hashedPassword && { password: hashedPassword }),
+    };
+
+    // Handle email update safely via emailEnAttente
+    if (email && email !== currentUser.email) {
+      updateData.emailEnAttente = email;
+      updateData.emailVerifie = false;
+
+      await triggerEmailVerification(userId, email, true);
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: updateData,
+      select: getUserSelect(),
+    });
+
+    // Format the response
+    const data = formatUserData(updatedUser);
+
+    return NextResponse.json(
+      {
+        message:
+          email && email !== currentUser.email
+            ? "Mise à jour réussie. Veuillez vérifier votre nouvelle adresse e-mail."
+            : "Utilisateur mis à jour avec succès",
+        data,
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("API Error [PATCH USER]:", error);
+    return NextResponse.json(
+      { error: ERROR_MESSAGES.INTERNAL_ERROR },
+      { status: 500 }
+    );
+  }
 }
