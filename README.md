@@ -134,8 +134,7 @@
 
 ---
 
-- `GET    /api/users/{userId}/profile` - Get user profile (for vendors)
-- `PATCH  /api/users/{userId}/profile` - Update user profile (for vendors)
+- `GET    /api/users/{userId}/profile` - Get a vendor public profile ✅
 
 ---
 
