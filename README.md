@@ -138,20 +138,15 @@
 
 ---
 
-- `GET    /api/users/{userId}/cart` - Get user cart
-- `POST   /api/users/{userId}/cart` - Add item to cart
-- `PATCH  /api/users/{userId}/cart` - Update cart
-- `DELETE /api/users/{userId}/cart` - Remove item from cart
+- `GET    /api/users/{userId}/notifications` - Retrieve all user notifications + (pagination & filters) ✅
+- `PATCH  /api/users/{userId}/notifications` - Update all user notifications (statut estLu) ✅
+- `DELETE /api/users/{userId}/notifications` - Delete all user notifications ✅
 
 ---
 
-- `GET    /api/users/{userId}/notifications` - Retrieve notifications
-- `POST   /api/users/{userId}/notifications` - Create a notification
-
----
-
-- `GET    /api/users/{userId}/notifications/{notifId}` - Retrieve a specific notification
-- `DELETE /api/users/{userId}/notifications/{notifId}` - Delete a notification
+- `GET    /api/users/{userId}/notifications/{notifId}` - Retrieve a user notifications by ID ✅
+- `PATCH  /api/users/{userId}/notifications/{notifId}` - Update a user notifications by ID ✅(statut estLu)
+- `DELETE /api/users/{userId}/notifications/{notifId}` - Delete a user notifications by Id ✅
 
 ---
 
@@ -166,14 +161,16 @@
 
 ---
 
-- `GET    /api/users/{userId}/payments` - Retrieve user payments
-- `GET    /api/users/{userId}/payments/{paymentId}` - Retrieve payment details
-- `PUT    /api/users/{userId}/payments/{paymentId}` - Update payment details
+- `GET    /api/users/{userId}/cart` - Get user cart
+- `POST   /api/users/{userId}/cart` - Add item to cart
+- `PATCH  /api/users/{userId}/cart` - Update cart
+- `DELETE /api/users/{userId}/cart` - Remove item from cart
 
 ---
 
-- `GET    /api/users/{userId}/settings` - Retrieve user settings
-- `PATCH  /api/users/{userId}/settings` - Update user settings
+- `GET    /api/users/{userId}/payments` - Retrieve user payments
+- `GET    /api/users/{userId}/payments/{paymentId}` - Retrieve payment details
+- `PUT    /api/users/{userId}/payments/{paymentId}` - Update payment details
 
 ### Admin
 

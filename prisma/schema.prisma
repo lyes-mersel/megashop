@@ -142,14 +142,15 @@ model LignePanier {
 }
 
 model Notification {
-  id             String    @id @default(cuid()) @db.VarChar(25)
-  objet          String?   @db.VarChar(255)
-  text           String?   @db.VarChar(1000)
-  date           DateTime? @default(now())
-  urlRedirection String?   @map("url_redirection") @db.VarChar(255)
-  estLu          Boolean?  @default(false) @map("est_lu")
-  userId         String?   @map("user_id") @db.VarChar(25)
-  user           User?     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  id             String           @id @default(cuid()) @db.VarChar(25)
+  type           NotificationType @default(DEFAULT)
+  objet          String           @db.VarChar(255)
+  text           String           @db.VarChar(1000)
+  date           DateTime         @default(now())
+  urlRedirection String?          @map("url_redirection") @db.VarChar(255)
+  estLu          Boolean          @default(false) @map("est_lu")
+  userId         String           @map("user_id") @db.VarChar(25)
+  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@index([userId], map: "index_notification_user_id")
   @@map("notification")
@@ -368,4 +369,14 @@ enum UserRole {
   CLIENT
   VENDEUR
   ADMIN
+}
+
+enum NotificationType {
+  DEFAULT
+  COMMANDE
+  LIVRAISON
+  PAIEMENT
+  SIGNALEMENT
+  EVALUATION
+  MESSAGE
 }

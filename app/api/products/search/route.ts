@@ -5,12 +5,15 @@ import { prisma } from "@/lib/utils/prisma";
 import { containsFilter } from "@/lib/utils";
 import { formatProductData, getProductSelect } from "@/lib/helpers/products";
 import { ERROR_MESSAGES } from "@/lib/constants/settings";
-import { getPaginationParams, getSortingParams } from "@/lib/utils/params";
+import {
+  getPaginationParams,
+  getSortingProductsParams,
+} from "@/lib/utils/params";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const { page, pageSize, skip } = getPaginationParams(req);
-  const { sortBy, sortOrder } = getSortingParams(req);
+  const { sortBy, sortOrder } = getSortingProductsParams(req);
 
   // Extract search params
   const query = searchParams.get("query") || "";
@@ -48,10 +51,10 @@ export async function GET(req: NextRequest) {
 
   try {
     // Fetch filtered products & count
-    const totalProducts = await prisma.produit.count();
+    const totalProducts = await prisma.produit.count({ where: whereClause });
     const products = await prisma.produit.findMany({
       where: whereClause,
-      orderBy: { [sortBy!]: sortOrder },
+      orderBy: { [sortBy]: sortOrder },
       select: getProductSelect(),
       skip,
       take: pageSize,

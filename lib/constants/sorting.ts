@@ -7,6 +7,8 @@ export const PRODUCT_SORT_FIELDS = [
   "dateCreation",
 ];
 
+export const NOTIFICATION_SORT_FIELDS = ["date"];
+
 // export const USER_SORT_FIELDS = ["name", "email", "createdAt"] as const;
 
 // export const ORDER_SORT_FIELDS = [

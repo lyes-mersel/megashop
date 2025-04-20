@@ -5,7 +5,10 @@ import { Prisma, UserRole } from "@prisma/client";
 import { auth } from "@/lib/auth";
 import { ERROR_MESSAGES } from "@/lib/constants/settings";
 import { productSchema, formatValidationErrors } from "@/lib/validations";
-import { getPaginationParams, getSortingParams } from "@/lib/utils/params";
+import {
+  getPaginationParams,
+  getSortingProductsParams,
+} from "@/lib/utils/params";
 import { formatProductData, getProductSelect } from "@/lib/helpers/products";
 import {
   deleteFromCloudinary,
@@ -14,10 +17,10 @@ import {
 
 export async function GET(req: NextRequest) {
   const { page, pageSize, skip } = getPaginationParams(req);
-  const { sortBy, sortOrder } = getSortingParams(req);
+  const { sortBy, sortOrder } = getSortingProductsParams(req);
 
   try {
-    // Fetch total products & count
+    // Fetch all products & count
     const totalProducts = await prisma.produit.count();
     const products = await prisma.produit.findMany({
       select: getProductSelect(),
