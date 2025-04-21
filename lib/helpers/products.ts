@@ -10,7 +10,7 @@ export function getProductSelect() {
     prix: true,
     qteStock: true,
     noteMoyenne: true,
-    totalNotations: true,
+    totalEvaluations: true,
     dateCreation: true,
     dateModification: true,
     // Relations
@@ -45,7 +45,11 @@ export function formatProductData(product: ProductFromDB): ProductResponse {
     produitMarketplace,
     produitBoutique,
     id,
+    nom,
+    objet,
+    description,
     prix,
+    qteStock,
     noteMoyenne,
     ...rest
   } = product;
@@ -57,7 +61,11 @@ export function formatProductData(product: ProductFromDB): ProductResponse {
       : produitMarketplace
       ? "marketplace"
       : null,
+    nom,
+    objet,
+    description,
     prix: prix.toNumber(),
+    qteStock,
     noteMoyenne: noteMoyenne?.toNumber(),
     ...rest,
     ...(produitBoutique

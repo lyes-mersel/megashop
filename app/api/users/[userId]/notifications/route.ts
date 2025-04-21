@@ -79,8 +79,8 @@ export async function GET(
       where: whereClause,
       orderBy: { [sortBy]: sortOrder },
       select: getNotificationSelect(),
-      skip,
       take: pageSize,
+      skip,
     });
 
     // Format notifs data

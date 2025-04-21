@@ -33,7 +33,10 @@ export async function GET(_req: NextRequest) {
 
     const data = users.map(formatUserData);
 
-    return NextResponse.json({ message: "OK", data }, { status: 200 });
+    return NextResponse.json(
+      { message: "Les utilisateurs ont été récupérés avec succès", data },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("API Error [GET ALL /api/users]:", error);
     return NextResponse.json(

@@ -50,7 +50,10 @@ export async function GET(
     // Format the response
     const data = formatUserData(user);
 
-    return NextResponse.json({ message: "OK", data }, { status: 200 });
+    return NextResponse.json(
+      { message: "L’utilisateur a été récupéré avec succès", data },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("API Error [GET /api/users/[userId]]:", error);
     return NextResponse.json(

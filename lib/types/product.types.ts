@@ -31,7 +31,7 @@ export type ProductResponse = {
   prix: number;
   qteStock: number;
   noteMoyenne: number;
-  totalNotations: number;
+  totalEvaluations: number;
   dateCreation: Date;
   dateModification: Date;
   genre: { id: string; nom: string } | null;

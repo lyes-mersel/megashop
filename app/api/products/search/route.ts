@@ -73,7 +73,11 @@ export async function GET(req: NextRequest) {
 
     // Return response
     return NextResponse.json(
-      { message: "OK", pagination, data },
+      {
+        message: "Les résultats de la recherche ont été récupérés avec succès",
+        pagination,
+        data,
+      },
       { status: 200 }
     );
   } catch (error) {

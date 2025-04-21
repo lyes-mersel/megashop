@@ -7,8 +7,7 @@ import { formatProductData, getProductSelect } from "@/lib/helpers/products";
 import { auth } from "@/lib/auth";
 import { Prisma, UserRole } from "@prisma/client";
 import { deleteFromCloudinary } from "@/lib/helpers/cloudinary";
-import { formatValidationErrors } from "@/lib/validations";
-import { updateProductSchema } from "@/lib/validations/product";
+import { updateProductSchema, formatValidationErrors } from "@/lib/validations";
 
 // Fetch product by ID
 export async function GET(
@@ -35,7 +34,10 @@ export async function GET(
     // Format the response
     const data = formatProductData(product);
 
-    return NextResponse.json({ message: "OK", data }, { status: 200 });
+    return NextResponse.json(
+      { message: "Le produit a été récupéré avec succès", data },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("API Error [GET /api/products/:productId] : ", error);
     return NextResponse.json(
@@ -258,10 +260,7 @@ export async function PATCH(
       error.code === "P2025"
     ) {
       return NextResponse.json(
-        {
-          error:
-            "Échec de la création du produit : Un ou plusieurs IDs fournis sont invalides.",
-        },
+        { error: ERROR_MESSAGES.BAD_REQUEST_ID },
         { status: 400 }
       );
     }

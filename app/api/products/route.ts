@@ -43,7 +43,11 @@ export async function GET(req: NextRequest) {
 
     // Return response
     return NextResponse.json(
-      { message: "OK", pagination, data },
+      {
+        message: "Les produits ont été récupérés avec succès",
+        pagination,
+        data,
+      },
       { status: 200 }
     );
   } catch (error) {
@@ -181,10 +185,7 @@ export async function POST(req: NextRequest) {
       if (dbError instanceof Prisma.PrismaClientKnownRequestError) {
         if (dbError.code === "P2025") {
           return NextResponse.json(
-            {
-              error:
-                "Échec de la création du produit : Un ou plusieurs IDs fournis sont invalides.",
-            },
+            { error: ERROR_MESSAGES.BAD_REQUEST_ID },
             { status: 400 }
           );
         }

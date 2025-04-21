@@ -87,19 +87,20 @@
 
 ---
 
-- `GET    /api/products/{productId}/reviews` - Retrieve product reviews
-- `POST   /api/products/{productId}/reviews` - Add a review
-- `GET    /api/products/{productId}/reviews/{reviewId}` - Retrieve a specific review
-- `PUT    /api/products/{productId}/reviews/{reviewId}` - Update a review
-- `DELETE /api/products/{productId}/reviews/{reviewId}` - Delete a review
+- `GET    /api/reviews?productId` - Retrieve a product reviews (public) ✅
+- `POST   /api/reviews?productId` - Add a review to a product (private) ✅
+- `DELETE /api/reviews?productId` - Delete all reviews of a product (admin) ✅
+- `GET    /api/reviews/{reviewId}` - Retrieve a specific review
+- `PUT    /api/reviews/{reviewId}` - Update a review
+- `DELETE /api/reviews/{reviewId}` - Delete a review
 
 ---
 
-- `GET    /api/products/{productId}/reviews/{reviewId}/responses` - Retrieve responses to a review
-- `POST   /api/products/{productId}/reviews/{reviewId}/responses` - Respond to a review
-- `GET    /api/products/{productId}/reviews/{reviewId}/responses/{responseId}` - Retrieve a specific response
-- `PUT    /api/products/{productId}/reviews/{reviewId}/responses/{responseId}` - Update a response
-- `DELETE /api/products/{productId}/reviews/{reviewId}/responses/{responseId}` - Delete a response
+- `GET    /api/reviews/{reviewId}/responses` - Retrieve responses to a review
+- `POST   /api/reviews/{reviewId}/responses` - Respond to a review
+- `GET    /api/reviews/{reviewId}/responses/{responseId}` - Retrieve a specific response
+- `PUT    /api/reviews/{reviewId}/responses/{responseId}` - Update a response
+- `DELETE /api/reviews/{reviewId}/responses/{responseId}` - Delete a response
 
 ### Users
 
