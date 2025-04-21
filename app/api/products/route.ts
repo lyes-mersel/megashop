@@ -15,6 +15,7 @@ import {
   uploadToCloudinary,
 } from "@/lib/helpers/cloudinary";
 
+// Fetch all products
 export async function GET(req: NextRequest) {
   const { page, pageSize, skip } = getPaginationParams(req);
   const { sortBy, sortOrder } = getSortingProductsParams(req);
@@ -51,6 +52,7 @@ export async function GET(req: NextRequest) {
   }
 }
 
+// Create a new product
 export async function POST(req: NextRequest) {
   try {
     // Authentication Check
@@ -189,6 +191,96 @@ export async function POST(req: NextRequest) {
     }
   } catch (error) {
     console.error("API Error [POST NEW PRODUCT] :", error);
+    return NextResponse.json(
+      { error: ERROR_MESSAGES.INTERNAL_ERROR },
+      { status: 500 }
+    );
+  }
+}
+
+// DELETE all products
+export async function DELETE(_req: NextRequest) {
+  const session = await auth();
+
+  // Authentication Check
+  if (!session) {
+    return NextResponse.json(
+      { error: ERROR_MESSAGES.UNAUTHORIZED },
+      { status: 401 }
+    );
+  }
+
+  try {
+    let produitsToDelete;
+    let message;
+
+    switch (session.user.role) {
+      case UserRole.ADMIN:
+        // Get all boutique products and their images
+        produitsToDelete = await prisma.produit.findMany({
+          where: {
+            produitBoutique: {
+              isNot: null,
+            },
+          },
+          select: {
+            id: true,
+            images: true,
+          },
+        });
+        message = "Tous les produits boutique ont été supprimés avec succès.";
+        break;
+
+      case UserRole.VENDEUR:
+        // Get vendor's marketplace products and their images
+        produitsToDelete = await prisma.produit.findMany({
+          where: {
+            produitMarketplace: {
+              vendeurId: session.user.id,
+            },
+          },
+          select: {
+            id: true,
+            images: true,
+          },
+        });
+        message = "Tous vos produits ont été supprimés avec succès.";
+        break;
+
+      default:
+        return NextResponse.json(
+          { error: ERROR_MESSAGES.FORBIDDEN },
+          { status: 403 }
+        );
+    }
+
+    // Delete all related images from Cloudinary
+    await Promise.all(
+      produitsToDelete.flatMap((produit) =>
+        (produit.images || []).map((img) =>
+          deleteFromCloudinary(img.imagePublicId)
+        )
+      )
+    );
+
+    // Delete all products
+    const deleted = await prisma.produit.deleteMany({
+      where: {
+        id: {
+          in: produitsToDelete.map((p) => p.id),
+        },
+      },
+    });
+
+    return NextResponse.json(
+      {
+        message,
+        count: deleted.count,
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("API Error [DELETE /api/products]:", error);
     return NextResponse.json(
       { error: ERROR_MESSAGES.INTERNAL_ERROR },
       { status: 500 }

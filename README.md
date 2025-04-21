@@ -74,7 +74,8 @@
 ### Products
 
 - `GET    /api/products` - Get all products ✅
-- `POST   /api/products` - Add a product ✅
+- `POST   /api/products` - Add a new product ✅
+- `DELETE /api/products` - Delete all products ✅
 
 ---
 
@@ -84,7 +85,7 @@
 
 - `GET    /api/products/{productId}` - Get product by ID ✅
 - `PATCH  /api/products/{productId}` - Update product details
-- `DELETE /api/products/{productId}` - Delete a product
+- `DELETE /api/products/{productId}` - Delete a product by ID ✅
 
 ---
 
