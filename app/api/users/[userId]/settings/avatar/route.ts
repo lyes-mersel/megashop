@@ -59,7 +59,7 @@ export async function GET(
       { status: 200 }
     );
   } catch (error) {
-    console.error("API Error [GET /api/users/:userId/settings/avatar]:", error);
+    console.error("API Error [GET /api/users/[userId]/settings/avatar]:", error);
     return NextResponse.json(
       { error: ERROR_MESSAGES.INTERNAL_ERROR },
       { status: 500 }
@@ -134,7 +134,7 @@ export async function PUT(
       { status: 200 }
     );
   } catch (error) {
-    console.error("API Error [PUT /api/users/:userId/settings/avatar]:", error);
+    console.error("API Error [PUT /api/users/[userId]/settings/avatar]:", error);
     return NextResponse.json(
       { error: ERROR_MESSAGES.INTERNAL_ERROR },
       { status: 500 }
@@ -195,7 +195,7 @@ export async function DELETE(
     );
   } catch (error) {
     console.error(
-      "API Error [DELETE /api/users/:userId/settings/avatar]:",
+      "API Error [DELETE /api/users/[userId]/settings/avatar]:",
       error
     );
     return NextResponse.json(

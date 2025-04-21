@@ -56,45 +56,39 @@
 
 ## MegaShop API Documentation
 
-### Authentication ✅
+### Authentication
 
-- `POST   /api/auth/register` - Register a new user
-- `POST   /api/auth/login` - User login
-- `POST   /api/auth/logout` - User logout
-- `POST   /api/auth/password/reset` - Reset user password
-- `POST   /api/auth/password/send-reset-code` - Send a password reset code via email
-- `POST   /api/auth/email/verify` - Verify user email
-- `POST   /api/auth/email/update` - Verify user email after an update request
-- `POST   /api/auth/email/send-verification-code` - Send an email verification code
+- `POST   /api/auth/register` - Register a new user (public) ✅
+- `POST   /api/auth/login` - User login (public) ✅
+- `POST   /api/auth/logout` - User logout (public) ✅
+- `POST   /api/auth/password/reset` - Reset user password (public) ✅
+- `POST   /api/auth/password/send-reset-code` - Send a password reset code via email (public) ✅
+- `POST   /api/auth/email/verify` - Verify user email (private) ✅
+- `POST   /api/auth/email/update` - Verify user email after an update request (private) ✅
+- `POST   /api/auth/email/send-verification-code` - Send an email verification code (private) ✅
 
-### Uploads ✅
+### Uploads
 
-- `POST   /api/uploads/image` - Upload an image
+- `POST   /api/uploads/image` - Upload an image (admin) ✅
 
 ### Products
 
-- `GET    /api/products` - Get all products ✅
-- `POST   /api/products` - Add a new product ✅
-- `DELETE /api/products` - Delete all products ✅
+- `GET    /api/products` - Get all products (public) ✅
+- `POST   /api/products` - Add a new product (admin|vendor) ✅
+- `DELETE /api/products` - Delete all products (admin|vendor) ✅
+- `GET    /api/products/search` - Search for products (public) ✅
 
 ---
 
-- `GET    /api/products/search` - Search for products ✅
-
----
-
-- `GET    /api/products/{productId}` - Get product by ID ✅
-- `PATCH  /api/products/{productId}` - Update product details ✅
-- `DELETE /api/products/{productId}` - Delete a product by ID ✅
+- `GET    /api/products/{productId}` - Get product by ID (public) ✅
+- `PATCH  /api/products/{productId}` - Update product details (admin|vendor) ✅
+- `DELETE /api/products/{productId}` - Delete a product by ID (admin|vendor) ✅
 - `OP     /api/products/{productId}/images` - Add operations for a product images (Later)
 
 ---
 
 - `GET    /api/products/{productId}/reviews` - Retrieve product reviews
 - `POST   /api/products/{productId}/reviews` - Add a review
-
----
-
 - `GET    /api/products/{productId}/reviews/{reviewId}` - Retrieve a specific review
 - `PUT    /api/products/{productId}/reviews/{reviewId}` - Update a review
 - `DELETE /api/products/{productId}/reviews/{reviewId}` - Delete a review
@@ -103,52 +97,51 @@
 
 - `GET    /api/products/{productId}/reviews/{reviewId}/responses` - Retrieve responses to a review
 - `POST   /api/products/{productId}/reviews/{reviewId}/responses` - Respond to a review
-
----
-
 - `GET    /api/products/{productId}/reviews/{reviewId}/responses/{responseId}` - Retrieve a specific response
 - `PUT    /api/products/{productId}/reviews/{reviewId}/responses/{responseId}` - Update a response
 - `DELETE /api/products/{productId}/reviews/{reviewId}/responses/{responseId}` - Delete a response
 
 ### Users
 
-- `GET    /api/users/{userId}` - Retrieve a user ✅
-- `PATCH  /api/users/{userId}` - Update a user ✅
-- `DELETE /api/users/{userId}` - Delete a user ✅
+- `GET    /api/admin/users` - Get all users (admin) ✅
+- `DELETE /api/admin/users` - Delete all users (admin) ✅
+- `GET    /api/users/{userId}` - Retrieve a user (admin|concernedUser) ✅
+- `PATCH  /api/users/{userId}` - Update a user (concernedUser) ✅
+- `DELETE /api/users/{userId}` - Delete a user (admin|concernedUser) ✅
 
 ---
 
-- `GET    /api/users/{userId}/settings/address` - Retrieve a user address✅
-- `PUT    /api/users/{userId}/settings/address` - Update a user address ✅
-- `DELETE /api/users/{userId}/settings/address` - Delete a user address ✅
+- `GET    /api/users/{userId}/settings/address` - Retrieve a user address (concernedUser)✅
+- `PUT    /api/users/{userId}/settings/address` - Update a user address (concernedUser) ✅
+- `DELETE /api/users/{userId}/settings/address` - Delete a user address (concernedUser) ✅
 
 ---
 
-- `GET    /api/users/{userId}/settings/avatar` - Retrieve a user avatar ✅
-- `PUT    /api/users/{userId}/settings/avatar` - Update a user avatar ✅
-- `DELETE /api/users/{userId}/settings/avatar` - Delete a user avatar ✅
+- `GET    /api/users/{userId}/settings/avatar` - Retrieve a user avatar (concernedUser) ✅
+- `PUT    /api/users/{userId}/settings/avatar` - Update a user avatar (concernedUser) ✅
+- `DELETE /api/users/{userId}/settings/avatar` - Delete a user avatar (concernedUser) ✅
 
 ---
 
-- `GET    /api/users/{userId}/settings/vendor-status` - Retrieve a vendor status details ✅
-- `POST   /api/users/{userId}/settings/vendor-status` - Client becomes a vendor ✅
-- `PUT    /api/users/{userId}/settings/vendor-status` - Update a vendor infos ✅
+- `GET    /api/users/{userId}/settings/vendor-status` - Retrieve a vendor status details (concernedUser) ✅
+- `POST   /api/users/{userId}/settings/vendor-status` - Client becomes a vendor (concernedUser) ✅
+- `PUT    /api/users/{userId}/settings/vendor-status` - Update a vendor infos (concernedUser) ✅
 
 ---
 
-- `GET    /api/users/{userId}/profile` - Get a vendor public profile ✅
+- `GET    /api/users/{userId}/profile` - Get a vendor public profile (public) ✅
 
 ---
 
-- `GET    /api/users/{userId}/notifications` - Retrieve all user notifications + (pagination & filters) ✅
-- `PATCH  /api/users/{userId}/notifications` - Update all user notifications (statut estLu) ✅
-- `DELETE /api/users/{userId}/notifications` - Delete all user notifications ✅
+- `GET    /api/users/{userId}/notifications` - Retrieve all user notifications (concernedUser) ✅
+- `PATCH  /api/users/{userId}/notifications` - Update all user notifications (concernedUser) ✅
+- `DELETE /api/users/{userId}/notifications` - Delete all user notifications (concernedUser) ✅
 
 ---
 
-- `GET    /api/users/{userId}/notifications/{notifId}` - Retrieve a user notifications by ID ✅
-- `PATCH  /api/users/{userId}/notifications/{notifId}` - Update a user notifications by ID ✅(statut estLu)
-- `DELETE /api/users/{userId}/notifications/{notifId}` - Delete a user notifications by Id ✅
+- `GET    /api/users/{userId}/notifications/{notifId}` - Retrieve a user notifications by ID (concernedUser) ✅
+- `PATCH  /api/users/{userId}/notifications/{notifId}` - Update a user notifications by ID (concernedUser) ✅
+- `DELETE /api/users/{userId}/notifications/{notifId}` - Delete a user notifications by Id (concernedUser) ✅
 
 ---
 
@@ -174,34 +167,26 @@
 - `GET    /api/users/{userId}/payments/{paymentId}` - Retrieve payment details
 - `PUT    /api/users/{userId}/payments/{paymentId}` - Update payment details
 
-### Admin
+### Orders
 
-- `GET    /api/admin/users` - Get all users
-- `POST   /api/admin/users` - Create a user
-- `GET    /api/admin/users/{userId}` - Get a specific user
-- `PATCH  /api/admin/users/{userId}` - Update a user
-- `DELETE /api/admin/users/{userId}` - Delete a user
+- `GET    /api/orders` - Get all orders (admin)
+- `GET    /api/orders/{orderId}` - Get a specific order (admin)
+- `PATCH  /api/orders/{orderId}` - Update an order (admin)
+- `DELETE /api/orders/{orderId}` - Delete an order (admin)
 
----
+### Reports
 
-- `GET    /api/admin/reports` - Get all user reports
-- `GET    /api/admin/reports/{reportId}` - Get a specific report
-- `PATCH  /api/admin/reports/{reportId}` - Modify the status of a report
-- `DELETE /api/admin/reports/{reportId}` - Delete a report
+- `GET    /api/reports` - Get all user reports (admin)
+- `GET    /api/reports/{reportId}` - Get a specific report (admin)
+- `PATCH  /api/reports/{reportId}` - Modify the status of a report (admin)
+- `DELETE /api/reports/{reportId}` - Delete a report (admin)
 
----
+### Payments
 
-- `GET    /api/admin/orders` - Get all orders
-- `GET    /api/admin/orders/{orderId}` - Get a specific order
-- `PATCH  /api/admin/orders/{orderId}` - Update an order
-- `DELETE /api/admin/orders/{orderId}` - Delete an order
-
----
-
-- `GET    /api/admin/payments` - Get all payments
-- `GET    /api/admin/payments/{paymentId}` - Get payment details
-- `PATCH  /api/admin/payments/{paymentId}` - Update payment details
-- `DELETE /api/admin/payments/{paymentId}` - Delete a payment
+- `GET    /api/payments` - Get all payments (admin)
+- `GET    /api/payments/{paymentId}` - Get payment details (admin)
+- `PATCH  /api/payments/{paymentId}` - Update payment details (admin)
+- `DELETE /api/payments/{paymentId}` - Delete a payment (admin)
 
 ### Testimonials
 

@@ -200,7 +200,8 @@ export async function DELETE(
 
     return NextResponse.json(
       {
-        message: `${result.count} notification(s) supprimée(s) avec succès`,
+        message: "Tous vos produits ont été supprimés avec succès.",
+        count: result.count,
       },
       { status: 200 }
     );
