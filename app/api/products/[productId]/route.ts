@@ -5,8 +5,10 @@ import { ERROR_MESSAGES } from "@/lib/constants/settings";
 
 import { formatProductData, getProductSelect } from "@/lib/helpers/products";
 import { auth } from "@/lib/auth";
-import { UserRole } from "@prisma/client";
+import { Prisma, UserRole } from "@prisma/client";
 import { deleteFromCloudinary } from "@/lib/helpers/cloudinary";
+import { formatValidationErrors } from "@/lib/validations";
+import { updateProductSchema } from "@/lib/validations/product";
 
 // Fetch product by ID
 export async function GET(
@@ -25,7 +27,7 @@ export async function GET(
     // Check if product exists
     if (!product) {
       return NextResponse.json(
-        { error: "Produit non trouvé" },
+        { error: ERROR_MESSAGES.NOT_FOUND },
         { status: 404 }
       );
     }
@@ -41,17 +43,6 @@ export async function GET(
       { status: 500 }
     );
   }
-}
-
-export async function PUT(
-  _req: NextRequest,
-  { params }: { params: Promise<{ productId: string }> }
-) {
-  const { productId } = await params;
-  return NextResponse.json(
-    { message: `Update product with ID: ${productId}` },
-    { status: 200 }
-  );
 }
 
 // Delete a product
@@ -136,7 +127,145 @@ export async function DELETE(
       { status: 200 }
     );
   } catch (error) {
-    console.error("API Error [DELETE /api/products/:id]:", error);
+    console.error("API Error [DELETE /api/products/:productId]:", error);
+    return NextResponse.json(
+      { error: ERROR_MESSAGES.INTERNAL_ERROR },
+      { status: 500 }
+    );
+  }
+}
+
+// Update an existing product
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: Promise<{ productId: string }> }
+) {
+  try {
+    const { productId } = await params;
+    // Auth check
+    const session = await auth();
+    if (!session) {
+      return NextResponse.json(
+        { error: ERROR_MESSAGES.UNAUTHORIZED },
+        { status: 401 }
+      );
+    }
+
+    const isVendeur = session.user.role === UserRole.VENDEUR;
+    const isAdmin = session.user.role === UserRole.ADMIN;
+
+    if (!isVendeur && !isAdmin) {
+      return NextResponse.json(
+        { error: ERROR_MESSAGES.FORBIDDEN },
+        { status: 403 }
+      );
+    }
+
+    // Validate and Parse request body
+    const body = await req.json();
+    const parsedData = updateProductSchema.safeParse(body);
+    if (!parsedData.success) {
+      return formatValidationErrors(parsedData);
+    }
+
+    const {
+      nom,
+      prix,
+      qteStock,
+      objet,
+      description,
+      categorieId,
+      genreId,
+      couleurs,
+      tailles,
+    } = parsedData.data;
+
+    // Check if the product exists
+    const produit = await prisma.produit.findUnique({
+      where: { id: productId },
+      select: {
+        produitMarketplace: true,
+        produitBoutique: true,
+      },
+    });
+
+    if (!produit) {
+      return NextResponse.json(
+        { error: ERROR_MESSAGES.NOT_FOUND },
+        { status: 404 }
+      );
+    }
+
+    // Vendor can only update his products
+    if (produit.produitMarketplace) {
+      if (
+        !isVendeur ||
+        produit.produitMarketplace.vendeurId !== session.user.id
+      ) {
+        return NextResponse.json(
+          { error: ERROR_MESSAGES.FORBIDDEN },
+          { status: 403 }
+        );
+      }
+    }
+
+    // Admin can only update boutique products
+    if (produit.produitBoutique) {
+      if (!isAdmin) {
+        return NextResponse.json(
+          { error: ERROR_MESSAGES.FORBIDDEN },
+          { status: 403 }
+        );
+      }
+    }
+
+    // Update the product in the database
+    const updatedProduct = await prisma.produit.update({
+      where: { id: productId },
+      data: {
+        nom,
+        prix,
+        qteStock,
+        objet,
+        description,
+        categorie: categorieId ? { connect: { id: categorieId } } : undefined,
+        genre: genreId ? { connect: { id: genreId } } : undefined,
+        couleurs: couleurs?.length
+          ? {
+              set: couleurs.map((id: string) => ({ id })),
+            }
+          : undefined,
+        tailles: tailles?.length
+          ? {
+              set: tailles.map((id: string) => ({ id })),
+            }
+          : undefined,
+      },
+    });
+
+    return NextResponse.json(
+      {
+        message: "Produit mis à jour avec succès.",
+        data: updatedProduct,
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("API Error [PATCH /api/products/:productId] :", error);
+
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2025"
+    ) {
+      return NextResponse.json(
+        {
+          error:
+            "Échec de la création du produit : Un ou plusieurs IDs fournis sont invalides.",
+        },
+        { status: 400 }
+      );
+    }
+
     return NextResponse.json(
       { error: ERROR_MESSAGES.INTERNAL_ERROR },
       { status: 500 }

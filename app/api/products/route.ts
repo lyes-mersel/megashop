@@ -47,8 +47,11 @@ export async function GET(req: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
-    console.error("API Error [GET ALL PRODUCTS] : ", error);
-    return NextResponse.json({ error: ERROR_MESSAGES }, { status: 500 });
+    console.error("API Error [GET /api/products] : ", error);
+    return NextResponse.json(
+      { error: ERROR_MESSAGES.INTERNAL_ERROR },
+      { status: 500 }
+    );
   }
 }
 
@@ -64,8 +67,10 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Role Check
-    if (session.user.role !== UserRole.VENDEUR) {
+    const isVendeur = session.user.role === UserRole.VENDEUR;
+    const isAdmin = session.user.role === UserRole.ADMIN;
+
+    if (!isVendeur && !isAdmin) {
       return NextResponse.json(
         { error: ERROR_MESSAGES.FORBIDDEN },
         { status: 403 }
@@ -120,37 +125,38 @@ export async function POST(req: NextRequest) {
           objet: parsedData.data.objet,
           description: parsedData.data.description,
           categorie: parsedData.data.categorieId
-            ? {
-                connect: {
-                  id: parsedData.data.categorieId,
-                },
-              }
+            ? { connect: { id: parsedData.data.categorieId } }
             : undefined,
           genre: parsedData.data.genreId
-            ? {
-                connect: {
-                  id: parsedData.data.genreId,
-                },
-              }
+            ? { connect: { id: parsedData.data.genreId } }
             : undefined,
-          couleurs: parsedData.data.couleurs
+          couleurs: parsedData.data.couleurs?.length
             ? {
                 connect: parsedData.data.couleurs.map((id: string) => ({ id })),
               }
             : undefined,
-          tailles: parsedData.data.tailles
-            ? { connect: parsedData.data.tailles.map((id: string) => ({ id })) }
+          tailles: parsedData.data.tailles?.length
+            ? {
+                connect: parsedData.data.tailles.map((id: string) => ({ id })),
+              }
             : undefined,
-          produitMarketplace: {
-            create: {
-              vendeurId: session.user.id,
-            },
-          },
           images: {
-            create: uploadedImages.map((imagePublicId) => ({
-              imagePublicId,
+            create: uploadedImages.map((publicId) => ({
+              imagePublicId: publicId,
             })),
           },
+          ...(isVendeur && {
+            produitMarketplace: {
+              create: {
+                vendeurId: session.user.id,
+              },
+            },
+          }),
+          ...(isAdmin && {
+            produitBoutique: {
+              create: {},
+            },
+          }),
         },
       });
 
@@ -190,7 +196,7 @@ export async function POST(req: NextRequest) {
       );
     }
   } catch (error) {
-    console.error("API Error [POST NEW PRODUCT] :", error);
+    console.error("API Error [POST /api/products] :", error);
     return NextResponse.json(
       { error: ERROR_MESSAGES.INTERNAL_ERROR },
       { status: 500 }

@@ -84,8 +84,9 @@
 ---
 
 - `GET    /api/products/{productId}` - Get product by ID ✅
-- `PATCH  /api/products/{productId}` - Update product details
+- `PATCH  /api/products/{productId}` - Update product details ✅
 - `DELETE /api/products/{productId}` - Delete a product by ID ✅
+- `OP     /api/products/{productId}/images` - Add operations for a product images (Later)
 
 ---
 
@@ -175,10 +176,6 @@
 
 ### Admin
 
-- `GET    /api/admin/analytics` - Get platform analytics
-
----
-
 - `GET    /api/admin/users` - Get all users
 - `POST   /api/admin/users` - Create a user
 - `GET    /api/admin/users/{userId}` - Get a specific user
@@ -187,31 +184,10 @@
 
 ---
 
-- `GET    /api/admin/reviews` - Get all product reviews
-- `GET    /api/admin/reviews/{reviewId}` - Get a specific review
-- `DELETE /api/admin/reviews/{reviewId}` - Delete a review
-
----
-
-- `GET    /api/admin/reviews/{reviewId}/responses` - Get responses to a review
-- `POST   /api/admin/reviews/{reviewId}/responses` - Add a response to a review
-- `GET    /api/admin/reviews/{reviewId}/responses/{responseId}` - Get a specific response
-- `PUT    /api/admin/reviews/{reviewId}/responses/{responseId}` - Update a response
-- `DELETE /api/admin/reviews/{reviewId}/responses/{responseId}` - Delete a response
-
----
-
 - `GET    /api/admin/reports` - Get all user reports
 - `GET    /api/admin/reports/{reportId}` - Get a specific report
 - `PATCH  /api/admin/reports/{reportId}` - Modify the status of a report
 - `DELETE /api/admin/reports/{reportId}` - Delete a report
-
----
-
-- `GET    /api/admin/notifications` - Get all notifications
-- `POST   /api/admin/notifications` - Create a new notification
-- `GET    /api/admin/notifications/{notifId}` - Get a specific notification
-- `DELETE /api/admin/notifications/{notifId}` - Delete a notification
 
 ---
 
@@ -227,26 +203,15 @@
 - `PATCH  /api/admin/payments/{paymentId}` - Update payment details
 - `DELETE /api/admin/payments/{paymentId}` - Delete a payment
 
----
-
-- `GET    /api/admin/products` - Get all products
-- `GET    /api/admin/products/{productId}` - Get a specific product
-- `PATCH  /api/admin/products/{productId}` - Update a product
-- `DELETE /api/admin/products/{productId}` - Delete a product
-
----
-
-- `GET    /api/admin/testimonials` - Get all testimonials
-- `GET    /api/admin/testimonials/{testimonialId}` - Get a specific testimonial
-- `PATCH  /api/admin/testimonials/{testimonialId}` - Update a testimonial
-- `DELETE /api/admin/testimonials/{testimonialId}` - Delete a testimonial
-
----
-
-- `GET    /api/admin/settings` - Get platform settings
-- `PATCH  /api/admin/settings` - Update platform settings
-
 ### Testimonials
 
 - `GET    /api/testimonials` - Get testimonials
+- `POST   /api/testimonials` - Get testimonials (for admin)
 - `GET    /api/testimonials/{testimonialId}` - Get a testimonial by ID
+- `PATCH  /api/admin/testimonials/{testimonialId}` - Update a testimonial (for admin)
+- `DELETE /api/admin/testimonials/{testimonialId}` - Delete a testimonial (for admin)
+
+### Analytics
+
+- `GET    /api/analytics` - Get analytics (for vendor and admin)
+- `POST   /api/analytics/cron` - An endpoint that should be triggered daily to generate analytics.

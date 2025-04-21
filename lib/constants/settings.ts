@@ -2,6 +2,7 @@
 export const DEFAULT_PAGE = 1;
 export const DEFAULT_PAGE_SIZE = 12;
 export const MAX_PAGE_SIZE = 100;
+export const MAX_ID_LENGTH = 25;
 
 // Cloud folder names
 export const ALLOWED_FOLDERS = ["products", "avatars"];
