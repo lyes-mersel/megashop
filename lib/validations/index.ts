@@ -1,6 +1,10 @@
 import { registerSchema, loginSchema, resetPasswordSchema } from "./auth";
 import { productSchema, updateProductSchema } from "./product";
-import { reviewSchema } from "@/lib/validations/review";
+import {
+  reviewSchema,
+  updateReviewSchema,
+  reviewReplySchema,
+} from "@/lib/validations/review";
 import {
   updateUserSchema,
   updateAddressSchema,
@@ -22,6 +26,8 @@ export {
 
   // Review
   reviewSchema,
+  updateReviewSchema,
+  reviewReplySchema,
 
   // User
   updateUserSchema,

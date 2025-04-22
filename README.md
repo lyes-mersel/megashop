@@ -96,8 +96,9 @@
 
 ---
 
-- `GET    /api/reviews/{reviewId}/responses` - Retrieve responses to a review
-- `POST   /api/reviews/{reviewId}/responses` - Respond to a review
+- `GET    /api/reviews/{reviewId}/responses` - Retrieve responses to a review (public) ✅
+- `POST   /api/reviews/{reviewId}/responses` - Respond to a review (admin|productVendor) ✅
+- `DELETE /api/reviews/{reviewId}/responses` - Delete all responses (admin) ✅
 - `GET    /api/reviews/{reviewId}/responses/{responseId}` - Retrieve a specific response
 - `PUT    /api/reviews/{reviewId}/responses/{responseId}` - Update a response
 - `DELETE /api/reviews/{reviewId}/responses/{responseId}` - Delete a response
@@ -124,7 +125,7 @@
 
 ---
 
-- `GET    /api/users/{userId}/settings/vendor-status` - Retrieve a vendor status details (concernedUser) ✅
+- `GET    /api/users/{userId}/settings/vendor-status` - Get a vendor status details (concernedUser)✅
 - `POST   /api/users/{userId}/settings/vendor-status` - Client becomes a vendor (concernedUser) ✅
 - `PUT    /api/users/{userId}/settings/vendor-status` - Update a vendor infos (concernedUser) ✅
 

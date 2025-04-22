@@ -1,4 +1,4 @@
-import { getReviewSelect } from "@/lib/helpers/reviews";
+import { getReviewReplySelect, getReviewSelect } from "@/lib/helpers/reviews";
 import { Prisma, UserRole } from "@prisma/client";
 
 export type ReviewFromDB = Prisma.EvaluationGetPayload<{
@@ -10,6 +10,7 @@ export type ReviewFromAPI = {
   note: number;
   text: string | null;
   date: Date;
+  produitId: string;
   user: {
     id: string;
     nom: string;
@@ -19,6 +20,10 @@ export type ReviewFromAPI = {
   };
   reponses: ReviewReplyFromAPI[];
 };
+
+export type ReviewReplyFromDB = Prisma.ReponseEvaluationGetPayload<{
+  select: ReturnType<typeof getReviewReplySelect>;
+}>;
 
 export type ReviewReplyFromAPI = {
   id: string;
