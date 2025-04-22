@@ -90,9 +90,9 @@
 - `GET    /api/reviews?productId` - Retrieve a product reviews (public) ✅
 - `POST   /api/reviews?productId` - Add a review to a product (private) ✅
 - `DELETE /api/reviews?productId` - Delete all reviews of a product (admin) ✅
-- `GET    /api/reviews/{reviewId}` - Retrieve a specific review
-- `PUT    /api/reviews/{reviewId}` - Update a review
-- `DELETE /api/reviews/{reviewId}` - Delete a review
+- `GET    /api/reviews/{reviewId}` - Retrieve a specific review (public) ✅
+- `PUT    /api/reviews/{reviewId}` - Update a review (concernedUser) ✅
+- `DELETE /api/reviews/{reviewId}` - Delete a review (admin|concernedUser) ✅
 
 ---
 
@@ -112,7 +112,7 @@
 
 ---
 
-- `GET    /api/users/{userId}/settings/address` - Retrieve a user address (concernedUser)✅
+- `GET    /api/users/{userId}/settings/address` - Get a user address (concernedUser)✅
 - `PUT    /api/users/{userId}/settings/address` - Update a user address (concernedUser) ✅
 - `DELETE /api/users/{userId}/settings/address` - Delete a user address (concernedUser) ✅
 
@@ -140,9 +140,9 @@
 
 ---
 
-- `GET    /api/users/{userId}/notifications/{notifId}` - Retrieve a user notifications by ID (concernedUser) ✅
-- `PATCH  /api/users/{userId}/notifications/{notifId}` - Update a user notifications by ID (concernedUser) ✅
-- `DELETE /api/users/{userId}/notifications/{notifId}` - Delete a user notifications by Id (concernedUser) ✅
+- `GET    /api/users/{userId}/notifications/{notifId}` - Retrieve a notif by ID (concernedUser) ✅
+- `PATCH  /api/users/{userId}/notifications/{notifId}` - Update a notif by ID (concernedUser) ✅
+- `DELETE /api/users/{userId}/notifications/{notifId}` - Delete a notif by Id (concernedUser) ✅
 
 ---
 
