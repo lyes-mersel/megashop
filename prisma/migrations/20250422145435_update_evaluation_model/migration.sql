@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "evaluation" ALTER COLUMN "note" SET DATA TYPE DECIMAL(3,2),
+ALTER COLUMN "text" DROP NOT NULL;

@@ -79,8 +79,8 @@ model Commande {
 
 model Evaluation {
   id                 String              @id @default(cuid()) @db.VarChar(25)
-  note               Decimal             @db.Decimal(2, 1)
-  text               String              @db.VarChar(500)
+  note               Decimal             @db.Decimal(3, 2)
+  text               String?             @db.VarChar(500)
   date               DateTime            @default(now())
   userId             String              @map("user_id") @db.VarChar(25)
   produitId          String              @map("produit_id") @db.VarChar(25)

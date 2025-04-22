@@ -8,7 +8,7 @@ export type ReviewFromDB = Prisma.EvaluationGetPayload<{
 export type ReviewResponse = {
   id: string;
   note: number;
-  text: string;
+  text: string | null;
   date: Date;
   user: {
     id: string;
