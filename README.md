@@ -101,7 +101,7 @@
 - `DELETE /api/reviews/{reviewId}/responses` - Delete all responses (admin) ✅
 - `GET    /api/reviews/{reviewId}/responses/{responseId}` - Retrieve a specific response (public) ✅
 - `PUT    /api/reviews/{reviewId}/responses/{responseId}` - Update a response (concernedUser) ✅
-- `DELETE /api/reviews/{reviewId}/responses/{responseId}` - Delete a response (admin|concernedUser) ✅
+- `DELETE /api/reviews/{reviewId}/responses/{responseId}` - Delete a response (admin|concernedUser)✅
 
 ### Users
 
