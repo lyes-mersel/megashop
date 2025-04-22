@@ -1,6 +1,6 @@
 import {
   NotificationFromDB,
-  NotificationResponse,
+  NotificationFromAPI,
 } from "@/lib/types/notification.types";
 
 export function getNotificationSelect() {
@@ -18,6 +18,6 @@ export function getNotificationSelect() {
 
 export function formatNotificationData(
   notif: NotificationFromDB
-): NotificationResponse {
-  return notif as NotificationResponse;
+): NotificationFromAPI {
+  return notif as NotificationFromAPI;
 }

@@ -5,7 +5,7 @@ export type NotificationFromDB = Prisma.NotificationGetPayload<{
   select: ReturnType<typeof getNotificationSelect>;
 }>;
 
-export type NotificationResponse = {
+export type NotificationFromAPI = {
   id: string;
   type: NotificationType;
   objet: string;

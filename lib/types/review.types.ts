@@ -5,7 +5,7 @@ export type ReviewFromDB = Prisma.EvaluationGetPayload<{
   select: ReturnType<typeof getReviewSelect>;
 }>;
 
-export type ReviewResponse = {
+export type ReviewFromAPI = {
   id: string;
   note: number;
   text: string | null;
@@ -17,16 +17,18 @@ export type ReviewResponse = {
     imagePublicId: string | null;
     role: UserRole;
   };
-  reponses: {
+  reponses: ReviewReplyFromAPI[];
+};
+
+export type ReviewReplyFromAPI = {
+  id: string;
+  text: string;
+  date: Date;
+  user: {
     id: string;
-    text: string;
-    date: Date;
-    user: {
-      id: string;
-      nom: string;
-      prenom: string;
-      imagePublicId: string | null;
-      role: UserRole;
-    };
-  }[];
+    nom: string;
+    prenom: string;
+    imagePublicId: string | null;
+    role: UserRole;
+  };
 };

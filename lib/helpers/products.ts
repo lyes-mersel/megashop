@@ -1,4 +1,4 @@
-import { ProductFromDB, ProductResponse } from "@/lib/types/product.types";
+import { ProductFromDB, ProductFromAPI } from "@/lib/types/product.types";
 
 export function getProductSelect() {
   return {
@@ -40,7 +40,7 @@ export function getProductSelect() {
   };
 }
 
-export function formatProductData(product: ProductFromDB): ProductResponse {
+export function formatProductData(product: ProductFromDB): ProductFromAPI {
   const {
     produitMarketplace,
     produitBoutique,

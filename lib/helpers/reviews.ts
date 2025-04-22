@@ -1,4 +1,4 @@
-import { ReviewFromDB, ReviewResponse } from "@/lib/types/review.types";
+import { ReviewFromDB, ReviewFromAPI } from "@/lib/types/review.types";
 
 export function getReviewSelect() {
   return {
@@ -34,7 +34,7 @@ export function getReviewSelect() {
   };
 }
 
-export function formatReviewData(review: ReviewFromDB): ReviewResponse {
+export function formatReviewData(review: ReviewFromDB): ReviewFromAPI {
   const { id, note, text, date, user, reponsesEvaluation } = review;
 
   return {

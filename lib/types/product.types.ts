@@ -22,7 +22,7 @@ export type ProductFromDB = Prisma.ProduitGetPayload<{
   select: ReturnType<typeof getProductSelect>;
 }>;
 
-export type ProductResponse = {
+export type ProductFromAPI = {
   id: string;
   type: "boutique" | "marketplace" | null;
   nom: string;
