@@ -243,13 +243,13 @@ export async function PATCH(
             }
           : undefined,
       },
+      select: getProductSelect(),
     });
 
+    const data = formatProductData(updatedProduct);
+
     return NextResponse.json(
-      {
-        message: "Produit mis à jour avec succès.",
-        data: updatedProduct,
-      },
+      { message: "Produit mis à jour avec succès.", data },
       { status: 200 }
     );
   } catch (error) {

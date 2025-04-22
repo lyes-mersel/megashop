@@ -162,10 +162,13 @@ export async function POST(req: NextRequest) {
             },
           }),
         },
+        select: getProductSelect(),
       });
 
+      const data = formatProductData(product);
+
       return NextResponse.json(
-        { message: "Produit créé avec succès", data: product },
+        { message: "Produit créé avec succès", data },
         { status: 201 }
       );
     } catch (dbError) {
