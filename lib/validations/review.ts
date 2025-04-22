@@ -11,7 +11,7 @@ export const updateReviewSchema = z.object({
   text: z.string().min(1).max(500).optional(),
 });
 
-export const reviewReplySchema = z.object({
+export const reviewResponseSchema = z.object({
   text: z
     .string({
       required_error: "Le texte est requis.",

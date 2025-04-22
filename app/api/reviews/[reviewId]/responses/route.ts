@@ -2,11 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/utils/prisma";
 import { ERROR_MESSAGES } from "@/lib/constants/settings";
 import {
-  formatReviewReplyData,
-  getReviewReplySelect,
+  formatReviewResponsesData,
+  getReviewResponsesSelect,
 } from "@/lib/helpers/reviews";
 import { auth } from "@/lib/auth";
-import { formatValidationErrors, reviewReplySchema } from "@/lib/validations";
+import { formatValidationErrors, reviewResponseSchema } from "@/lib/validations";
 
 export async function GET(
   _req: NextRequest,
@@ -39,10 +39,10 @@ export async function GET(
     const responses = await prisma.reponseEvaluation.findMany({
       where: { evaluationId: reviewId },
       orderBy: { date: "asc" },
-      select: getReviewReplySelect(),
+      select: getReviewResponsesSelect(),
     });
 
-    const data = responses.map(formatReviewReplyData);
+    const data = responses.map(formatReviewResponsesData);
 
     return NextResponse.json(
       { message: "Les réponses ont été récupérées avec succès", data },
@@ -75,7 +75,7 @@ export async function POST(
 
     // Parse and validate the request body
     const body = await req.json();
-    const parsedData = reviewReplySchema.safeParse(body);
+    const parsedData = reviewResponseSchema.safeParse(body);
     if (!parsedData.success) {
       return formatValidationErrors(parsedData);
     }
@@ -123,10 +123,10 @@ export async function POST(
         evaluationId: reviewId,
         userId,
       },
-      select: getReviewReplySelect(),
+      select: getReviewResponsesSelect(),
     });
 
-    const formatted = formatReviewReplyData(response);
+    const formatted = formatReviewResponsesData(response);
 
     return NextResponse.json(
       {

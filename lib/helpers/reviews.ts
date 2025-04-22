@@ -1,8 +1,8 @@
 import {
   ReviewFromDB,
   ReviewFromAPI,
-  ReviewReplyFromDB,
-  ReviewReplyFromAPI,
+  ReviewResponseFromDB,
+  ReviewResponseFromAPI,
 } from "@/lib/types/review.types";
 
 export function getReviewSelect() {
@@ -54,7 +54,7 @@ export function formatReviewData(review: ReviewFromDB): ReviewFromAPI {
   };
 }
 
-export function getReviewReplySelect() {
+export function getReviewResponsesSelect() {
   return {
     id: true,
     text: true,
@@ -71,8 +71,8 @@ export function getReviewReplySelect() {
   };
 }
 
-export function formatReviewReplyData(
-  reviewReply: ReviewReplyFromDB
-): ReviewReplyFromAPI {
-  return reviewReply;
+export function formatReviewResponsesData(
+  reviewResponse: ReviewResponseFromDB
+): ReviewResponseFromAPI {
+  return reviewResponse;
 }

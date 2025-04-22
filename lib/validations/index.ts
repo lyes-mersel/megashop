@@ -3,7 +3,7 @@ import { productSchema, updateProductSchema } from "./product";
 import {
   reviewSchema,
   updateReviewSchema,
-  reviewReplySchema,
+  reviewResponseSchema,
 } from "@/lib/validations/review";
 import {
   updateUserSchema,
@@ -27,7 +27,7 @@ export {
   // Review
   reviewSchema,
   updateReviewSchema,
-  reviewReplySchema,
+  reviewResponseSchema,
 
   // User
   updateUserSchema,
