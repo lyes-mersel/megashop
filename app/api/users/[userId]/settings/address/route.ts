@@ -62,7 +62,7 @@ export async function GET(
     );
   } catch (error) {
     console.error(
-      "API Error [GET /api/users/:userId/settings/adresse]:",
+      "API Error [GET /api/users/[userId]/settings/adresse]:",
       error
     );
     return NextResponse.json(
@@ -144,7 +144,7 @@ export async function PUT(
     );
   } catch (error) {
     console.error(
-      "API Error [PUT /api/users/:userId/settings/adresse]:",
+      "API Error [PUT /api/users/[userId]/settings/adresse]:",
       error
     );
     return NextResponse.json(
@@ -212,7 +212,7 @@ export async function DELETE(
     );
   } catch (error) {
     console.error(
-      "API Error [DELETE /api/users/:userId/settings/adresse]:",
+      "API Error [DELETE /api/users/[userId]/settings/adresse]:",
       error
     );
     return NextResponse.json(

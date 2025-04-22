@@ -5,19 +5,23 @@ import { Prisma, UserRole } from "@prisma/client";
 import { auth } from "@/lib/auth";
 import { ERROR_MESSAGES } from "@/lib/constants/settings";
 import { productSchema, formatValidationErrors } from "@/lib/validations";
-import { getPaginationParams, getSortingParams } from "@/lib/utils/params";
+import {
+  getPaginationParams,
+  getSortingProductsParams,
+} from "@/lib/utils/params";
 import { formatProductData, getProductSelect } from "@/lib/helpers/products";
 import {
   deleteFromCloudinary,
   uploadToCloudinary,
 } from "@/lib/helpers/cloudinary";
 
+// Fetch all products
 export async function GET(req: NextRequest) {
   const { page, pageSize, skip } = getPaginationParams(req);
-  const { sortBy, sortOrder } = getSortingParams(req);
+  const { sortBy, sortOrder } = getSortingProductsParams(req);
 
   try {
-    // Fetch total products & count
+    // Fetch all products & count
     const totalProducts = await prisma.produit.count();
     const products = await prisma.produit.findMany({
       select: getProductSelect(),
@@ -39,15 +43,23 @@ export async function GET(req: NextRequest) {
 
     // Return response
     return NextResponse.json(
-      { message: "OK", pagination, data },
+      {
+        message: "Les produits ont été récupérés avec succès",
+        pagination,
+        data,
+      },
       { status: 200 }
     );
   } catch (error) {
-    console.error("API Error [GET ALL PRODUCTS] : ", error);
-    return NextResponse.json({ error: ERROR_MESSAGES }, { status: 500 });
+    console.error("API Error [GET /api/products] : ", error);
+    return NextResponse.json(
+      { error: ERROR_MESSAGES.INTERNAL_ERROR },
+      { status: 500 }
+    );
   }
 }
 
+// Create a new product
 export async function POST(req: NextRequest) {
   try {
     // Authentication Check
@@ -59,8 +71,10 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Role Check
-    if (session.user.role !== UserRole.VENDEUR) {
+    const isVendeur = session.user.role === UserRole.VENDEUR;
+    const isAdmin = session.user.role === UserRole.ADMIN;
+
+    if (!isVendeur && !isAdmin) {
       return NextResponse.json(
         { error: ERROR_MESSAGES.FORBIDDEN },
         { status: 403 }
@@ -115,42 +129,46 @@ export async function POST(req: NextRequest) {
           objet: parsedData.data.objet,
           description: parsedData.data.description,
           categorie: parsedData.data.categorieId
-            ? {
-                connect: {
-                  id: parsedData.data.categorieId,
-                },
-              }
+            ? { connect: { id: parsedData.data.categorieId } }
             : undefined,
           genre: parsedData.data.genreId
-            ? {
-                connect: {
-                  id: parsedData.data.genreId,
-                },
-              }
+            ? { connect: { id: parsedData.data.genreId } }
             : undefined,
-          couleurs: parsedData.data.couleurs
+          couleurs: parsedData.data.couleurs?.length
             ? {
                 connect: parsedData.data.couleurs.map((id: string) => ({ id })),
               }
             : undefined,
-          tailles: parsedData.data.tailles
-            ? { connect: parsedData.data.tailles.map((id: string) => ({ id })) }
+          tailles: parsedData.data.tailles?.length
+            ? {
+                connect: parsedData.data.tailles.map((id: string) => ({ id })),
+              }
             : undefined,
-          produitMarketplace: {
-            create: {
-              vendeurId: session.user.id,
-            },
-          },
           images: {
-            create: uploadedImages.map((imagePublicId) => ({
-              imagePublicId,
+            create: uploadedImages.map((publicId) => ({
+              imagePublicId: publicId,
             })),
           },
+          ...(isVendeur && {
+            produitMarketplace: {
+              create: {
+                vendeurId: session.user.id,
+              },
+            },
+          }),
+          ...(isAdmin && {
+            produitBoutique: {
+              create: {},
+            },
+          }),
         },
+        select: getProductSelect(),
       });
 
+      const data = formatProductData(product);
+
       return NextResponse.json(
-        { message: "Produit créé avec succès", data: product },
+        { message: "Produit créé avec succès", data },
         { status: 201 }
       );
     } catch (dbError) {
@@ -170,10 +188,7 @@ export async function POST(req: NextRequest) {
       if (dbError instanceof Prisma.PrismaClientKnownRequestError) {
         if (dbError.code === "P2025") {
           return NextResponse.json(
-            {
-              error:
-                "Échec de la création du produit : Un ou plusieurs IDs fournis sont invalides.",
-            },
+            { error: ERROR_MESSAGES.BAD_REQUEST_ID },
             { status: 400 }
           );
         }
@@ -185,7 +200,97 @@ export async function POST(req: NextRequest) {
       );
     }
   } catch (error) {
-    console.error("API Error [POST NEW PRODUCT] :", error);
+    console.error("API Error [POST /api/products] :", error);
+    return NextResponse.json(
+      { error: ERROR_MESSAGES.INTERNAL_ERROR },
+      { status: 500 }
+    );
+  }
+}
+
+// DELETE all products
+export async function DELETE(_req: NextRequest) {
+  const session = await auth();
+
+  // Authentication Check
+  if (!session) {
+    return NextResponse.json(
+      { error: ERROR_MESSAGES.UNAUTHORIZED },
+      { status: 401 }
+    );
+  }
+
+  try {
+    let produitsToDelete;
+    let message;
+
+    switch (session.user.role) {
+      case UserRole.ADMIN:
+        // Get all boutique products and their images
+        produitsToDelete = await prisma.produit.findMany({
+          where: {
+            produitBoutique: {
+              isNot: null,
+            },
+          },
+          select: {
+            id: true,
+            images: true,
+          },
+        });
+        message = "Tous les produits boutique ont été supprimés avec succès.";
+        break;
+
+      case UserRole.VENDEUR:
+        // Get vendor's marketplace products and their images
+        produitsToDelete = await prisma.produit.findMany({
+          where: {
+            produitMarketplace: {
+              vendeurId: session.user.id,
+            },
+          },
+          select: {
+            id: true,
+            images: true,
+          },
+        });
+        message = "Tous vos produits ont été supprimés avec succès.";
+        break;
+
+      default:
+        return NextResponse.json(
+          { error: ERROR_MESSAGES.FORBIDDEN },
+          { status: 403 }
+        );
+    }
+
+    // Delete all related images from Cloudinary
+    await Promise.all(
+      produitsToDelete.flatMap((produit) =>
+        (produit.images || []).map((img) =>
+          deleteFromCloudinary(img.imagePublicId)
+        )
+      )
+    );
+
+    // Delete all products
+    const deleted = await prisma.produit.deleteMany({
+      where: {
+        id: {
+          in: produitsToDelete.map((p) => p.id),
+        },
+      },
+    });
+
+    return NextResponse.json(
+      {
+        message,
+        count: deleted.count,
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("API Error [DELETE /api/products]:", error);
     return NextResponse.json(
       { error: ERROR_MESSAGES.INTERNAL_ERROR },
       { status: 500 }

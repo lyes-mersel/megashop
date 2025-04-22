@@ -50,9 +50,12 @@ export async function GET(
     // Format the response
     const data = formatUserData(user);
 
-    return NextResponse.json({ message: "OK", data }, { status: 200 });
+    return NextResponse.json(
+      { message: "L’utilisateur a été récupéré avec succès", data },
+      { status: 200 }
+    );
   } catch (error) {
-    console.error("API Error [GET USER BY ID]:", error);
+    console.error("API Error [GET /api/users/[userId]]:", error);
     return NextResponse.json(
       { error: ERROR_MESSAGES.INTERNAL_ERROR },
       { status: 500 }
@@ -154,7 +157,7 @@ export async function DELETE(
       { status: 200 }
     );
   } catch (error) {
-    console.error("API Error [DELETE USER BY ID]:", error);
+    console.error("API Error [DELETE /api/users/[userId]]:", error);
     return NextResponse.json(
       { error: ERROR_MESSAGES.INTERNAL_ERROR },
       { status: 500 }
@@ -260,7 +263,7 @@ export async function PATCH(
       { status: 200 }
     );
   } catch (error) {
-    console.error("API Error [PATCH USER]:", error);
+    console.error("API Error [PATCH /api/users/[userId]]:", error);
     return NextResponse.json(
       { error: ERROR_MESSAGES.INTERNAL_ERROR },
       { status: 500 }

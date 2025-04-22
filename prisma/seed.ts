@@ -602,9 +602,15 @@ async function insertProducts() {
     },
   ];
 
-  await Promise.all(
-    produits.map((produit) => prisma.produit.create({ data: produit }))
-  );
+  // Note: Slower, but more reliable
+  for (const produit of produits) {
+    await prisma.produit.create({ data: produit });
+  }
+
+  // Faster, but often fails due to poor connection
+  // await Promise.all(
+  //   produits.map((produit) => prisma.produit.create({ data: produit }))
+  // );
 
   console.log("Produits insérés avec succès !");
 }

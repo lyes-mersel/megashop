@@ -1,7 +1,8 @@
 // Pagination Defaults
 export const DEFAULT_PAGE = 1;
-export const DEFAULT_PAGE_SIZE = 10;
+export const DEFAULT_PAGE_SIZE = 12;
 export const MAX_PAGE_SIZE = 100;
+export const MAX_ID_LENGTH = 25;
 
 // Cloud folder names
 export const ALLOWED_FOLDERS = ["products", "avatars"];
@@ -15,6 +16,8 @@ export const ERROR_MESSAGES = {
   // 400
   BAD_REQUEST:
     "La requête est invalide. Veuillez vérifier les données envoyées.",
+  BAD_REQUEST_ID:
+    "Échec de la création du produit : Un ou plusieurs IDs fournis sont invalides.",
   // 401
   UNAUTHORIZED: "Vous devez être authentifié pour accéder à cette ressource.",
   // 403

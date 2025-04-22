@@ -79,9 +79,9 @@ model Commande {
 
 model Evaluation {
   id                 String              @id @default(cuid()) @db.VarChar(25)
-  note               Decimal             @db.Decimal(2, 1)
-  text               String              @db.VarChar(500)
-  date               DateTime?           @default(now())
+  note               Decimal             @db.Decimal(3, 2)
+  text               String?             @db.VarChar(500)
+  date               DateTime            @default(now())
   userId             String              @map("user_id") @db.VarChar(25)
   produitId          String              @map("produit_id") @db.VarChar(25)
   user               User                @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
@@ -142,14 +142,15 @@ model LignePanier {
 }
 
 model Notification {
-  id             String    @id @default(cuid()) @db.VarChar(25)
-  objet          String?   @db.VarChar(255)
-  text           String?   @db.VarChar(1000)
-  date           DateTime? @default(now())
-  urlRedirection String?   @map("url_redirection") @db.VarChar(255)
-  estLu          Boolean?  @default(false) @map("est_lu")
-  userId         String?   @map("user_id") @db.VarChar(25)
-  user           User?     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  id             String           @id @default(cuid()) @db.VarChar(25)
+  type           NotificationType @default(DEFAULT)
+  objet          String           @db.VarChar(255)
+  text           String           @db.VarChar(1000)
+  date           DateTime         @default(now())
+  urlRedirection String?          @map("url_redirection") @db.VarChar(255)
+  estLu          Boolean          @default(false) @map("est_lu")
+  userId         String           @map("user_id") @db.VarChar(25)
+  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@index([userId], map: "index_notification_user_id")
   @@map("notification")
@@ -200,7 +201,7 @@ model Produit {
   prix               Decimal             @db.Decimal(10, 2)
   qteStock           Int                 @map("qte_stock")
   noteMoyenne        Decimal             @default(0.0) @map("note_moyenne") @db.Decimal(2, 1)
-  totalNotations     Int                 @default(0) @map("total_notations")
+  totalEvaluations   Int                 @default(0) @map("total_evaluations")
   dateCreation       DateTime            @default(now()) @map("date_creation") @db.Timestamp(0)
   dateModification   DateTime            @default(now()) @map("date_modification") @db.Timestamp(0)
   categorieId        String?             @map("categorie_id") @db.VarChar(25)
@@ -253,7 +254,7 @@ model ProduitMarketplace {
 model ReponseEvaluation {
   id           String     @id @default(cuid()) @db.VarChar(25)
   text         String     @db.VarChar(500)
-  date         DateTime?  @default(now())
+  date         DateTime   @default(now())
   userId       String     @map("user_id") @db.VarChar(25)
   evaluationId String     @map("evaluation_id") @db.VarChar(25)
   user         User       @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
@@ -368,4 +369,14 @@ enum UserRole {
   CLIENT
   VENDEUR
   ADMIN
+}
+
+enum NotificationType {
+  DEFAULT
+  COMMANDE
+  LIVRAISON
+  PAIEMENT
+  SIGNALEMENT
+  EVALUATION
+  MESSAGE
 }

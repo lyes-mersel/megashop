@@ -1,4 +1,4 @@
-import { ProductFromDB, ProductResponse } from "@/lib/types/product.types";
+import { ProductFromDB, ProductFromAPI } from "@/lib/types/product.types";
 
 export function getProductSelect() {
   return {
@@ -10,7 +10,7 @@ export function getProductSelect() {
     prix: true,
     qteStock: true,
     noteMoyenne: true,
-    totalNotations: true,
+    totalEvaluations: true,
     dateCreation: true,
     dateModification: true,
     // Relations
@@ -40,12 +40,16 @@ export function getProductSelect() {
   };
 }
 
-export function formatProductData(product: ProductFromDB): ProductResponse {
+export function formatProductData(product: ProductFromDB): ProductFromAPI {
   const {
     produitMarketplace,
     produitBoutique,
     id,
+    nom,
+    objet,
+    description,
     prix,
+    qteStock,
     noteMoyenne,
     ...rest
   } = product;
@@ -57,7 +61,11 @@ export function formatProductData(product: ProductFromDB): ProductResponse {
       : produitMarketplace
       ? "marketplace"
       : null,
+    nom,
+    objet,
+    description,
     prix: prix.toNumber(),
+    qteStock,
     noteMoyenne: noteMoyenne?.toNumber(),
     ...rest,
     ...(produitBoutique

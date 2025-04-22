@@ -1,4 +1,4 @@
-import { UserFromDB, UserResponse } from "@/lib/types/user.types";
+import { UserFromDB, UserFromAPI } from "@/lib/types/user.types";
 
 export function getUserSelect() {
   return {
@@ -33,7 +33,7 @@ export function getUserSelect() {
   };
 }
 
-export function formatUserData(user: UserFromDB): UserResponse {
+export function formatUserData(user: UserFromDB): UserFromAPI {
   const {
     id,
     email,

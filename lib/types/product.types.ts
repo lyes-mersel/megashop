@@ -22,7 +22,7 @@ export type ProductFromDB = Prisma.ProduitGetPayload<{
   select: ReturnType<typeof getProductSelect>;
 }>;
 
-export type ProductResponse = {
+export type ProductFromAPI = {
   id: string;
   type: "boutique" | "marketplace" | null;
   nom: string;
@@ -31,7 +31,7 @@ export type ProductResponse = {
   prix: number;
   qteStock: number;
   noteMoyenne: number;
-  totalNotations: number;
+  totalEvaluations: number;
   dateCreation: Date;
   dateModification: Date;
   genre: { id: string; nom: string } | null;

@@ -5,7 +5,7 @@ export type UserFromDB = Prisma.UserGetPayload<{
   select: ReturnType<typeof getUserSelect>;
 }>;
 
-export type UserResponse = {
+export type UserFromAPI = {
   id: string;
   email: string;
   role: "CLIENT" | "VENDEUR" | "ADMIN";

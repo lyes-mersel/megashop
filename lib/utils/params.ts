@@ -2,6 +2,8 @@ import { NextRequest } from "next/server";
 import {
   VALID_SORT_ORDERS,
   PRODUCT_SORT_FIELDS,
+  NOTIFICATION_SORT_FIELDS,
+  REVIEW_SORT_FIELDS,
 } from "@/lib/constants/sorting";
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "@/lib/constants/settings";
 
@@ -24,7 +26,7 @@ export function getPaginationParams(req: NextRequest) {
   return { page, pageSize, skip };
 }
 
-export function getSortingParams(req: NextRequest) {
+export function getSortingProductsParams(req: NextRequest) {
   const { searchParams } = new URL(req.url);
 
   let sortBy = searchParams.get("sortBy") || "nom";
@@ -32,6 +34,30 @@ export function getSortingParams(req: NextRequest) {
 
   sortBy = PRODUCT_SORT_FIELDS.includes(sortBy) ? sortBy : "nom";
   sortOrder = VALID_SORT_ORDERS.includes(sortOrder) ? sortOrder : "asc";
+
+  return { sortBy, sortOrder };
+}
+
+export function getSortingNotifsParams(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+
+  let sortBy = searchParams.get("sortBy") || "date";
+  let sortOrder = searchParams.get("sortOrder") || "asc";
+
+  sortBy = NOTIFICATION_SORT_FIELDS.includes(sortBy) ? sortBy : "date";
+  sortOrder = VALID_SORT_ORDERS.includes(sortOrder) ? sortOrder : "desc";
+
+  return { sortBy, sortOrder };
+}
+
+export function getSortingReviewsParams(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+
+  let sortBy = searchParams.get("sortBy") || "date";
+  let sortOrder = searchParams.get("sortOrder") || "desc";
+
+  sortBy = REVIEW_SORT_FIELDS.includes(sortBy) ? sortBy : "date";
+  sortOrder = VALID_SORT_ORDERS.includes(sortOrder) ? sortOrder : "desc";
 
   return { sortBy, sortOrder };
 }
