@@ -159,7 +159,7 @@ export default function CatalogPage() {
                 className={`text-2xl md:text-[32px] font-extrabold uppercase tracking-tight ${montserrat.className}`}
                 style={{ fontFamily: "'Montserrat', sans-serif" }}
               >
-                Marketplace
+                Nos produits
               </h1>
               <FiShoppingCart className="text-black text-2xl md:text-3xl" />
             </div>
@@ -243,7 +243,7 @@ export default function CatalogPage() {
         <div className="flex md:space-x-5 items-start">
           <div className="hidden md:block min-w-[295px] max-w-[295px] border border-black/10 rounded-[20px] px-5 md:px-6 py-5 space-y-5 md:space-y-6">
             <div className="flex items-center justify-between">
-              <span className="font-bold text-black text-xl">Catégories</span>
+              <span className="font-bold text-black text-xl">Filtres</span>
               <FiSliders className="text-2xl text-black/40" />
             </div>
             <Filters />

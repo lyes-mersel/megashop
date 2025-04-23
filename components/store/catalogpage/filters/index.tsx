@@ -1,3 +1,7 @@
+"use client";
+
+import { useState } from "react";
+
 // UI Components
 import { Button } from "@/components/ui/button";
 
@@ -8,10 +12,17 @@ import PriceSection from "@/components/store/catalogpage/filters/PriceSection";
 import SizeSection from "@/components/store/catalogpage/filters/SizeSection";
 
 const Filters = () => {
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(
+    null
+  );
+
   return (
     <>
       <hr className="border-t-black/10" />
-      <CategoriesSection />
+      <CategoriesSection
+        selectedId={selectedCategoryId}
+        onSelect={setSelectedCategoryId}
+      />
       <hr className="border-t-black/10" />
       <PriceSection />
       <hr className="border-t-black/10" />
