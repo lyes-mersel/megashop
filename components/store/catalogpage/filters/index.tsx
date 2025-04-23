@@ -10,8 +10,10 @@ import CategoriesSection from "@/components/store/catalogpage/filters/Categories
 import ColorsSection from "@/components/store/catalogpage/filters/ColorsSection";
 import PriceSection from "@/components/store/catalogpage/filters/PriceSection";
 import SizeSection from "@/components/store/catalogpage/filters/SizeSection";
+import GendersSection from "@/components/store/catalogpage/filters/GendersSection";
 
 const Filters = () => {
+  const [selectedGenderId, setSelectedGenderId] = useState<string | null>(null);
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(
     null
   );
@@ -19,6 +21,10 @@ const Filters = () => {
   return (
     <>
       <hr className="border-t-black/10" />
+      <GendersSection
+        selectedId={selectedGenderId}
+        onSelect={setSelectedGenderId}
+      />
       <CategoriesSection
         selectedId={selectedCategoryId}
         onSelect={setSelectedCategoryId}
