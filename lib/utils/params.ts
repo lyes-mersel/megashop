@@ -4,6 +4,7 @@ import {
   PRODUCT_SORT_FIELDS,
   NOTIFICATION_SORT_FIELDS,
   REVIEW_SORT_FIELDS,
+  ORDER_SORT_FIELDS,
 } from "@/lib/constants/sorting";
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "@/lib/constants/settings";
 
@@ -57,6 +58,18 @@ export function getSortingReviewsParams(req: NextRequest) {
   let sortOrder = searchParams.get("sortOrder") || "desc";
 
   sortBy = REVIEW_SORT_FIELDS.includes(sortBy) ? sortBy : "date";
+  sortOrder = VALID_SORT_ORDERS.includes(sortOrder) ? sortOrder : "desc";
+
+  return { sortBy, sortOrder };
+}
+
+export function getSortingOrdersParams(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+
+  let sortBy = searchParams.get("sortBy") || "date";
+  let sortOrder = searchParams.get("sortOrder") || "asc";
+
+  sortBy = ORDER_SORT_FIELDS.includes(sortBy) ? sortBy : "date";
   sortOrder = VALID_SORT_ORDERS.includes(sortOrder) ? sortOrder : "desc";
 
   return { sortBy, sortOrder };

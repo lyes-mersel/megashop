@@ -69,7 +69,7 @@ export function formatProductData(product: ProductFromDB): ProductFromAPI {
     noteMoyenne: noteMoyenne?.toNumber(),
     ...rest,
     ...(produitBoutique
-      ? { fournisseur: { nomPublic: produitBoutique.fournisseur } }
+      ? { fournisseur: { nom: produitBoutique.fournisseur } }
       : {}),
     ...(produitMarketplace
       ? {
