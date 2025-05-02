@@ -147,14 +147,8 @@
 
 ---
 
-- `GET    /api/users/{userId}/orders` - Retrieve user orders
-- `POST   /api/users/{userId}/orders` - Create an order
-
----
-
-- `GET    /api/users/{userId}/orders/{orderId}` - Retrieve a specific order
-- `PUT    /api/users/{userId}/orders/{orderId}` - Update an order
-- `DELETE /api/users/{userId}/orders/{orderId}` - Delete an order
+- `GET    /api/users/{userId}/orders` - Retrieve user orders (concernedUser) ✅
+- `GET    /api/users/{userId}/orders/{orderId}` - Retrieve a specific order (concernedUser) ✅
 
 ---
 
@@ -162,12 +156,6 @@
 - `POST   /api/users/{userId}/cart` - Add item to cart
 - `PATCH  /api/users/{userId}/cart` - Update cart
 - `DELETE /api/users/{userId}/cart` - Remove item from cart
-
----
-
-- `GET    /api/users/{userId}/payments` - Retrieve user payments
-- `GET    /api/users/{userId}/payments/{paymentId}` - Retrieve payment details
-- `PUT    /api/users/{userId}/payments/{paymentId}` - Update payment details
 
 ### Orders
 

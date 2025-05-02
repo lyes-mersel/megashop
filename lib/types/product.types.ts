@@ -38,7 +38,7 @@ export type ProductFromAPI = {
   categorie: { id: string; nom: string } | null;
   couleurs: { id: string; nom: string; code: string }[];
   tailles: { id: string; nom: string }[];
-  fournisseur?: { nomPublic: string | null };
+  fournisseur?: { nom: string | null };
   vendeur?: { id: string; nomBoutique: string };
   images: { id: string; imagePublicId: string }[];
 };

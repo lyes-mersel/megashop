@@ -1,4 +1,4 @@
-import { PrismaClient, UserRole } from "@prisma/client";
+import { PrismaClient, UserRole, CommandeStatut } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
@@ -34,8 +34,84 @@ async function insertUsers() {
       password: hashedPassword,
       role: UserRole.CLIENT,
       emailVerifie: true,
+      tel: "0555555555",
+      adresse: {
+        create: {
+          rue: "Rue de la liberté",
+          ville: "Béjaia",
+          wilaya: "Béjaia",
+          codePostal: "06000",
+        },
+      },
       client: {
-        create: {},
+        create: {
+          commandes: {
+            create: {
+              date: new Date(),
+              montant: 10000,
+              statut: CommandeStatut.LIVREE,
+              adresse: {
+                create: {
+                  rue: "Rue de la liberté",
+                  ville: "Béjaia",
+                  wilaya: "Béjaia",
+                  codePostal: "06000",
+                },
+              },
+              lignesCommande: {
+                createMany: {
+                  data: [
+                    {
+                      nomProduit: "Pull simple",
+                      quantite: 1,
+                      prixUnit: 1500,
+                      imagePublicId: "megashop/products/vb4cs0y36cy0qv8srg4l",
+                      produitId: null, // ID du produit à lier
+                      tailleId: (
+                        await prisma.taille.findUnique({ where: { nom: "M" } })
+                      )?.id,
+                      couleurId: (
+                        await prisma.couleur.findUnique({
+                          where: { nom: "Noir" },
+                        })
+                      )?.id,
+                    },
+                    {
+                      nomProduit: "Jean slim",
+                      quantite: 2,
+                      prixUnit: 4500,
+                      imagePublicId: "megashop/products/kqwugy39a6fp80a5jelb",
+                      produitId: null, // ID du produit à lier
+                      tailleId: (
+                        await prisma.taille.findUnique({ where: { nom: "L" } })
+                      )?.id,
+                      couleurId: (
+                        await prisma.couleur.findUnique({
+                          where: { nom: "Bleu" },
+                        })
+                      )?.id,
+                    },
+                    {
+                      nomProduit: "Baskets sport",
+                      quantite: 1,
+                      prixUnit: 4000,
+                      imagePublicId: "megashop/products/vpan4ziol2swrceu2jhq",
+                      produitId: null, // ID du produit à lier
+                      tailleId: (
+                        await prisma.taille.findUnique({ where: { nom: "42" } })
+                      )?.id,
+                      couleurId: (
+                        await prisma.couleur.findUnique({
+                          where: { nom: "Gris" },
+                        })
+                      )?.id,
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        },
       },
     },
   });
@@ -49,6 +125,15 @@ async function insertUsers() {
       password: hashedPassword,
       role: UserRole.VENDEUR,
       emailVerifie: true,
+      tel: "0666666666",
+      adresse: {
+        create: {
+          rue: "Boulevard Colonel Amirouche",
+          ville: "Béjaia",
+          wilaya: "Béjaia",
+          codePostal: "06000",
+        },
+      },
       client: {
         create: {
           vendeur: {
@@ -56,7 +141,7 @@ async function insertUsers() {
               nomBoutique: "Marque Luxe Béjaia",
               nomBanque: "Algérie Poste",
               rib: "000999554283123",
-              description: "Description de la boutique",
+              description: "Marque de vêtements de luxe",
             },
           },
         },
@@ -73,6 +158,15 @@ async function insertUsers() {
       password: hashedPassword,
       role: UserRole.ADMIN,
       emailVerifie: true,
+      tel: "0555555555",
+      adresse: {
+        create: {
+          rue: "Boulevard de l'ALN",
+          ville: "Béjaia",
+          wilaya: "Béjaia",
+          codePostal: "06000",
+        },
+      },
       admin: {
         create: {},
       },
