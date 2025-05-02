@@ -1,3 +1,5 @@
+// /api/users/[userId]/orders
+
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/utils/prisma";
@@ -7,7 +9,9 @@ import {
   getSortingOrdersParams,
 } from "@/lib/utils/params";
 import { Prisma } from "@prisma/client";
+import { formatOrderData, getOrderSelect } from "@/lib/helpers/orders";
 
+// GET all orders for a user
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ userId: string }> }
@@ -67,50 +71,12 @@ export async function GET(
       orderBy: {
         [sortBy]: sortOrder,
       },
-      // include: {
-      //   lignesCommande: true,
-      // },
+      select: getOrderSelect(),
       take: pageSize,
       skip,
-      select: {
-        id: true,
-        date: true,
-        montant: true,
-        statut: true,
-        adresse: {
-          select: {
-            id: true,
-            rue: true,
-            ville: true,
-            wilaya: true,
-            codePostal: true,
-          },
-        },
-        lignesCommande: {
-          select: {
-            id: true,
-            nomProduit: true,
-            quantite: true,
-            prixUnit: true,
-            imagePublicId: true,
-            produitId: true,
-            // continue
-          },
-        },
-      },
     });
 
-    const formatted = commandes.map((commande) => ({
-      id: commande.id,
-      date: commande.date,
-      montant: commande.montant.toFixed(2),
-      statut: commande.statut,
-      produits: commande.lignesCommande.map((ligne) => ({
-        nom: ligne.nomProduit,
-        quantite: ligne.quantite,
-        prixUnit: ligne.prixUnit.toFixed(2),
-      })),
-    }));
+    const formattedData = commandes.map(formatOrderData);
 
     const pagination = {
       totalItems: total,
@@ -122,8 +88,8 @@ export async function GET(
     return NextResponse.json(
       {
         message: "Commandes récupérées avec succès",
-        data: formatted,
         pagination,
+        data: formattedData,
       },
       { status: 200 }
     );
@@ -134,15 +100,4 @@ export async function GET(
       { status: 500 }
     );
   }
-}
-
-export async function POST(
-  _req: NextRequest,
-  { params }: { params: Promise<{ userId: string }> }
-) {
-  const { userId } = await params;
-  return NextResponse.json(
-    { message: `Create an order for user with ID: ${userId}` },
-    { status: 201 }
-  );
 }
