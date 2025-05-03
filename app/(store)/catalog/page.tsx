@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import { FiSliders, FiShoppingCart } from "react-icons/fi";
 
@@ -27,34 +28,9 @@ import BreadcrumbShop from "@/components/store/catalogpage/BreadcrumbShop";
 import MobileFilters from "@/components/store/catalogpage/filters/MobileFilters";
 import Filters from "@/components/store/catalogpage/filters";
 
-// Data
-import {
-  shopProductsData,
-  marketProductsData,
-  relatedProductData,
-  topSellingData,
-} from "@/lib/data";
-
-// Import de la police Montserrat depuis Google Fonts
-import { Montserrat } from "next/font/google";
-
-// Configuration de la police Montserrat pour le titre (ExtraBold)
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  weight: "800", // ExtraBold
-  display: "swap",
-});
-
-// Configuration de la police Montserrat pour la description (Regular)
-const montserratRegular = Montserrat({
-  subsets: ["latin"],
-  weight: "400", // Regular
-  display: "swap",
-});
-
-// Interface pour typage des produits
-import { Product } from "@/lib/types/product.types";
-import Image from "next/image";
+// Fonts & Types
+import { montserrat } from "@/styles/fonts";
+import { ProductFromAPI } from "@/lib/types/product.types";
 
 // Données des publicités avec propriétés imageWidth et imageHeight
 const ads = [
@@ -111,24 +87,34 @@ const ads = [
 ];
 
 export default function CatalogPage() {
+  const [allProducts, setAllProducts] = useState<ProductFromAPI[]>([]);
   const [currentAd, setCurrentAd] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 12;
+  const [pagination, setPagination] = useState({
+    totalItems: 0,
+    totalPages: 0,
+    currentPage: 1,
+    pageSize: 9,
+  });
 
-  // Fusion des données des produits
-  const allProducts: Product[] = [
-    ...shopProductsData,
-    ...marketProductsData,
-    ...relatedProductData,
-    ...topSellingData,
-  ].slice(0, 100); // Limite à 100 produits
-
-  // Calcul de la pagination
-  const totalPages = Math.ceil(allProducts.length / productsPerPage);
-  const paginatedProducts = allProducts.slice(
-    (currentPage - 1) * productsPerPage,
-    currentPage * productsPerPage
-  );
+  // Fetch products from API
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch(
+          `/api/products?page=${pagination.currentPage}&pageSize=${pagination.pageSize}`
+        );
+        if (!response.ok) {
+          throw new Error("Erreur lors de la récupération des produits");
+        }
+        const jsonData = await response.json();
+        setAllProducts(jsonData.data);
+        setPagination(jsonData.pagination);
+      } catch (error) {
+        console.error("Erreur:", error);
+      }
+    };
+    fetchProducts();
+  }, [pagination.currentPage, pagination.pageSize]);
 
   // Gestion du carrousel publicitaire
   useEffect(() => {
@@ -143,7 +129,7 @@ export default function CatalogPage() {
   };
 
   const handlePageChange = (page: number) => {
-    setCurrentPage(page);
+    setPagination({ ...pagination, currentPage: page });
     window.scrollTo({ top: 0, behavior: "smooth" }); // Scroll en haut de la page
   };
 
@@ -152,12 +138,13 @@ export default function CatalogPage() {
       <div className="max-w-frame mx-auto px-4 xl:px-0">
         <hr className="h-[1px] border-t-black/10 mb-5 sm:mb-6" />
         <BreadcrumbShop />
-        <div className="mb-8 flex flex-col space-y-4">
+
+        {/* Page title: h1 */}
+        <div className="mb-4 flex flex-col">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <h1
                 className={`text-2xl md:text-[32px] font-extrabold uppercase tracking-tight ${montserrat.className}`}
-                style={{ fontFamily: "'Montserrat', sans-serif" }}
               >
                 Nos produits
               </h1>
@@ -165,12 +152,19 @@ export default function CatalogPage() {
             </div>
             <MobileFilters />
           </div>
+
+          {/* Sort */}
           <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
             <span className="text-sm md:text-base text-black/60">
-              Affichage de {(currentPage - 1) * productsPerPage + 1} à{" "}
-              {Math.min(currentPage * productsPerPage, allProducts.length)} sur{" "}
-              {allProducts.length} produits
+              Affichage de{" "}
+              {(pagination.currentPage - 1) * pagination.pageSize + 1} à{" "}
+              {Math.min(
+                pagination.currentPage * pagination.pageSize,
+                pagination.totalItems
+              )}{" "}
+              sur {pagination.totalItems} produits
             </span>
+
             <div className="flex items-center">
               Trier par:{" "}
               <Select defaultValue="most-popular">
@@ -183,11 +177,15 @@ export default function CatalogPage() {
                   </SelectItem>
                   <SelectItem value="low-price">Prix bas</SelectItem>
                   <SelectItem value="high-price">Prix élevé</SelectItem>
+                  <SelectItem value="newest">Plus récent</SelectItem>
+                  <SelectItem value="oldest">Plus ancien</SelectItem>
                 </SelectContent>
               </Select>
             </div>
           </div>
         </div>
+
+        {/* Ads */}
         <div
           className={`${ads[currentAd].bgColor} rounded-2xl shadow-lg overflow-hidden mb-8 ${ads[currentAd].textColor}`}
         >
@@ -195,13 +193,11 @@ export default function CatalogPage() {
             <div className="w-full sm:w-1/2 p-6 flex flex-col justify-center">
               <h2
                 className={`text-2xl md:text-3xl font-bold ${montserrat.className}`}
-                style={{ fontFamily: "'Montserrat', sans-serif" }}
               >
                 {ads[currentAd].title}
               </h2>
               <p
-                className={`text-sm md:text-base mt-4 ${montserratRegular.className}`}
-                style={{ fontFamily: "'Montserrat', sans-serif" }}
+                className={`text-sm md:text-base mt-4 ${montserrat.className}`}
               >
                 {ads[currentAd].description}
               </p>
@@ -240,18 +236,22 @@ export default function CatalogPage() {
             ))}
           </div>
         </div>
+
         <div className="flex md:space-x-5 items-start">
-          <div className="hidden md:block min-w-[295px] max-w-[295px] border border-black/10 rounded-[20px] px-5 md:px-6 py-5 space-y-5 md:space-y-6">
+          {/* Filters */}
+          <div className="hidden md:block min-w-[295px] max-w-[295px] min-h-[1300px] border border-black/10 rounded-[20px] px-5 md:px-6 py-5 space-y-5 md:space-y-6">
             <div className="flex items-center justify-between">
               <span className="font-bold text-black text-xl">Filtres</span>
               <FiSliders className="text-2xl text-black/40" />
             </div>
             <Filters />
           </div>
-          <div className="flex flex-col w-full space-y-5">
+
+          {/* Products */}
+          <div className="flex flex-col w-full md:min-h-[1300px] space-y-5">
             <div className="w-full grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
-              {paginatedProducts.length > 0 ? (
-                paginatedProducts.map((product) => (
+              {allProducts.length > 0 ? (
+                allProducts.map((product) => (
                   <ProductCard key={product.id} data={product} />
                 ))
               ) : (
@@ -265,47 +265,94 @@ export default function CatalogPage() {
                 </div>
               )}
             </div>
+            <div className="flex-grow"></div>
+
+            {/* Pagination */}
             <hr className="border-t-black/10" />
             <Pagination className="justify-between">
               <PaginationPrevious
-                onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+                onClick={() => {
+                  if (pagination.currentPage > 1) {
+                    handlePageChange(pagination.currentPage - 1);
+                  }
+                }}
                 className={`border border-black/10 ${
-                  currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
+                  pagination.currentPage === 1
+                    ? "opacity-50 cursor-not-allowed"
+                    : "cursor-pointer"
                 }`}
               />
+
               <PaginationContent>
-                {Array.from({ length: totalPages }, (_, i) => i + 1)
-                  .slice(
-                    Math.max(0, currentPage - 3),
-                    Math.min(totalPages, currentPage + 2)
+                {pagination.totalPages > 5 && pagination.currentPage > 3 && (
+                  <>
+                    <PaginationItem>
+                      <PaginationLink
+                        onClick={() => handlePageChange(1)}
+                        className="cursor-pointer"
+                      >
+                        1
+                      </PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationEllipsis className="text-black/50 font-medium text-sm" />
+                    </PaginationItem>
+                  </>
+                )}
+
+                {Array.from({ length: pagination.totalPages }, (_, i) => i + 1)
+                  .filter(
+                    (page) =>
+                      page === 1 ||
+                      page === pagination.totalPages ||
+                      (page >= pagination.currentPage - 2 &&
+                        page <= pagination.currentPage + 2)
                   )
                   .map((page) => (
                     <PaginationItem key={page}>
                       <PaginationLink
                         onClick={() => handlePageChange(page)}
-                        className={`text-black/50 font-medium text-sm ${
-                          currentPage === page ? "text-black font-bold" : ""
+                        className={`text-black/50 font-medium text-sm cursor-pointer ${
+                          pagination.currentPage === page
+                            ? "text-black font-bold"
+                            : ""
                         }`}
-                        isActive={currentPage === page}
+                        isActive={pagination.currentPage === page}
                       >
                         {page}
                       </PaginationLink>
                     </PaginationItem>
                   ))}
-                {totalPages > 5 && currentPage < totalPages - 2 && (
-                  <PaginationItem>
-                    <PaginationEllipsis className="text-black/50 font-medium text-sm" />
-                  </PaginationItem>
-                )}
+
+                {pagination.totalPages > 5 &&
+                  pagination.currentPage < pagination.totalPages - 2 && (
+                    <>
+                      <PaginationItem>
+                        <PaginationEllipsis className="text-black/50 font-medium text-sm" />
+                      </PaginationItem>
+                      <PaginationItem>
+                        <PaginationLink
+                          onClick={() =>
+                            handlePageChange(pagination.totalPages)
+                          }
+                          className="cursor-pointer"
+                        >
+                          {pagination.totalPages}
+                        </PaginationLink>
+                      </PaginationItem>
+                    </>
+                  )}
               </PaginationContent>
               <PaginationNext
-                onClick={() =>
-                  handlePageChange(Math.min(totalPages, currentPage + 1))
-                }
+                onClick={() => {
+                  if (pagination.currentPage < pagination.totalPages) {
+                    handlePageChange(pagination.currentPage + 1);
+                  }
+                }}
                 className={`border border-black/10 ${
-                  currentPage === totalPages
+                  pagination.currentPage === pagination.totalPages
                     ? "opacity-50 cursor-not-allowed"
-                    : ""
+                    : "cursor-pointer"
                 }`}
               />
             </Pagination>

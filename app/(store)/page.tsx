@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 // Components
 import HeroSec from "@/components/store/homepage/HeroSec";
 import BrandsSec from "@/components/store/homepage/BrandsSec";

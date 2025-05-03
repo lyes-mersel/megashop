@@ -2,10 +2,11 @@ import React from "react";
 import Rating from "../ui/Rating";
 import Image from "next/image";
 import Link from "next/link";
-import { Product } from "@/lib/types/product.types";
+import { ProductFromAPI } from "@/lib/types/product.types";
+import { getImageUrlFromPublicId } from "@/lib/utils";
 
 type ProductCardProps = {
-  data: Product;
+  data: ProductFromAPI;
 };
 
 const ProductCard = ({ data }: ProductCardProps) => {
@@ -16,18 +17,22 @@ const ProductCard = ({ data }: ProductCardProps) => {
     >
       <div className="bg-[#F0EEED] rounded-[13px] lg:rounded-[20px] w-full lg:max-w-[295px] aspect-square mb-2.5 xl:mb-4 overflow-hidden">
         <Image
-          src={data.srcUrl}
+          src={
+            data.images[0]?.imagePublicId
+              ? getImageUrlFromPublicId(data.images[0].imagePublicId)
+              : "/images/placeholder.png"
+          }
           width={295}
           height={298}
           className="rounded-md w-full h-full object-contain hover:scale-110 transition-all duration-500"
-          alt={data.title}
+          alt={data.nom}
           priority
         />
       </div>
-      <strong className="text-black xl:text-xl">{data.title}</strong>
+      <strong className="text-black xl:text-xl">{data.nom}</strong>
       <div className="flex items-end mb-1 xl:mb-2">
         <Rating
-          initialValue={data.rating}
+          initialValue={data.noteMoyenne}
           allowFraction
           SVGclassName="inline-block"
           emptyClassName="fill-gray-50"
@@ -35,46 +40,36 @@ const ProductCard = ({ data }: ProductCardProps) => {
           readonly
         />
         <span className="text-black text-xs xl:text-sm ml-[11px] xl:ml-[13px] pb-0.5 xl:pb-0">
-          {data.rating.toFixed(1)}
+          {data.noteMoyenne.toFixed(1)}
           <span className="text-black/60">/5</span>
         </span>
+        <span className="text-black text-xs xl:text-sm ml-[11px] xl:ml-[13px] pb-0.5 xl:pb-0">
+          {`(${data.totalEvaluations})`}
+        </span>
       </div>
-      <div className="flex items-center space-x-[5px] xl:space-x-2.5">
-        {data.discount.percentage > 0 ? (
-          <span className="font-bold text-black text-xl xl:text-2xl">
-            {`$${Math.round(
-              data.price - (data.price * data.discount.percentage) / 100
-            )}`}
-          </span>
-        ) : data.discount.amount > 0 ? (
-          <span className="font-bold text-black text-xl xl:text-2xl">
-            {`$${data.price - data.discount.amount}`}
-          </span>
+      <div className="flex items-center justify-between w-full">
+        <span className="font-bold text-black text-xl xl:text-2xl">
+          {data.prix}DA
+        </span>
+
+        {data.type === "marketplace" ? (
+          <div className="relative group">
+            <div className="text-xs xl:text-sm bg-[#F0EEED] text-gray-700 font-medium px-2.5 py-1 rounded-full">
+              Produit Marketplace
+            </div>
+            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-black text-white text-xs rounded px-2 py-1 z-10 w-max max-w-[200px] text-center">
+              Vendu par un vendeur tiers inscrit sur notre plateforme.
+            </div>
+          </div>
         ) : (
-          <span className="font-bold text-black text-xl xl:text-2xl">
-            ${data.price}
-          </span>
-        )}
-        {data.discount.percentage > 0 && (
-          <span className="font-bold text-black/40 line-through text-xl xl:text-2xl">
-            ${data.price}
-          </span>
-        )}
-        {data.discount.amount > 0 && (
-          <span className="font-bold text-black/40 line-through text-xl xl:text-2xl">
-            ${data.price}
-          </span>
-        )}
-        {data.discount.percentage > 0 ? (
-          <span className="font-medium text-[10px] xl:text-xs py-1.5 px-3.5 rounded-full bg-[#FF3333]/10 text-[#FF3333]">
-            {`-${data.discount.percentage}%`}
-          </span>
-        ) : (
-          data.discount.amount > 0 && (
-            <span className="font-medium text-[10px] xl:text-xs py-1.5 px-3.5 rounded-full bg-[#FF3333]/10 text-[#FF3333]">
-              {`-$${data.discount.amount}`}
-            </span>
-          )
+          <div className="relative group">
+            <div className="text-xs xl:text-sm bg-[#F0EEED] text-black font-medium px-2.5 py-1 rounded-full">
+              Produit officiel
+            </div>
+            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-black text-white text-xs rounded px-2 py-1 z-10 w-max max-w-[200px] text-center">
+              Vendu et expédié directement par notre boutique.
+            </div>
+          </div>
         )}
       </div>
     </Link>

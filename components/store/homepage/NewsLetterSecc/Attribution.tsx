@@ -7,27 +7,23 @@ import { SocialNetworks } from "@/lib/types/ui/footer.types";
 const githubLinks: SocialNetworks[] = [
   {
     id: 1,
-    name: "BRAHAMI Rayan",
-    url: "https://github.com/BrahimiRayan",
-    icon: <FaGithub />,
+    name: "MERSEL Lyes",
+    url: "https://github.com/lyes-mersel",
   },
   {
     id: 2,
-    name: "MECHKOUR Billal",
-    url: "https://github.com/Billalmechekour",
-    icon: <FaGithub />,
+    name: "BRAHAMI Rayan",
+    url: "https://github.com/BrahimiRayan",
   },
   {
     id: 3,
-    name: "MERSEL Lyes",
-    url: "https://github.com/lyes-mersel",
-    icon: <FaGithub />,
+    name: "MECHKOUR Billal",
+    url: "https://github.com/Billalmechekour",
   },
   {
     id: 4,
     name: "MESSAOUDENE Saïd",
     url: "https://github.com/Messaoudene-Said",
-    icon: <FaGithub />,
   },
 ];
 

@@ -16,6 +16,7 @@ export type Product = {
   price: number;
   discount: Discount;
   rating: number;
+  type: "boutique" | "marketplace" | null;
 };
 
 export type ProductFromDB = Prisma.ProduitGetPayload<{

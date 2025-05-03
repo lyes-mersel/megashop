@@ -65,7 +65,7 @@ async function insertUsers() {
                       nomProduit: "Pull simple",
                       quantite: 1,
                       prixUnit: 1500,
-                      imagePublicId: "megashop/products/vb4cs0y36cy0qv8srg4l",
+                      imagePublicId: "pic1_etcsri",
                       produitId: null, // ID du produit à lier
                       tailleId: (
                         await prisma.taille.findUnique({ where: { nom: "M" } })
@@ -80,7 +80,7 @@ async function insertUsers() {
                       nomProduit: "Jean slim",
                       quantite: 2,
                       prixUnit: 4500,
-                      imagePublicId: "megashop/products/kqwugy39a6fp80a5jelb",
+                      imagePublicId: "pic2_vqzxsr",
                       produitId: null, // ID du produit à lier
                       tailleId: (
                         await prisma.taille.findUnique({ where: { nom: "L" } })
@@ -95,7 +95,7 @@ async function insertUsers() {
                       nomProduit: "Baskets sport",
                       quantite: 1,
                       prixUnit: 4000,
-                      imagePublicId: "megashop/products/vpan4ziol2swrceu2jhq",
+                      imagePublicId: "pic25_jji03o",
                       produitId: null, // ID du produit à lier
                       tailleId: (
                         await prisma.taille.findUnique({ where: { nom: "42" } })
@@ -314,9 +314,16 @@ async function insertSizes() {
 async function insertProducts() {
   const categories = await prisma.categorie.findMany();
   const genres = await prisma.genre.findMany();
+  const vendeurId = (
+    await prisma.user.findUnique({
+      where: { email: "vendeur@email.com" },
+    })
+  )?.id;
 
-  if (!categories.length || !genres.length) {
-    console.error("Impossible de récupérer les catégories ou genres.");
+  if (!categories.length || !genres.length || !vendeurId) {
+    console.error(
+      "Impossible de récupérer les catégories, les genres, ou l'ID du vendeur."
+    );
     return;
   }
 
@@ -336,14 +343,14 @@ async function insertProducts() {
       tailles: { connect: [{ nom: "M" }, { nom: "L" }, { nom: "XL" }] },
       images: {
         create: [
-          { imagePublicId: "megashop/products/vb4cs0y36cy0qv8srg4l" },
-          { imagePublicId: "megashop/products/bbzxa6ymi8zjvzjhbhir" },
-          { imagePublicId: "megashop/products/oysthz7eyefyaztd9zeg" },
+          { imagePublicId: "pic1_etcsri" },
+          { imagePublicId: "pic15_wwfmqd" },
+          { imagePublicId: "pic4_pixlol" },
         ],
       },
-      produitBoutique: {
+      produitMarketplace: {
         create: {
-          fournisseur: "Marque Luxe Béjaia",
+          vendeurId: vendeurId,
         },
       },
     },
@@ -362,9 +369,9 @@ async function insertProducts() {
       tailles: { connect: [{ nom: "S" }, { nom: "M" }, { nom: "L" }] },
       images: {
         create: [
-          { imagePublicId: "megashop/products/qbjwniev3juy4d2ncurl" },
-          { imagePublicId: "megashop/products/nhoafrtbgiugboe3heqc" },
-          { imagePublicId: "megashop/products/wfvxfviw1uildauhv8ri" },
+          { imagePublicId: "pic9_cfvvky" },
+          { imagePublicId: "pic6_ksyt5i" },
+          { imagePublicId: "pic13_spjtes" },
         ],
       },
       produitBoutique: {
@@ -386,8 +393,8 @@ async function insertProducts() {
       tailles: { connect: [{ nom: "M" }, { nom: "L" }, { nom: "XL" }] },
       images: {
         create: [
-          { imagePublicId: "megashop/products/eymtw8ei2m7ar3lkc7o4" },
-          { imagePublicId: "megashop/products/tlhaqc8tk5usveg2ul1a" },
+          { imagePublicId: "pic12_wnptms" },
+          { imagePublicId: "pic14_zgcopv" },
         ],
       },
       produitBoutique: {
@@ -409,13 +416,13 @@ async function insertProducts() {
       tailles: { connect: [{ nom: "S" }, { nom: "M" }, { nom: "L" }] },
       images: {
         create: [
-          { imagePublicId: "megashop/products/kqwugy39a6fp80a5jelb" },
-          { imagePublicId: "megashop/products/zjj4qgqc4lhbd0darhvj" },
+          { imagePublicId: "pic2_vqzxsr" },
+          { imagePublicId: "pic8_xy8nct" },
         ],
       },
-      produitBoutique: {
+      produitMarketplace: {
         create: {
-          fournisseur: "Marque Luxe Béjaia",
+          vendeurId: vendeurId,
         },
       },
     },
@@ -433,7 +440,7 @@ async function insertProducts() {
         connect: [{ nom: "S" }, { nom: "M" }, { nom: "L" }, { nom: "XL" }],
       },
       images: {
-        create: [{ imagePublicId: "megashop/products/picnxwvjhphzp9wyu177" }],
+        create: [{ imagePublicId: "pic7_hfywjb" }],
       },
       produitBoutique: {
         create: {
@@ -451,15 +458,15 @@ async function insertProducts() {
       categorieId: categories.find((c) => c.nom === "Hauts")?.id ?? null,
       genreId: genres.find((g) => g.nom === "Homme")?.id ?? null,
       couleurs: {
-        connect: [{ nom: "Bleu" }, { nom: "Rouge" }, { nom: "Vert" }],
+        connect: [{ nom: "Vert" }, { nom: "Bleu" }],
       },
       tailles: {
         connect: [{ nom: "S" }, { nom: "M" }, { nom: "L" }, { nom: "XL" }],
       },
       images: {
         create: [
-          { imagePublicId: "megashop/products/ziwjsx7fai6wvdkw8mu4" },
-          { imagePublicId: "megashop/products/d7winzl1jb8psaygpdfj" },
+          { imagePublicId: "pic5_rruoqd" },
+          { imagePublicId: "pic3_tgahxr" },
         ],
       },
       produitBoutique: {
@@ -483,11 +490,34 @@ async function insertProducts() {
         connect: [{ nom: "S" }, { nom: "6T" }, { nom: "5T" }, { nom: "4T" }],
       },
       images: {
-        create: [{ imagePublicId: "megashop/products/uh5flh2dfd210k3wivmk" }],
+        create: [{ imagePublicId: "pic17_be8rmr" }],
       },
       produitBoutique: {
         create: {
           fournisseur: "Marque Luxe Béjaia",
+        },
+      },
+    },
+    {
+      nom: "Ensemble en jean garçon 2",
+      objet: "Veste et pantalon en denim",
+      description:
+        "Un ensemble en jean robuste et stylé pour les garçons, composé d'une veste et d'un pantalon en denim de haute qualité.",
+      prix: 5000,
+      qteStock: 25,
+      categorieId:
+        categories.find((c) => c.nom === "Robes & Ensembles")?.id ?? null,
+      genreId: genres.find((g) => g.nom === "Enfant")?.id ?? null,
+      couleurs: { connect: [{ nom: "Bleu" }] },
+      tailles: {
+        connect: [{ nom: "S" }, { nom: "6T" }, { nom: "5T" }, { nom: "4T" }],
+      },
+      images: {
+        create: [{ imagePublicId: "pic16_eslrop" }],
+      },
+      produitMarketplace: {
+        create: {
+          vendeurId: vendeurId,
         },
       },
     },
@@ -507,8 +537,8 @@ async function insertProducts() {
       },
       images: {
         create: [
-          { imagePublicId: "megashop/products/lx1tdbokig0umlq01vaa" },
-          { imagePublicId: "megashop/products/v8kkh5mqpmih3psdd5tp" },
+          { imagePublicId: "pic18_o6pini" },
+          { imagePublicId: "pic19_fanfuw" },
         ],
       },
       produitBoutique: {
@@ -531,13 +561,13 @@ async function insertProducts() {
       tailles: { connect: [{ nom: "S" }, { nom: "M" }] },
       images: {
         create: [
-          { imagePublicId: "megashop/products/z4q7qrsxfgtq8b93ina0" },
-          { imagePublicId: "megashop/products/ordmhtiy4dbvbks9sxtj" },
+          { imagePublicId: "pic20_a81vv9" },
+          { imagePublicId: "pic21_syyqp6" },
         ],
       },
-      produitBoutique: {
+      produitMarketplace: {
         create: {
-          fournisseur: "Marque Luxe Béjaia",
+          vendeurId: vendeurId,
         },
       },
     },
@@ -550,13 +580,14 @@ async function insertProducts() {
       qteStock: 15,
       categorieId:
         categories.find((c) => c.nom === "Vestes & Manteaux")?.id ?? null,
-      genreId: genres.find((g) => g.nom === "Homme")?.id ?? null,
+      genreId: genres.find((g) => g.nom === "Femme")?.id ?? null,
       couleurs: { connect: [{ nom: "Noir" }, { nom: "Marron" }] },
       tailles: { connect: [{ nom: "M" }, { nom: "L" }, { nom: "XL" }] },
       images: {
         create: [
-          { imagePublicId: "megashop/products/zig8munjwzzlmpl7pv7u" },
-          { imagePublicId: "megashop/products/fxv11weoijdb47rfrpgt" },
+          { imagePublicId: "pic22_flkjfejf" },
+          { imagePublicId: "pic23_evhsovnd" },
+          { imagePublicId: "pic24_nvorishogh" },
         ],
       },
       produitBoutique: {
@@ -591,9 +622,9 @@ async function insertProducts() {
       },
       images: {
         create: [
-          { imagePublicId: "megashop/products/vpan4ziol2swrceu2jhq" },
-          { imagePublicId: "megashop/products/gbyaknytn3tjjmovxgv2" },
-          { imagePublicId: "megashop/products/mlx9tn6fs6upd4cnctdl" },
+          { imagePublicId: "pic25_jji03o" },
+          { imagePublicId: "pic26_np93m8" },
+          { imagePublicId: "pic27_amvqpz" },
         ],
       },
       produitBoutique: {
@@ -624,11 +655,11 @@ async function insertProducts() {
         ],
       },
       images: {
-        create: [{ imagePublicId: "megashop/products/kvjaxufxxrn5zm7gwd1l" }],
+        create: [{ imagePublicId: "pic28_wnnyyd" }],
       },
-      produitBoutique: {
+      produitMarketplace: {
         create: {
-          fournisseur: "Marque Luxe Béjaia",
+          vendeurId: vendeurId,
         },
       },
     },
@@ -645,8 +676,8 @@ async function insertProducts() {
       tailles: { connect: [{ nom: "S" }, { nom: "M" }, { nom: "L" }] },
       images: {
         create: [
-          { imagePublicId: "megashop/products/mdveukyrre9rdyur5ll5" },
-          { imagePublicId: "megashop/products/nkyrljzkjma4tarrcml8" },
+          { imagePublicId: "pic28_eq4xqj" },
+          { imagePublicId: "pic29_aqkijy" },
         ],
       },
       produitBoutique: {
@@ -665,11 +696,11 @@ async function insertProducts() {
       genreId: genres.find((g) => g.nom === "Unisexe")?.id ?? null,
       couleurs: { connect: [{ nom: "Marron" }, { nom: "Noir" }] },
       images: {
-        create: [{ imagePublicId: "megashop/products/aucrct6rjtwwbuxbisah" }],
+        create: [{ imagePublicId: "pic30_dweino" }],
       },
-      produitBoutique: {
+      produitMarketplace: {
         create: {
-          fournisseur: "Marque Luxe Béjaia",
+          vendeurId: vendeurId,
         },
       },
     },
@@ -681,11 +712,11 @@ async function insertProducts() {
       qteStock: 30,
       categorieId: categories.find((c) => c.nom === "Accessoires")?.id ?? null,
       genreId: genres.find((g) => g.nom === "Femme")?.id ?? null,
-      couleurs: { connect: [{ nom: "Marron" }, { nom: "Noir" }] },
+      couleurs: { connect: [{ nom: "Noir" }, { nom: "Marron" }] },
       images: {
         create: [
-          { imagePublicId: "megashop/products/zndfbcbh5tzpav3kwvbp" },
-          { imagePublicId: "megashop/products/k3pxwto8yx1hfk31daxy" },
+          { imagePublicId: "pic32_hjy8fx" },
+          { imagePublicId: "pic31_xdtzme" },
         ],
       },
       produitBoutique: {

@@ -53,7 +53,7 @@ const GendersSection = ({ selectedId, onSelect }: Props) => {
         <AccordionTrigger className="text-black font-bold text-xl hover:no-underline p-0 py-0.5">
           Genre
         </AccordionTrigger>
-        <AccordionContent className="pt-4 pb-0">
+        <AccordionContent className="pt-4 pb-0 overflow-visible">
           <div className="flex flex-col space-y-1 text-black/80">
             {gendersData.map((gender) => (
               <div className="relative group" key={gender.id}>

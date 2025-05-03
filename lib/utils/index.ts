@@ -19,3 +19,11 @@ export function containsFilter(value: string) {
     ? { contains: value }
     : { contains: value, mode: Prisma.QueryMode.insensitive };
 }
+
+export const getImageUrlFromPublicId = (imagePublicId: string) => {
+  const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+
+  const defaultTransformations = "f_auto,q_auto";
+
+  return `https://res.cloudinary.com/${cloudName}/image/upload/${defaultTransformations}/${imagePublicId}`;
+};

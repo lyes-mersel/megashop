@@ -3,9 +3,9 @@
 import CartCounter from "@/components/ui/CartCounter";
 import React, { useState } from "react";
 import AddToCartBtn from "./AddToCartBtn";
-import { Product } from "@/lib/types/product.types";
+import { ProductFromAPI } from "@/lib/types/product.types";
 
-const AddToCardSection = ({ data }: { data: Product }) => {
+const AddToCardSection = ({ data }: { data: ProductFromAPI }) => {
   const [quantity, setQuantity] = useState<number>(1);
 
   return (
