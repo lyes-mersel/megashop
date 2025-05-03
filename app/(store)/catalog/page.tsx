@@ -152,7 +152,9 @@ export default function CatalogPage() {
       <div className="max-w-frame mx-auto px-4 xl:px-0">
         <hr className="h-[1px] border-t-black/10 mb-5 sm:mb-6" />
         <BreadcrumbShop />
-        <div className="mb-8 flex flex-col space-y-4">
+
+        {/* Page title: h1 */}
+        <div className="mb-4 flex flex-col">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <h1
@@ -165,6 +167,8 @@ export default function CatalogPage() {
             </div>
             <MobileFilters />
           </div>
+
+          {/* Sort */}
           <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
             <span className="text-sm md:text-base text-black/60">
               Affichage de {(currentPage - 1) * productsPerPage + 1} à{" "}
@@ -183,11 +187,15 @@ export default function CatalogPage() {
                   </SelectItem>
                   <SelectItem value="low-price">Prix bas</SelectItem>
                   <SelectItem value="high-price">Prix élevé</SelectItem>
+                  <SelectItem value="newest">Plus récent</SelectItem>
+                  <SelectItem value="oldest">Plus ancien</SelectItem>
                 </SelectContent>
               </Select>
             </div>
           </div>
         </div>
+
+        {/* Ads */}
         <div
           className={`${ads[currentAd].bgColor} rounded-2xl shadow-lg overflow-hidden mb-8 ${ads[currentAd].textColor}`}
         >
@@ -240,7 +248,9 @@ export default function CatalogPage() {
             ))}
           </div>
         </div>
+
         <div className="flex md:space-x-5 items-start">
+          {/* Filters */}
           <div className="hidden md:block min-w-[295px] max-w-[295px] border border-black/10 rounded-[20px] px-5 md:px-6 py-5 space-y-5 md:space-y-6">
             <div className="flex items-center justify-between">
               <span className="font-bold text-black text-xl">Filtres</span>
@@ -248,6 +258,8 @@ export default function CatalogPage() {
             </div>
             <Filters />
           </div>
+
+          {/* Products */}
           <div className="flex flex-col w-full space-y-5">
             <div className="w-full grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
               {paginatedProducts.length > 0 ? (
@@ -265,12 +277,16 @@ export default function CatalogPage() {
                 </div>
               )}
             </div>
+
+            {/* Pagination */}
             <hr className="border-t-black/10" />
             <Pagination className="justify-between">
               <PaginationPrevious
                 onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
                 className={`border border-black/10 ${
-                  currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
+                  currentPage === 1
+                    ? "opacity-50 cursor-not-allowed"
+                    : "cursor-pointer"
                 }`}
               />
               <PaginationContent>
@@ -283,7 +299,7 @@ export default function CatalogPage() {
                     <PaginationItem key={page}>
                       <PaginationLink
                         onClick={() => handlePageChange(page)}
-                        className={`text-black/50 font-medium text-sm ${
+                        className={`text-black/50 font-medium text-sm cursor-pointer ${
                           currentPage === page ? "text-black font-bold" : ""
                         }`}
                         isActive={currentPage === page}
@@ -305,7 +321,7 @@ export default function CatalogPage() {
                 className={`border border-black/10 ${
                   currentPage === totalPages
                     ? "opacity-50 cursor-not-allowed"
-                    : ""
+                    : "cursor-pointer"
                 }`}
               />
             </Pagination>

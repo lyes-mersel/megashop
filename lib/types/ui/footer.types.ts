@@ -1,7 +1,6 @@
 export type SocialNetworks = {
   id: number;
   name: string;
-  icon: React.ReactNode;
   url: string;
 };
 
