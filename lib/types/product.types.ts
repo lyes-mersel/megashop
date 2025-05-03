@@ -14,7 +14,7 @@ export type Product = {
   srcUrl: string;
   gallery?: string[];
   price: number;
-  // discount: Discount;
+  discount: Discount;
   rating: number;
   type: "boutique" | "marketplace" | null;
 };

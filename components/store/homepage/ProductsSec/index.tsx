@@ -2,15 +2,34 @@
 import ProductListSec from "@/components/common/ProductListSec";
 
 // Data
-import { shopProductsData, marketProductsData } from "@/lib/data";
+import { formatProductData, getProductSelect } from "@/lib/helpers/products";
+import { prisma } from "@/lib/utils/prisma";
 
-const ProductsSec = () => {
+const ProductsSec = async () => {
+  const [shopProductsRaw, marketplaceProductsRaw] = await Promise.all([
+    prisma.produit.findMany({
+      where: { produitBoutique: { isNot: null } },
+      select: getProductSelect(),
+      orderBy: { noteMoyenne: "desc" },
+      take: 4,
+    }),
+    prisma.produit.findMany({
+      where: { produitMarketplace: { isNot: null } },
+      select: getProductSelect(),
+      orderBy: { noteMoyenne: "desc" },
+      take: 4,
+    }),
+  ]);
+
+  const shopProducts = shopProductsRaw.map(formatProductData);
+  const marketplaceProducts = marketplaceProductsRaw.map(formatProductData);
+
   return (
     <section className="my-[50px] sm:my-[72px]">
       <ProductListSec
         title="Explorez Notre Boutique"
         description="Produits vendus et expédiés directement par nous"
-        data={shopProductsData}
+        data={shopProducts}
         viewAllLink="/catalog?type=boutique"
       />
       <div className="max-w-frame mx-auto px-4 xl:px-0">
@@ -20,7 +39,7 @@ const ProductsSec = () => {
         <ProductListSec
           title="Explorez Notre Marketplace"
           description="Produits proposés par nos vendeurs partenaires"
-          data={marketProductsData}
+          data={marketplaceProducts}
           viewAllLink="/catalog?type=marketplace"
         />
       </div>

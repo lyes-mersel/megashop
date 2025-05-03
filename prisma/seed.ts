@@ -65,7 +65,7 @@ async function insertUsers() {
                       nomProduit: "Pull simple",
                       quantite: 1,
                       prixUnit: 1500,
-                      imagePublicId: "megashop/products/pic1_etcsri",
+                      imagePublicId: "pic1_etcsri",
                       produitId: null, // ID du produit à lier
                       tailleId: (
                         await prisma.taille.findUnique({ where: { nom: "M" } })
@@ -80,7 +80,7 @@ async function insertUsers() {
                       nomProduit: "Jean slim",
                       quantite: 2,
                       prixUnit: 4500,
-                      imagePublicId: "megashop/products/pic2_vqzxsr",
+                      imagePublicId: "pic2_vqzxsr",
                       produitId: null, // ID du produit à lier
                       tailleId: (
                         await prisma.taille.findUnique({ where: { nom: "L" } })
@@ -95,7 +95,7 @@ async function insertUsers() {
                       nomProduit: "Baskets sport",
                       quantite: 1,
                       prixUnit: 4000,
-                      imagePublicId: "megashop/products/pic25_jji03o",
+                      imagePublicId: "pic25_jji03o",
                       produitId: null, // ID du produit à lier
                       tailleId: (
                         await prisma.taille.findUnique({ where: { nom: "42" } })
@@ -336,9 +336,9 @@ async function insertProducts() {
       tailles: { connect: [{ nom: "M" }, { nom: "L" }, { nom: "XL" }] },
       images: {
         create: [
-          { imagePublicId: "megashop/products/pic1_etcsri" },
-          { imagePublicId: "megashop/products/pic15_wwfmqd" },
-          { imagePublicId: "megashop/products/pic4_pixlol" },
+          { imagePublicId: "pic1_etcsri" },
+          { imagePublicId: "pic15_wwfmqd" },
+          { imagePublicId: "pic4_pixlol" },
         ],
       },
       produitBoutique: {
@@ -362,9 +362,9 @@ async function insertProducts() {
       tailles: { connect: [{ nom: "S" }, { nom: "M" }, { nom: "L" }] },
       images: {
         create: [
-          { imagePublicId: "megashop/products/pic9_cfvvky" },
-          { imagePublicId: "megashop/products/pic6_ksyt5i" },
-          { imagePublicId: "megashop/products/pic13_spjtes" },
+          { imagePublicId: "pic9_cfvvky" },
+          { imagePublicId: "pic6_ksyt5i" },
+          { imagePublicId: "pic13_spjtes" },
         ],
       },
       produitBoutique: {
@@ -386,8 +386,8 @@ async function insertProducts() {
       tailles: { connect: [{ nom: "M" }, { nom: "L" }, { nom: "XL" }] },
       images: {
         create: [
-          { imagePublicId: "megashop/products/pic12_wnptms" },
-          { imagePublicId: "megashop/products/pic14_zgcopv" },
+          { imagePublicId: "pic12_wnptms" },
+          { imagePublicId: "pic14_zgcopv" },
         ],
       },
       produitBoutique: {
@@ -409,8 +409,8 @@ async function insertProducts() {
       tailles: { connect: [{ nom: "S" }, { nom: "M" }, { nom: "L" }] },
       images: {
         create: [
-          { imagePublicId: "megashop/products/pic2_vqzxsr" },
-          { imagePublicId: "megashop/products/pic8_xy8nct" },
+          { imagePublicId: "pic2_vqzxsr" },
+          { imagePublicId: "pic8_xy8nct" },
         ],
       },
       produitBoutique: {
@@ -433,7 +433,7 @@ async function insertProducts() {
         connect: [{ nom: "S" }, { nom: "M" }, { nom: "L" }, { nom: "XL" }],
       },
       images: {
-        create: [{ imagePublicId: "megashop/products/pic7_hfywjb" }],
+        create: [{ imagePublicId: "pic7_hfywjb" }],
       },
       produitBoutique: {
         create: {
@@ -458,8 +458,8 @@ async function insertProducts() {
       },
       images: {
         create: [
-          { imagePublicId: "megashop/products/pic5_rruoqd" },
-          { imagePublicId: "megashop/products/pic3_tgahxr" },
+          { imagePublicId: "pic5_rruoqd" },
+          { imagePublicId: "pic3_tgahxr" },
         ],
       },
       produitBoutique: {
@@ -483,7 +483,7 @@ async function insertProducts() {
         connect: [{ nom: "S" }, { nom: "6T" }, { nom: "5T" }, { nom: "4T" }],
       },
       images: {
-        create: [{ imagePublicId: "megashop/products/pic16_eslrop" }],
+        create: [{ imagePublicId: "pic16_eslrop" }],
       },
       produitBoutique: {
         create: {
@@ -506,7 +506,7 @@ async function insertProducts() {
         connect: [{ nom: "S" }, { nom: "6T" }, { nom: "5T" }, { nom: "4T" }],
       },
       images: {
-        create: [{ imagePublicId: "megashop/products/pic17_be8rmr" }],
+        create: [{ imagePublicId: "pic17_be8rmr" }],
       },
       produitBoutique: {
         create: {
@@ -530,8 +530,8 @@ async function insertProducts() {
       },
       images: {
         create: [
-          { imagePublicId: "megashop/products/pic18_o6pini" },
-          { imagePublicId: "megashop/products/pic19_fanfuw" },
+          { imagePublicId: "pic18_o6pini" },
+          { imagePublicId: "pic19_fanfuw" },
         ],
       },
       produitBoutique: {
@@ -554,8 +554,8 @@ async function insertProducts() {
       tailles: { connect: [{ nom: "S" }, { nom: "M" }] },
       images: {
         create: [
-          { imagePublicId: "megashop/products/pic20_a81vv9" },
-          { imagePublicId: "megashop/products/pic21_syyqp6" },
+          { imagePublicId: "pic20_a81vv9" },
+          { imagePublicId: "pic21_syyqp6" },
         ],
       },
       produitBoutique: {
@@ -578,9 +578,9 @@ async function insertProducts() {
       tailles: { connect: [{ nom: "M" }, { nom: "L" }, { nom: "XL" }] },
       images: {
         create: [
-          { imagePublicId: "megashop/products/pic22_flkjfejf" },
-          { imagePublicId: "megashop/products/pic23_evhsovnd" },
-          { imagePublicId: "megashop/products/pic24_nvorishogh" },
+          { imagePublicId: "pic22_flkjfejf" },
+          { imagePublicId: "pic23_evhsovnd" },
+          { imagePublicId: "pic24_nvorishogh" },
         ],
       },
       produitBoutique: {
@@ -615,9 +615,9 @@ async function insertProducts() {
       },
       images: {
         create: [
-          { imagePublicId: "megashop/products/pic25_jji03o" },
-          { imagePublicId: "megashop/products/pic26_np93m8" },
-          { imagePublicId: "megashop/products/pic27_amvqpz" },
+          { imagePublicId: "pic25_jji03o" },
+          { imagePublicId: "pic26_np93m8" },
+          { imagePublicId: "pic27_amvqpz" },
         ],
       },
       produitBoutique: {
@@ -648,7 +648,7 @@ async function insertProducts() {
         ],
       },
       images: {
-        create: [{ imagePublicId: "megashop/products/pic28_wnnyyd" }],
+        create: [{ imagePublicId: "pic28_wnnyyd" }],
       },
       produitBoutique: {
         create: {
@@ -669,8 +669,8 @@ async function insertProducts() {
       tailles: { connect: [{ nom: "S" }, { nom: "M" }, { nom: "L" }] },
       images: {
         create: [
-          { imagePublicId: "megashop/products/pic28_eq4xqj" },
-          { imagePublicId: "megashop/products/pic29_aqkijy" },
+          { imagePublicId: "pic28_eq4xqj" },
+          { imagePublicId: "pic29_aqkijy" },
         ],
       },
       produitBoutique: {
@@ -689,7 +689,7 @@ async function insertProducts() {
       genreId: genres.find((g) => g.nom === "Unisexe")?.id ?? null,
       couleurs: { connect: [{ nom: "Marron" }, { nom: "Noir" }] },
       images: {
-        create: [{ imagePublicId: "megashop/products/pic30_dweino" }],
+        create: [{ imagePublicId: "pic30_dweino" }],
       },
       produitBoutique: {
         create: {
@@ -708,8 +708,8 @@ async function insertProducts() {
       couleurs: { connect: [{ nom: "Noir" }, { nom: "Marron" }] },
       images: {
         create: [
-          { imagePublicId: "megashop/products/pic32_hjy8fx" },
-          { imagePublicId: "megashop/products/pic31_xdtzme" },
+          { imagePublicId: "pic32_hjy8fx" },
+          { imagePublicId: "pic31_xdtzme" },
         ],
       },
       produitBoutique: {

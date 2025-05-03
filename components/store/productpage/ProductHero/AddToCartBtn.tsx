@@ -6,9 +6,13 @@ import { addToCart } from "@/redux/features/carts/cartsSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
 // Types
-import { Product } from "@/lib/types/product.types";
+import { ProductFromAPI } from "@/lib/types/product.types";
 
-const AddToCartBtn = ({ data }: { data: Product & { quantity: number } }) => {
+const AddToCartBtn = ({
+  data,
+}: {
+  data: ProductFromAPI & { quantity: number };
+}) => {
   const dispatch = useAppDispatch();
   const { sizeSelection, colorSelection } = useAppSelector(
     (state: RootState) => state.products
@@ -21,12 +25,11 @@ const AddToCartBtn = ({ data }: { data: Product & { quantity: number } }) => {
       onClick={() =>
         dispatch(
           addToCart({
-            id: data.id,
-            name: data.title,
-            srcUrl: data.srcUrl,
-            price: data.price,
+            id: Number(data.id),
+            name: data.nom,
+            imagePublicId: data.images[0].imagePublicId,
+            price: data.prix,
             attributes: [sizeSelection, colorSelection.name],
-            discount: data.discount,
             quantity: data.quantity,
           })
         )

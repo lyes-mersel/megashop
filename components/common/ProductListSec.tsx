@@ -14,7 +14,7 @@ import {
 
 // Utils & Types
 import { cn } from "@/lib/utils";
-import { Product } from "@/lib/types/product.types";
+import { ProductFromAPI } from "@/lib/types/product.types";
 
 // Styles
 import { integralCF } from "@/styles/fonts";
@@ -22,8 +22,8 @@ import { integralCF } from "@/styles/fonts";
 type ProductListSecProps = {
   title: string;
   description?: string;
-  data: Product[];
   viewAllLink?: string;
+  data: ProductFromAPI[];
 };
 
 const ProductListSec = ({
