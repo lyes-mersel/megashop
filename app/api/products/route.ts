@@ -17,6 +17,8 @@ import {
 
 // Fetch all products
 export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const type = searchParams.get("type");
   const { page, pageSize, skip } = getPaginationParams(req);
   const { sortBy, sortOrder } = getSortingProductsParams(req);
 
@@ -24,6 +26,10 @@ export async function GET(req: NextRequest) {
     // Fetch all products & count
     const totalProducts = await prisma.produit.count();
     const products = await prisma.produit.findMany({
+      where: {
+        ...(type === "boutique" && { produitBoutique: { isNot: null } }),
+        ...(type === "marketplace" && { produitMarketplace: { isNot: null } }),
+      },
       select: getProductSelect(),
       orderBy: { [sortBy]: sortOrder },
       skip,

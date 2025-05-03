@@ -1,31 +1,39 @@
-// Dynamic rendering
-export const dynamic = "force-dynamic";
-
 // Components
 import ProductListSec from "@/components/common/ProductListSec";
 
-// Data
-import { formatProductData, getProductSelect } from "@/lib/helpers/products";
-import { prisma } from "@/lib/utils/prisma";
+// Types
+import { ApiResponse } from "@/lib/types/apiResponse.types";
+import { ProductFromAPI } from "@/lib/types/product.types";
+import { redirect } from "next/navigation";
 
 const ProductsSec = async () => {
-  const [shopProductsRaw, marketplaceProductsRaw] = await Promise.all([
-    prisma.produit.findMany({
-      where: { produitBoutique: { isNot: null } },
-      select: getProductSelect(),
-      orderBy: { noteMoyenne: "desc" },
-      take: 4,
-    }),
-    prisma.produit.findMany({
-      where: { produitMarketplace: { isNot: null } },
-      select: getProductSelect(),
-      orderBy: { noteMoyenne: "desc" },
-      take: 4,
-    }),
+  const fetchProductData = async (
+    url: string
+  ): Promise<ProductFromAPI[] | null> => {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
+      const json: ApiResponse<ProductFromAPI[]> = await res.json();
+      return json.data;
+    } catch (error) {
+      console.error(`Error fetching ${url}:`, error);
+      return null;
+    }
+  };
+
+  const [shopProducts, marketplaceProducts] = await Promise.all([
+    fetchProductData(
+      `${process.env.NEXT_PUBLIC_API_URL}/products?sortBy=noteMoyenne&page=1&pageSize=4&type=boutique`
+    ),
+    fetchProductData(
+      `${process.env.NEXT_PUBLIC_API_URL}/products?sortBy=noteMoyenne&page=1&pageSize=4&type=marketplace`
+    ),
   ]);
 
-  const shopProducts = shopProductsRaw.map(formatProductData);
-  const marketplaceProducts = marketplaceProductsRaw.map(formatProductData);
+  const isError = !shopProducts || !marketplaceProducts;
+  if (isError) {
+    redirect("/internal-error");
+  }
 
   return (
     <section className="my-[50px] sm:my-[72px]">
@@ -45,9 +53,6 @@ const ProductsSec = async () => {
           data={marketplaceProducts}
           viewAllLink="/catalog?type=marketplace"
         />
-      </div>
-      <div className="max-w-frame mx-auto px-4 xl:px-0">
-        <hr className="h-[1px] border-t-black/10 my-10 sm:my-16" />
       </div>
     </section>
   );
