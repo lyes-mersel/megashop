@@ -1,3 +1,6 @@
+// Dynamic rendering
+export const dynamic = "force-dynamic";
+
 // Components
 import ProductListSec from "@/components/common/ProductListSec";
 
