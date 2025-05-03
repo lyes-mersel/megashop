@@ -314,9 +314,16 @@ async function insertSizes() {
 async function insertProducts() {
   const categories = await prisma.categorie.findMany();
   const genres = await prisma.genre.findMany();
+  const vendeurId = (
+    await prisma.user.findUnique({
+      where: { email: "vendeur@email.com" },
+    })
+  )?.id;
 
-  if (!categories.length || !genres.length) {
-    console.error("Impossible de récupérer les catégories ou genres.");
+  if (!categories.length || !genres.length || !vendeurId) {
+    console.error(
+      "Impossible de récupérer les catégories, les genres, ou l'ID du vendeur."
+    );
     return;
   }
 
@@ -341,9 +348,9 @@ async function insertProducts() {
           { imagePublicId: "pic4_pixlol" },
         ],
       },
-      produitBoutique: {
+      produitMarketplace: {
         create: {
-          fournisseur: "Marque Luxe Béjaia",
+          vendeurId: vendeurId,
         },
       },
     },
@@ -413,9 +420,9 @@ async function insertProducts() {
           { imagePublicId: "pic8_xy8nct" },
         ],
       },
-      produitBoutique: {
+      produitMarketplace: {
         create: {
-          fournisseur: "Marque Luxe Béjaia",
+          vendeurId: vendeurId,
         },
       },
     },
@@ -483,7 +490,7 @@ async function insertProducts() {
         connect: [{ nom: "S" }, { nom: "6T" }, { nom: "5T" }, { nom: "4T" }],
       },
       images: {
-        create: [{ imagePublicId: "pic16_eslrop" }],
+        create: [{ imagePublicId: "pic17_be8rmr" }],
       },
       produitBoutique: {
         create: {
@@ -506,11 +513,11 @@ async function insertProducts() {
         connect: [{ nom: "S" }, { nom: "6T" }, { nom: "5T" }, { nom: "4T" }],
       },
       images: {
-        create: [{ imagePublicId: "pic17_be8rmr" }],
+        create: [{ imagePublicId: "pic16_eslrop" }],
       },
-      produitBoutique: {
+      produitMarketplace: {
         create: {
-          fournisseur: "Marque Luxe Béjaia",
+          vendeurId: vendeurId,
         },
       },
     },
@@ -558,9 +565,9 @@ async function insertProducts() {
           { imagePublicId: "pic21_syyqp6" },
         ],
       },
-      produitBoutique: {
+      produitMarketplace: {
         create: {
-          fournisseur: "Marque Luxe Béjaia",
+          vendeurId: vendeurId,
         },
       },
     },
@@ -650,9 +657,9 @@ async function insertProducts() {
       images: {
         create: [{ imagePublicId: "pic28_wnnyyd" }],
       },
-      produitBoutique: {
+      produitMarketplace: {
         create: {
-          fournisseur: "Marque Luxe Béjaia",
+          vendeurId: vendeurId,
         },
       },
     },
@@ -691,9 +698,9 @@ async function insertProducts() {
       images: {
         create: [{ imagePublicId: "pic30_dweino" }],
       },
-      produitBoutique: {
+      produitMarketplace: {
         create: {
-          fournisseur: "Marque Luxe Béjaia",
+          vendeurId: vendeurId,
         },
       },
     },
