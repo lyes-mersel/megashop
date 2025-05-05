@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import React, { useState } from "react";
 import ProductDescription from "./ProductDescription";
 import ReviewsContent from "./ProductReviews";
+import { ProductFromAPI } from "@/lib/types/product.types";
 
 type TabBtn = {
   id: number;
@@ -14,15 +15,15 @@ type TabBtn = {
 const tabBtnData: TabBtn[] = [
   {
     id: 1,
-    label: "Product Description",
+    label: "Description",
   },
   {
     id: 2,
-    label: "Rating & Reviews",
+    label: "Evaluations",
   },
 ];
 
-const Tabs = ({ productId }: { productId: string }) => {
+const Tabs = ({ product }: { product: ProductFromAPI }) => {
   const [active, setActive] = useState<number>(1);
 
   return (
@@ -46,8 +47,10 @@ const Tabs = ({ productId }: { productId: string }) => {
         ))}
       </div>
       <div className="mb-12 sm:mb-16">
-        {active === 1 && <ProductDescription productId={productId} />}
-        {active === 2 && <ReviewsContent productId={productId} />}
+        {active === 1 && (
+          <ProductDescription description={product.description} />
+        )}
+        {active === 2 && <ReviewsContent productId={product.id} />}
       </div>
     </div>
   );

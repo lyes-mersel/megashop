@@ -23,7 +23,7 @@ const NewsLetterSection = () => {
                 src="/icons/logo.svg"
                 height={100}
                 width={175}
-                alt="Mega Shop Logo"
+                alt="MEGA SHOP Logo"
                 className="h-[100px] w-[175px]"
               />
             </Link>

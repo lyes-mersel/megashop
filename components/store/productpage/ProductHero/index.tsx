@@ -14,19 +14,12 @@ import { ProductFromAPI } from "@/lib/types/product.types";
 // Styles
 import { integralCF } from "@/styles/fonts";
 
-const ProductHero = ({
-  productId,
-  data,
-}: {
-  productId: string;
-  data: ProductFromAPI;
-}) => {
-  console.log(productId);
+const ProductHero = ({ product }: { product: ProductFromAPI }) => {
   return (
     <section className="mb-11">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div>
-          <PhotoSection data={data} />
+          <PhotoSection data={product} />
         </div>
         <div>
           <h1
@@ -35,12 +28,12 @@ const ProductHero = ({
               "text-2xl md:text-[40px] md:leading-[40px] mb-3 md:mb-3.5 capitalize",
             ])}
           >
-            {data.nom}
+            {product.nom}
           </h1>
 
           <div className="flex items-center mb-3 sm:mb-3.5">
             <Rating
-              initialValue={data.noteMoyenne}
+              initialValue={product.noteMoyenne}
               allowFraction
               SVGclassName="inline-block"
               emptyClassName="fill-gray-50"
@@ -48,17 +41,17 @@ const ProductHero = ({
               readonly
             />
             <span className="text-black text-xs sm:text-sm ml-[11px] sm:ml-[13px] pb-0.5 sm:pb-0">
-              {data.noteMoyenne.toFixed(1)}
+              {product.noteMoyenne.toFixed(1)}
               <span className="text-black/60">/5</span>
             </span>
           </div>
 
           <span className="font-bold text-black text-2xl sm:text-[32px]">
-            {data.prix} DA
+            {product.prix} DA
           </span>
 
           <p className="text-sm sm:text-base text-black/60 mb-5">
-            {data.description}
+            {product.description}
           </p>
           <hr className="h-[1px] border-t-black/10 mb-5" />
 
@@ -68,7 +61,7 @@ const ProductHero = ({
           <SizeSelection />
           <hr className="hidden md:block h-[1px] border-t-black/10 my-5" />
 
-          <AddToCardSection data={data} />
+          <AddToCardSection data={product} />
         </div>
       </div>
     </section>

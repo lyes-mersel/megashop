@@ -19,13 +19,13 @@ import ReviewCard from "@/components/common/ReviewCard";
 
 // Utils & Types
 import { cn } from "@/lib/utils";
-import { Review } from "@/lib/types/ui/review-ui.types";
 import { useIsClient, useMediaQuery } from "usehooks-ts";
 
 // Syles
 import { integralCF } from "@/styles/fonts";
+import { ReviewFromAPI } from "@/lib/types/review.types";
 
-type ReviewsProps = { data: Review[] };
+type ReviewsProps = { data: ReviewFromAPI[] };
 
 const TestimonialsSec = ({ data }: ReviewsProps) => {
   const [api, setApi] = React.useState<CarouselApi>();
@@ -95,7 +95,7 @@ const TestimonialsSec = ({ data }: ReviewsProps) => {
               >
                 <ReviewCard
                   className="h-full"
-                  data={review}
+                  review={review}
                   blurChild={
                     data.length >= 6 && (
                       <div

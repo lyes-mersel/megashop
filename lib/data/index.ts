@@ -479,60 +479,11 @@ export const relatedProductData: ProductFromAPI[] = [
   },
 ];
 
-// Data : Témoignages
-export const testimonialsData: Review[] = [
-  {
-    id: 1,
-    user: "Alex K.",
-    content:
-      '"Finding clothes that align with my personal style used to be a challenge until I discovered Shop.co. The range of options they offer is truly remarkable, catering to a variety of tastes and occasions.”',
-    rating: 5,
-    date: "August 14, 2023",
-  },
-  {
-    id: 2,
-    user: "Sarah M.",
-    content: `"I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.”`,
-    rating: 5,
-    date: "August 15, 2023",
-  },
-  {
-    id: 3,
-    user: "Ethan R.",
-    content: `"This t-shirt is a must-have for anyone who appreciates good design. The minimalistic yet stylish pattern caught my eye, and the fit is perfect. I can see the designer's touch in every aspect of this shirt."`,
-    rating: 5,
-    date: "August 16, 2023",
-  },
-  {
-    id: 4,
-    user: "Olivia P.",
-    content: `"As a UI/UX enthusiast, I value simplicity and functionality. This t-shirt not only represents those principles but also feels great to wear. It's evident that the designer poured their creativity into making this t-shirt stand out."`,
-    rating: 5,
-    date: "August 17, 2023",
-  },
-  {
-    id: 5,
-    user: "Liam K.",
-    content: `"This t-shirt is a fusion of comfort and creativity. The fabric is soft, and the design speaks volumes about the designer's skill. It's like wearing a piece of art that reflects my passion for both design and fashion."`,
-    rating: 5,
-    date: "August 18, 2023",
-  },
-  {
-    id: 6,
-    user: "Samantha D.",
-    content: `"I absolutely love this t-shirt! The design is unique and the fabric feels so comfortable. As a fellow designer, I appreciate the attention to detail. It's become my favorite go-to shirt."`,
-    rating: 5,
-    date: "August 19, 2023",
-  },
-];
-
-// _______________________________
-// Data : Témoignages
-export const testimonialsData2: ReviewFromAPI[] = [
+export const testimonialsData: ReviewFromAPI[] = [
   {
     id: "1",
     note: 5,
-    text: "Finding clothes that align with my personal style used to be a challenge until I discovered Shop.co. The range of options they offer is truly remarkable, catering to a variety of tastes and occasions.",
+    text: "Trouvé des vêtements qui correspondent à mon style personnel était un défi jusqu'à ce que je découvre Shop.co. La gamme d'options qu'ils proposent est vraiment remarquable, répondant à une variété de goûts et d'occasions.",
     date: new Date("2023-08-14"),
     produitId: "1",
     user: {
@@ -545,7 +496,7 @@ export const testimonialsData2: ReviewFromAPI[] = [
     reponses: [
       {
         id: "r101",
-        text: "Thank you for your kind words, Alex! We're thrilled to hear that our collection resonates with your personal style. We're constantly updating our inventory to cater to diverse preferences.",
+        text: "Merci pour vos aimables commentaires, Alex ! Nous sommes ravis d'entendre que notre collection correspond à votre style personnel. Nous mettons constamment à jour notre inventaire pour répondre aux préférences diverses.",
         date: new Date("2023-08-15"),
         user: {
           id: "a1",
@@ -560,7 +511,7 @@ export const testimonialsData2: ReviewFromAPI[] = [
   {
     id: "2",
     note: 5,
-    text: "I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.",
+    text: "Je suis impressionnée par la qualité et le style des vêtements que j'ai reçus de Shop.co. Des tenues décontractées aux robes élégantes, chaque pièce que j'ai achetée a dépassé mes attentes.",
     date: new Date("2023-08-15"),
     produitId: "4",
     user: {
@@ -575,7 +526,7 @@ export const testimonialsData2: ReviewFromAPI[] = [
   {
     id: "3",
     note: 5,
-    text: "This t-shirt is a must-have for anyone who appreciates good design. The minimalistic yet stylish pattern caught my eye, and the fit is perfect. I can see the designer's touch in every aspect of this shirt.",
+    text: "Ce t-shirt est un incontournable pour quiconque apprécie le bon design. Le motif minimaliste mais élégant a attiré mon attention, et la coupe est parfaite. Je peux voir la touche du designer dans chaque aspect de cette chemise.",
     date: new Date("2023-08-16"),
     produitId: "6",
     user: {
@@ -588,7 +539,7 @@ export const testimonialsData2: ReviewFromAPI[] = [
     reponses: [
       {
         id: "r102",
-        text: "We're so happy you appreciate the design details, Ethan! Our designers will be thrilled to hear this feedback.",
+        text: "Nous sommes très heureux que vous appréciiez les détails du design, Ethan ! Nos designers seront ravis d'entendre ce retour.",
         date: new Date("2023-08-17"),
         user: {
           id: "a2",
@@ -603,7 +554,7 @@ export const testimonialsData2: ReviewFromAPI[] = [
   {
     id: "4",
     note: 5,
-    text: "As a UI/UX enthusiast, I value simplicity and functionality. This t-shirt not only represents those principles but also feels great to wear. It's evident that the designer poured their creativity into making this t-shirt stand out.",
+    text: "En tant que passionnée d'UI/UX, j'apprécie la simplicité et la fonctionnalité. Ce t-shirt non seulement représente ces principes, mais est aussi très agréable à porter. Il est évident que le designer a mis toute sa créativité pour faire ressortir ce t-shirt.",
     date: new Date("2023-08-17"),
     produitId: "1",
     user: {
@@ -616,7 +567,7 @@ export const testimonialsData2: ReviewFromAPI[] = [
     reponses: [
       {
         id: "r103",
-        text: "Thank you for the thoughtful review, Olivia! As fellow design enthusiasts, we appreciate your perspective on the balance between form and function.",
+        text: "Merci pour cette critique réfléchie, Olivia ! En tant que passionnés de design, nous apprécions votre point de vue sur l'équilibre entre forme et fonction.",
         date: new Date("2023-08-18"),
         user: {
           id: "a1",
@@ -628,7 +579,7 @@ export const testimonialsData2: ReviewFromAPI[] = [
       },
       {
         id: "r104",
-        text: "I'm glad the design principles resonated with you! I wear mine all the time too.",
+        text: "Je suis content que les principes de design vous aient plu ! Je porte aussi le mien tout le temps.",
         date: new Date("2023-08-19"),
         user: {
           id: "105",
@@ -643,7 +594,7 @@ export const testimonialsData2: ReviewFromAPI[] = [
   {
     id: "5",
     note: 5,
-    text: "This t-shirt is a fusion of comfort and creativity. The fabric is soft, and the design speaks volumes about the designer's skill. It's like wearing a piece of art that reflects my passion for both design and fashion.",
+    text: "Ce t-shirt est une fusion de confort et de créativité. Le tissu est doux, et le design en dit long sur le talent du designer. C'est comme porter une œuvre d'art qui reflète ma passion pour le design et la mode.",
     date: new Date("2023-08-18"),
     produitId: "10",
     user: {
@@ -658,7 +609,7 @@ export const testimonialsData2: ReviewFromAPI[] = [
   {
     id: "6",
     note: 5,
-    text: "I absolutely love this t-shirt! The design is unique and the fabric feels so comfortable. As a fellow designer, I appreciate the attention to detail. It's become my favorite go-to shirt.",
+    text: "J'adore absolument ce t-shirt ! Le design est unique et le tissu est très confortable. En tant que designer moi-même, j'apprécie l'attention aux détails. C'est devenu mon t-shirt préféré.",
     date: new Date("2023-08-19"),
     produitId: "14",
     user: {
@@ -671,7 +622,7 @@ export const testimonialsData2: ReviewFromAPI[] = [
     reponses: [
       {
         id: "r105",
-        text: "Thanks for your wonderful feedback, Samantha! It's especially meaningful coming from another designer. We put a lot of thought into both aesthetics and comfort.",
+        text: "Merci pour votre merveilleux retour, Samantha ! C'est particulièrement significatif venant d'une autre designer. Nous avons mis beaucoup de réflexion dans l'esthétique et le confort.",
         date: new Date("2023-08-20"),
         user: {
           id: "a3",

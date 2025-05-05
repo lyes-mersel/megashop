@@ -32,7 +32,7 @@ const NavBar = async () => {
           <h1
             className={cn([integralCF.className, "hidden sm:block text-3xl"])}
           >
-            Mega Shop
+            MEGA SHOP
           </h1>
         </Link>
       </div>
