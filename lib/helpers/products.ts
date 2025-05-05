@@ -27,6 +27,14 @@ export function getProductSelect() {
           select: {
             id: true,
             nomBoutique: true,
+            description: true,
+            client: {
+              select: {
+                user: {
+                  select: { imagePublicId: true },
+                },
+              },
+            },
           },
         },
       },
@@ -76,6 +84,8 @@ export function formatProductData(product: ProductFromDB): ProductFromAPI {
           vendeur: {
             id: produitMarketplace.vendeur.id,
             nomBoutique: produitMarketplace.vendeur.nomBoutique,
+            description: produitMarketplace.vendeur.description,
+            imagePublicId: produitMarketplace.vendeur.client.user.imagePublicId,
           },
         }
       : {}),

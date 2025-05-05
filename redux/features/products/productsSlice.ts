@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 export type Color = {
-  name: string;
+  id: string;
+  nom: string;
   code: string;
 };
 
@@ -15,10 +16,11 @@ interface ProductsState {
 // Define the initial state using that type
 const initialState: ProductsState = {
   colorSelection: {
-    name: "Brown",
-    code: "bg-[#4F4631]",
+    id: "",
+    nom: "",
+    code: "#4F4631",
   },
-  sizeSelection: "Large",
+  sizeSelection: "L",
 };
 
 export const productsSlice = createSlice({

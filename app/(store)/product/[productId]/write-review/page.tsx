@@ -1,5 +1,5 @@
 import RestrictedAccess from "@/components/common/RestrictedAccess";
-import ReviewCard from "@/components/store/productpage/WriteReview/ReviewCard";
+import ReviewCard from "@/components/store/productpage/WriteReview";
 import { auth } from "@/lib/auth";
 
 export default async function WriteReviewPage({

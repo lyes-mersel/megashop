@@ -8,7 +8,13 @@ import { RootState } from "@/redux/store";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setSizeSelection } from "@/redux/features/products/productsSlice";
 
-const SizeSelection = () => {
+// Types
+export type Size = {
+  id: string;
+  nom: string;
+};
+
+const SizeSelection = ({ sizes }: { sizes: Size[] }) => {
   const { sizeSelection } = useAppSelector(
     (state: RootState) => state.products
   );
@@ -17,20 +23,20 @@ const SizeSelection = () => {
   return (
     <div className="flex flex-col">
       <span className="text-sm sm:text-base text-black/60 mb-4">
-        Choose Size
+        Choisissez la taille
       </span>
       <div className="flex items-center flex-wrap lg:space-x-3">
-        {["XS", "S", "M", "L", "XL", "XXL"].map((size, index) => (
+        {sizes.map((size, index) => (
           <button
             key={index}
             type="button"
             className={cn([
               "bg-[#F0F0F0] flex items-center justify-center px-5 lg:px-6 py-2.5 lg:py-3 text-sm lg:text-base rounded-full m-1 lg:m-0 max-h-[46px]",
-              sizeSelection === size && "bg-black font-medium text-white",
+              sizeSelection === size.nom && "bg-black font-medium text-white",
             ])}
-            onClick={() => dispatch(setSizeSelection(size))}
+            onClick={() => dispatch(setSizeSelection(size.nom))}
           >
-            {size}
+            {size.nom}
           </button>
         ))}
       </div>

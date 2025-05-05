@@ -44,7 +44,7 @@ const ProductCard = ({ data }: ProductCardProps) => {
           <span className="text-black/60">/5</span>
         </span>
         <span className="text-black text-xs xl:text-sm ml-[11px] xl:ml-[13px] pb-0.5 xl:pb-0">
-          {`(${data.totalEvaluations})`}
+          {`(${data.totalEvaluations} avis)`}
         </span>
       </div>
       <div className="flex items-center justify-between w-full">
