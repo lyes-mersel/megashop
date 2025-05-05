@@ -30,13 +30,36 @@ export default function ReviewCard({ productId }: { productId: string }) {
         rating,
         review,
       });
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      const bodyData: Record<string, unknown> = {
+        productId,
+        note: rating,
+      };
+      if (review !== "") {
+        bodyData.text = review;
+      }
+
+      const response = await fetch(`/api/reviews?productId=${productId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(bodyData),
+      });
+
+      if (!response.ok) {
+        const json = await response.json();
+        console.log("error", json);
+        throw new Error("Erreur lors de l'envoi");
+      }
+
       setSuccess(true);
       setTimeout(() => {
         router.push(`/product/${productId}`);
       }, 2000);
-    } catch {
-      setError("Failed to submit review. Please try again.");
+    } catch (error) {
+      console.error("Review submission error:", error);
+      setError("Échec de l'envoi de l'avis. Veuillez réessayer.");
     } finally {
       setIsSubmitting(false);
     }
@@ -44,7 +67,7 @@ export default function ReviewCard({ productId }: { productId: string }) {
 
   if (success) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-50 flex items-center justify-center p-4">
+      <div className="w-full max-w-md flex items-center justify-center p-4">
         <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center animate-fade-in">
           <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <svg
@@ -64,10 +87,10 @@ export default function ReviewCard({ productId }: { productId: string }) {
           </div>
           <h2 className="text-3xl font-bold text-gray-800 mb-3">Thank You!</h2>
           <p className="text-gray-600 mb-6">
-            Your review has been submitted successfully.
+            Votre avis a été soumis avec succès.
           </p>
           <div className="animate-pulse text-sm text-blue-500">
-            Redirecting back to product...
+            Redirection vers le produit en cours...
           </div>
         </div>
       </div>

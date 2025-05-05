@@ -20,6 +20,11 @@ export function containsFilter(value: string) {
     : { contains: value, mode: Prisma.QueryMode.insensitive };
 }
 
+export function extractDateString(dateInput: Date | string): string {
+  const date = new Date(dateInput);
+  return date.toISOString().split("T")[0];
+}
+
 export const getImageUrlFromPublicId = (imagePublicId: string) => {
   const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
 

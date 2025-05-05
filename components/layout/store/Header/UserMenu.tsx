@@ -85,10 +85,10 @@ const UserMenu = () => {
         ) : (
           <>
             <DropdownMenuItem asChild>
-              <Link href="/auth/login">Se connecter</Link>
+              <Link href="/auth/register">S&apos;inscrire</Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link href="/auth/register">S&apos;inscrire</Link>
+              <Link href="/auth/login">Se connecter</Link>
             </DropdownMenuItem>
           </>
         )}

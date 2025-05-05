@@ -31,7 +31,7 @@
 - `DELETE /api/products/{productId}` - Delete a product by ID (admin|vendor) ✅
 - `OP     /api/products/{productId}/images` - Add operations for a product images (Later)
 
----
+## Reviews
 
 - `GET    /api/reviews?productId` - Retrieve a product reviews (public) ✅
 - `POST   /api/reviews?productId` - Add a review to a product (private) ✅

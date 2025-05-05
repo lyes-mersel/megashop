@@ -54,7 +54,7 @@ export function getSortingNotifsParams(req: NextRequest) {
 export function getSortingReviewsParams(req: NextRequest) {
   const { searchParams } = new URL(req.url);
 
-  let sortBy = searchParams.get("sortBy") || "date";
+  let sortBy = searchParams.get("sortBy") || "note";
   let sortOrder = searchParams.get("sortOrder") || "desc";
 
   sortBy = REVIEW_SORT_FIELDS.includes(sortBy) ? sortBy : "date";

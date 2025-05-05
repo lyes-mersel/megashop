@@ -7,14 +7,14 @@ import { IoIosCheckmarkCircle } from "react-icons/io";
 import { IoEllipsisHorizontal } from "react-icons/io5";
 
 // Utils & Types
-import { cn } from "@/lib/utils";
-import { Review } from "@/lib/types/ui/review-ui.types";
+import { cn, extractDateString } from "@/lib/utils";
+import { ReviewFromAPI } from "@/lib/types/review.types";
 
 type ReviewCardProps = {
   blurChild?: React.ReactNode;
   isAction?: boolean;
   isDate?: boolean;
-  data: Review;
+  review: ReviewFromAPI;
   className?: string;
 };
 
@@ -22,7 +22,7 @@ const ReviewCard = ({
   blurChild,
   isAction = false,
   isDate = false,
-  data,
+  review,
   className,
 }: ReviewCardProps) => {
   return (
@@ -35,7 +35,7 @@ const ReviewCard = ({
       {blurChild && blurChild}
       <div className="w-full flex items-center justify-between mb-3 sm:mb-4">
         <Rating
-          initialValue={data.rating}
+          initialValue={review.note}
           allowFraction
           SVGclassName="inline-block"
           size={23}
@@ -48,13 +48,15 @@ const ReviewCard = ({
         )}
       </div>
       <div className="flex items-center mb-2 sm:mb-3">
-        <strong className="text-black sm:text-xl mr-1">{data.user}</strong>
+        <strong className="text-black sm:text-xl mr-1">
+          {review.user.prenom} {review.user.nom}
+        </strong>
         <IoIosCheckmarkCircle className="text-[#01AB31] text-xl sm:text-2xl" />
       </div>
-      <p className="text-sm sm:text-base text-black/60">{data.content}</p>
+      <p className="text-sm sm:text-base text-black/60">{review.text}</p>
       {isDate && (
         <p className="text-black/60 text-sm font-medium mt-4 sm:mt-6">
-          Posted on {data.date}
+          Posted on {extractDateString(review.date)}
         </p>
       )}
     </div>
