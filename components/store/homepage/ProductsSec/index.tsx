@@ -2,36 +2,30 @@
 import ProductListSec from "@/components/common/ProductListSec";
 
 // Types
-import { ApiResponse } from "@/lib/types/apiResponse.types";
 import { ProductFromAPI } from "@/lib/types/product.types";
+import { fetchPaginatedDataFromAPI } from "@/lib/utils/fetchData";
 import { redirect } from "next/navigation";
 
 const ProductsSec = async () => {
-  const fetchProductData = async (
-    url: string
-  ): Promise<ProductFromAPI[] | null> => {
-    try {
-      const res = await fetch(url);
-      if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
-      const json: ApiResponse<ProductFromAPI[]> = await res.json();
-      return json.data;
-    } catch (error) {
-      console.error(`Error fetching ${url}:`, error);
-      return null;
-    }
-  };
-
-  const [shopProducts, marketplaceProducts] = await Promise.all([
-    fetchProductData(
+  // Fetch data for shop and marketplace products
+  const [shopProductsResult, marketplaceProductsResult] = await Promise.all([
+    fetchPaginatedDataFromAPI<ProductFromAPI[]>(
       `${process.env.NEXT_PUBLIC_API_URL}/products?sortBy=noteMoyenne&page=1&pageSize=4&type=boutique`
     ),
-    fetchProductData(
+    fetchPaginatedDataFromAPI<ProductFromAPI[]>(
       `${process.env.NEXT_PUBLIC_API_URL}/products?sortBy=noteMoyenne&page=1&pageSize=4&type=marketplace`
     ),
   ]);
 
-  const isError = !shopProducts || !marketplaceProducts;
-  if (isError) {
+  // Handle errors
+  if (shopProductsResult.error || marketplaceProductsResult.error) {
+    return redirect("/internal-error");
+  }
+
+  // Extract data & handle null data
+  const shopProducts = shopProductsResult.data?.data;
+  const marketplaceProducts = marketplaceProductsResult.data?.data;
+  if (!shopProducts || !marketplaceProducts) {
     redirect("/internal-error");
   }
 
