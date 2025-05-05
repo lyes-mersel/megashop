@@ -1,7 +1,6 @@
 // Types
 import { ProductFromAPI } from "@/lib/types/product.types";
 import { ReviewFromAPI } from "@/lib/types/review.types";
-import { Review } from "@/lib/types/ui/review-ui.types";
 import { UserRole } from "@prisma/client";
 
 // Data : Nos produits boutique
@@ -149,7 +148,12 @@ export const marketProductsData: ProductFromAPI[] = [
       { id: "3", nom: "L" },
       { id: "4", nom: "XL" },
     ],
-    vendeur: { id: "1", nomBoutique: "ModeClassic" },
+    vendeur: {
+      id: "1",
+      nomBoutique: "ModeClassic",
+      description: "Vêtements classiques et élégants pour hommes.",
+      imagePublicId: null,
+    },
     images: [
       { id: "9", imagePublicId: "/images/pic5.png" },
       { id: "10", imagePublicId: "/images/pic10.png" },
@@ -180,7 +184,12 @@ export const marketProductsData: ProductFromAPI[] = [
       { id: "2", nom: "M" },
       { id: "3", nom: "L" },
     ],
-    vendeur: { id: "2", nomBoutique: "GraphicStreet" },
+    vendeur: {
+      id: "2",
+      nomBoutique: "GraphicStreet",
+      description: "T-shirts avec designs graphiques uniques.",
+      imagePublicId: null,
+    },
     images: [
       { id: "12", imagePublicId: "/images/pic6.png" },
       { id: "13", imagePublicId: "/images/pic10.png" },
@@ -212,7 +221,12 @@ export const marketProductsData: ProductFromAPI[] = [
       { id: "4", nom: "XL" },
       { id: "5", nom: "XXL" },
     ],
-    vendeur: { id: "3", nomBoutique: "SummerStyle" },
+    vendeur: {
+      id: "3",
+      nomBoutique: "SummerStyle",
+      description: "Vêtements",
+      imagePublicId: null,
+    },
     images: [{ id: "15", imagePublicId: "/images/pic7.png" }],
   },
   {
@@ -236,7 +250,12 @@ export const marketProductsData: ProductFromAPI[] = [
       { id: "2", nom: "M" },
       { id: "3", nom: "L" },
     ],
-    vendeur: { id: "4", nomBoutique: "JeansExpert" },
+    vendeur: {
+      id: "4",
+      nomBoutique: "JeansExpert",
+      description: "Spécialiste des jeans de qualité.",
+      imagePublicId: null,
+    },
     images: [{ id: "16", imagePublicId: "/images/pic8.png" }],
   },
 ];
@@ -414,7 +433,12 @@ export const relatedProductData: ProductFromAPI[] = [
       { id: "2", nom: "M" },
       { id: "3", nom: "L" },
     ],
-    vendeur: { id: "5", nomBoutique: "ArtTees" },
+    vendeur: {
+      id: "5",
+      nomBoutique: "ArtTees",
+      description: "T-shirts avec designs artistiques uniques.",
+      imagePublicId: null,
+    },
     images: [
       { id: "28", imagePublicId: "/images/pic13.png" },
       { id: "29", imagePublicId: "/images/pic10.png" },
@@ -474,7 +498,12 @@ export const relatedProductData: ProductFromAPI[] = [
       { id: "3", nom: "L" },
       { id: "4", nom: "XL" },
     ],
-    vendeur: { id: "6", nomBoutique: "UrbanStyle" },
+    vendeur: {
+      id: "6",
+      nomBoutique: "UrbanStyle",
+      description: "Vêtements urbains et modernes pour les passionnés de mode.",
+      imagePublicId: null,
+    },
     images: [{ id: "32", imagePublicId: "/images/pic15.png" }],
   },
 ];

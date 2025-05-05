@@ -40,6 +40,11 @@ export type ProductFromAPI = {
   couleurs: { id: string; nom: string; code: string }[];
   tailles: { id: string; nom: string }[];
   fournisseur?: { nom: string | null };
-  vendeur?: { id: string; nomBoutique: string };
+  vendeur?: {
+    id: string;
+    nomBoutique: string;
+    description: string | null;
+    imagePublicId: string | null;
+  };
   images: { id: string; imagePublicId: string }[];
 };
