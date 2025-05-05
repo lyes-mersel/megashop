@@ -29,7 +29,7 @@ const AddToCartBtn = ({
             name: data.nom,
             imagePublicId: data.images[0].imagePublicId,
             price: data.prix,
-            attributes: [sizeSelection, colorSelection.name],
+            attributes: [sizeSelection, colorSelection.nom],
             quantity: data.quantity,
           })
         )
