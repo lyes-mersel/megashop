@@ -35,7 +35,7 @@ const AddToCartBtn = ({
         )
       }
     >
-      Add to Cart
+      Ajouter au panier
     </button>
   );
 };
