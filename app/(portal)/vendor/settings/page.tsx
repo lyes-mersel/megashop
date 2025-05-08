@@ -43,7 +43,7 @@ interface PasswordData {
   confirmPassword: string;
 }
 
-interface SellerInfo {
+interface VendorInfo {
   businessName: string;
   accountNumber: string;
   bankName: string;
@@ -53,7 +53,7 @@ interface SellerInfo {
 export default function SettingsPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isSellerActive, setIsSellerActive] = useState<boolean>(false);
+  const [isVendorActive, setIsVendorActive] = useState<boolean>(false);
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<string>("personal");
 
@@ -80,7 +80,7 @@ export default function SettingsPage() {
     confirmPassword: "",
   });
 
-  const [sellerInfo, setSellerInfo] = useState<SellerInfo>({
+  const [vendorInfo, setVendorInfo] = useState<VendorInfo>({
     businessName: "",
     accountNumber: "",
     bankName: "",
@@ -196,16 +196,16 @@ export default function SettingsPage() {
     setPasswordData({ ...passwordData, [e.target.name]: e.target.value });
   };
 
-  const handleSellerInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSellerInfo({ ...sellerInfo, [e.target.name]: e.target.value });
+  const handleVendorInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setVendorInfo({ ...vendorInfo, [e.target.name]: e.target.value });
   };
 
   const handleDeleteStore = () => {
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
-      setIsSellerActive(false);
-      setSellerInfo({
+      setIsVendorActive(false);
+      setVendorInfo({
         businessName: "",
         accountNumber: "",
         bankName: "",
@@ -280,17 +280,17 @@ export default function SettingsPage() {
     }, 700);
   };
 
-  const handleSellerSubmit = (e: React.FormEvent) => {
+  const handleVendorSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isSellerActive) {
-      setIsSellerActive(true);
+    if (!isVendorActive) {
+      setIsVendorActive(true);
       toast.success("Statut vendeur activé avec succès");
       return;
     }
     if (
-      !sellerInfo.businessName ||
-      !sellerInfo.accountNumber ||
-      !sellerInfo.bankName
+      !vendorInfo.businessName ||
+      !vendorInfo.accountNumber ||
+      !vendorInfo.bankName
     ) {
       toast.error("Veuillez remplir tous les champs obligatoires");
       return;
@@ -366,7 +366,7 @@ export default function SettingsPage() {
                 { value: "contact", icon: Phone, label: "Coordonnées" },
                 { value: "security", icon: Shield, label: "Sécurité" },
                 {
-                  value: "seller",
+                  value: "vendor",
                   icon: CreditCard,
                   label: "Paramètres Vendeur",
                 },
@@ -685,7 +685,7 @@ export default function SettingsPage() {
             )}
 
             {/* Paramètres vendeur */}
-            {activeTab === "seller" && (
+            {activeTab === "vendor" && (
               <div className="bg-white rounded-xl shadow-lg p-6">
                 <div className="flex justify-between items-center mb-6">
                   <div>
@@ -697,7 +697,7 @@ export default function SettingsPage() {
                       Configurez les informations de votre boutique.
                     </p>
                   </div>
-                  {isSellerActive && (
+                  {isVendorActive && (
                     <button
                       onClick={handleDeleteStore}
                       className="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition-all duration-300 shadow-md disabled:opacity-50 font-bold"
@@ -707,7 +707,7 @@ export default function SettingsPage() {
                     </button>
                   )}
                 </div>
-                <form onSubmit={handleSellerSubmit} className="space-y-6">
+                <form onSubmit={handleVendorSubmit} className="space-y-6">
                   <div className="space-y-2">
                     <label
                       htmlFor="businessName"
@@ -718,8 +718,8 @@ export default function SettingsPage() {
                     <input
                       id="businessName"
                       name="businessName"
-                      value={sellerInfo.businessName}
-                      onChange={handleSellerInfoChange}
+                      value={vendorInfo.businessName}
+                      onChange={handleVendorInfoChange}
                       className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition-all duration-200 text-gray-800"
                       placeholder="Ex: Chic & Tendance"
                     />
@@ -734,8 +734,8 @@ export default function SettingsPage() {
                     <input
                       id="accountNumber"
                       name="accountNumber"
-                      value={sellerInfo.accountNumber}
-                      onChange={handleSellerInfoChange}
+                      value={vendorInfo.accountNumber}
+                      onChange={handleVendorInfoChange}
                       className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition-all duration-200 text-gray-800"
                       placeholder="Ex: 123456789"
                     />
@@ -750,8 +750,8 @@ export default function SettingsPage() {
                     <input
                       id="bankName"
                       name="bankName"
-                      value={sellerInfo.bankName}
-                      onChange={handleSellerInfoChange}
+                      value={vendorInfo.bankName}
+                      onChange={handleVendorInfoChange}
                       className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition-all duration-200 text-gray-800"
                       placeholder="Ex: Banque Nationale"
                     />
@@ -766,8 +766,8 @@ export default function SettingsPage() {
                     <input
                       id="taxId"
                       name="taxId"
-                      value={sellerInfo.taxId}
-                      onChange={handleSellerInfoChange}
+                      value={vendorInfo.taxId}
+                      onChange={handleVendorInfoChange}
                       className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition-all duration-200 text-gray-800"
                       placeholder="Ex: 123-45-6789"
                     />
@@ -780,7 +780,7 @@ export default function SettingsPage() {
                     >
                       {isLoading
                         ? "Enregistrement..."
-                        : isSellerActive
+                        : isVendorActive
                         ? "Mettre à jour"
                         : "Activer le statut vendeur"}
                     </button>

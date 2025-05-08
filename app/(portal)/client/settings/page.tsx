@@ -47,7 +47,7 @@ interface PasswordData {
   confirmPassword: string;
 }
 
-interface SellerInfo {
+interface VendorInfo {
   businessName: string;
   accountNumber: string;
   routingNumber: string;
@@ -58,7 +58,7 @@ export default function SettingsPage() {
   useTheme();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isSellerActive, setIsSellerActive] = useState<boolean>(false);
+  const [isVendorActive, setIsVendorActive] = useState<boolean>(false);
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<string>("personal");
 
@@ -86,7 +86,7 @@ export default function SettingsPage() {
     confirmPassword: "",
   });
 
-  const [sellerInfo, setSellerInfo] = useState<SellerInfo>({
+  const [vendorInfo, setVendorInfo] = useState<VendorInfo>({
     businessName: "",
     accountNumber: "",
     routingNumber: "",
@@ -214,9 +214,9 @@ export default function SettingsPage() {
     });
   };
 
-  const handleSellerInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSellerInfo({
-      ...sellerInfo,
+  const handleVendorInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setVendorInfo({
+      ...vendorInfo,
       [e.target.name]: e.target.value,
     });
   };
@@ -285,17 +285,17 @@ export default function SettingsPage() {
     }, 700);
   };
 
-  const handleSellerSubmit = (e: React.FormEvent) => {
+  const handleVendorSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isSellerActive) {
-      setIsSellerActive(true);
+    if (!isVendorActive) {
+      setIsVendorActive(true);
       toast.success("Statut de vendeur activé");
       return;
     }
     if (
-      !sellerInfo.businessName ||
-      !sellerInfo.accountNumber ||
-      !sellerInfo.routingNumber
+      !vendorInfo.businessName ||
+      !vendorInfo.accountNumber ||
+      !vendorInfo.routingNumber
     ) {
       toast.error("Veuillez remplir tous les champs obligatoires");
       return;
@@ -382,7 +382,7 @@ export default function SettingsPage() {
                   { value: "contact", icon: Phone, label: "Contact" },
                   { value: "security", icon: Shield, label: "Sécurité" },
                   {
-                    value: "seller",
+                    value: "vendor",
                     icon: CreditCard,
                     label: "Paramètres vendeur",
                   },
@@ -731,8 +731,8 @@ export default function SettingsPage() {
               </>
             )}
 
-            {/* Seller Settings */}
-            {activeTab === "seller" && (
+            {/* Vendor Settings */}
+            {activeTab === "vendor" && (
               <>
                 <div className="bg-white rounded-xl border shadow-sm">
                   <div className="p-6 border-b">
@@ -756,20 +756,20 @@ export default function SettingsPage() {
                       <label className="relative inline-flex items-center cursor-pointer">
                         <input
                           type="checkbox"
-                          checked={isSellerActive}
+                          checked={isVendorActive}
                           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                            setIsSellerActive(e.target.checked)
+                            setIsVendorActive(e.target.checked)
                           }
                           className="sr-only"
                         />
                         <div
                           className={`w-11 h-6 rounded-full ${
-                            isSellerActive ? "bg-black" : "bg-gray-200"
+                            isVendorActive ? "bg-black" : "bg-gray-200"
                           }`}
                         ></div>
                         <div
                           className={`absolute w-5 h-5 bg-white rounded-full transition-transform ${
-                            isSellerActive ? "translate-x-5" : "translate-x-1"
+                            isVendorActive ? "translate-x-5" : "translate-x-1"
                           }`}
                         ></div>
                       </label>
@@ -777,9 +777,9 @@ export default function SettingsPage() {
                   </div>
                 </div>
 
-                {isSellerActive && (
+                {isVendorActive && (
                   <form
-                    onSubmit={handleSellerSubmit}
+                    onSubmit={handleVendorSubmit}
                     className="space-y-6 mt-6"
                   >
                     <div className="bg-white rounded-xl border shadow-sm">
@@ -803,8 +803,8 @@ export default function SettingsPage() {
                           <input
                             id="businessName"
                             name="businessName"
-                            value={sellerInfo.businessName}
-                            onChange={handleSellerInfoChange}
+                            value={vendorInfo.businessName}
+                            onChange={handleVendorInfoChange}
                             required
                             className="w-full px-3 py-2 border rounded-md"
                           />
@@ -819,8 +819,8 @@ export default function SettingsPage() {
                           <input
                             id="bio"
                             name="bio"
-                            value={sellerInfo.bio}
-                            onChange={handleSellerInfoChange}
+                            value={vendorInfo.bio}
+                            onChange={handleVendorInfoChange}
                             className="w-full px-3 py-2 border rounded-md"
                           />
                         </div>
@@ -849,8 +849,8 @@ export default function SettingsPage() {
                             <input
                               id="accountNumber"
                               name="accountNumber"
-                              value={sellerInfo.accountNumber}
-                              onChange={handleSellerInfoChange}
+                              value={vendorInfo.accountNumber}
+                              onChange={handleVendorInfoChange}
                               required
                               className="w-full px-3 py-2 border rounded-md"
                             />
@@ -865,8 +865,8 @@ export default function SettingsPage() {
                             <input
                               id="routingNumber"
                               name="routingNumber"
-                              value={sellerInfo.routingNumber}
-                              onChange={handleSellerInfoChange}
+                              value={vendorInfo.routingNumber}
+                              onChange={handleVendorInfoChange}
                               required
                               className="w-full px-3 py-2 border rounded-md"
                             />

@@ -10,6 +10,7 @@ async function main() {
   await insertColors();
   await insertSizes();
   await insertProducts();
+  await insertOrders();
 }
 
 main()
@@ -25,11 +26,11 @@ main()
 async function insertUsers() {
   const hashedPassword = await bcrypt.hash(process.env.DEFAULT_PASSWORD!, 10);
 
-  // Création d'un client
+  // Création du client 0
   await prisma.user.create({
     data: {
-      nom: "firstname",
-      prenom: "lastname",
+      nom: "Belkacem",
+      prenom: "Karim",
       email: "client@email.com",
       password: hashedPassword,
       role: UserRole.CLIENT,
@@ -44,74 +45,55 @@ async function insertUsers() {
         },
       },
       client: {
+        create: {},
+      },
+    },
+  });
+
+  // Création d'un client 1
+  await prisma.user.create({
+    data: {
+      nom: "Cherifi",
+      prenom: "Amina",
+      email: "client1@email.com",
+      password: hashedPassword,
+      role: UserRole.CLIENT,
+      emailVerifie: true,
+      tel: "0555555555",
+      adresse: {
         create: {
-          commandes: {
-            create: {
-              date: new Date(),
-              montant: 10000,
-              statut: CommandeStatut.LIVREE,
-              adresse: {
-                create: {
-                  rue: "Rue de la liberté",
-                  ville: "Béjaia",
-                  wilaya: "Béjaia",
-                  codePostal: "06000",
-                },
-              },
-              lignesCommande: {
-                createMany: {
-                  data: [
-                    {
-                      nomProduit: "Pull simple",
-                      quantite: 1,
-                      prixUnit: 1500,
-                      imagePublicId: "pic1_etcsri",
-                      produitId: null, // ID du produit à lier
-                      tailleId: (
-                        await prisma.taille.findUnique({ where: { nom: "M" } })
-                      )?.id,
-                      couleurId: (
-                        await prisma.couleur.findUnique({
-                          where: { nom: "Noir" },
-                        })
-                      )?.id,
-                    },
-                    {
-                      nomProduit: "Jean slim",
-                      quantite: 2,
-                      prixUnit: 4500,
-                      imagePublicId: "pic2_vqzxsr",
-                      produitId: null, // ID du produit à lier
-                      tailleId: (
-                        await prisma.taille.findUnique({ where: { nom: "L" } })
-                      )?.id,
-                      couleurId: (
-                        await prisma.couleur.findUnique({
-                          where: { nom: "Bleu" },
-                        })
-                      )?.id,
-                    },
-                    {
-                      nomProduit: "Baskets sport",
-                      quantite: 1,
-                      prixUnit: 4000,
-                      imagePublicId: "pic25_jji03o",
-                      produitId: null, // ID du produit à lier
-                      tailleId: (
-                        await prisma.taille.findUnique({ where: { nom: "42" } })
-                      )?.id,
-                      couleurId: (
-                        await prisma.couleur.findUnique({
-                          where: { nom: "Gris" },
-                        })
-                      )?.id,
-                    },
-                  ],
-                },
-              },
-            },
-          },
+          rue: "Rue Didouche Mourad",
+          ville: "Alger Centre",
+          wilaya: "Alger",
+          codePostal: "16000",
         },
+      },
+      client: {
+        create: {},
+      },
+    },
+  });
+
+  // Création du client 2
+  await prisma.user.create({
+    data: {
+      nom: "Merad",
+      prenom: "Sofiane",
+      email: "client2@email.com",
+      password: hashedPassword,
+      role: UserRole.CLIENT,
+      emailVerifie: true,
+      tel: "0555555555",
+      adresse: {
+        create: {
+          rue: "Rue Hassiba Ben Bouali",
+          ville: "Alger Centre",
+          wilaya: "Alger",
+          codePostal: "16000",
+        },
+      },
+      client: {
+        create: {},
       },
     },
   });
@@ -257,34 +239,23 @@ async function insertColors() {
 
 // Insertion des tailles
 async function insertSizes() {
-  // Tailles pour les vêtements adultes
   await prisma.taille.createMany({
     data: [
+      { nom: "Standart" },
+      // Tailles pour les vêtements adultes
       { nom: "S" },
       { nom: "M" },
       { nom: "L" },
       { nom: "XL" },
       { nom: "XXL" },
       { nom: "3XL" },
-    ],
-    skipDuplicates: true,
-  });
-
-  // Tailles pour les vêtements enfants
-  await prisma.taille.createMany({
-    data: [
-      { nom: "2T" }, // 2T = 2 ans
+      // Tailles pour les vêtements enfants (Ex: 2T = 2 ans)
+      { nom: "2T" },
       { nom: "3T" },
       { nom: "4T" },
       { nom: "5T" },
       { nom: "6T" },
-    ],
-    skipDuplicates: true,
-  });
-
-  // Tailles pour les baskets enfants
-  await prisma.taille.createMany({
-    data: [
+      // Tailles pour les baskets
       { nom: "27" },
       { nom: "28" },
       { nom: "29" },
@@ -695,6 +666,7 @@ async function insertProducts() {
       categorieId: categories.find((c) => c.nom === "Accessoires")?.id ?? null,
       genreId: genres.find((g) => g.nom === "Unisexe")?.id ?? null,
       couleurs: { connect: [{ nom: "Marron" }, { nom: "Noir" }] },
+      tailles: { connect: [{ nom: "Standart" }] },
       images: {
         create: [{ imagePublicId: "pic30_dweino" }],
       },
@@ -713,6 +685,7 @@ async function insertProducts() {
       categorieId: categories.find((c) => c.nom === "Accessoires")?.id ?? null,
       genreId: genres.find((g) => g.nom === "Femme")?.id ?? null,
       couleurs: { connect: [{ nom: "Noir" }, { nom: "Marron" }] },
+      tailles: { connect: [{ nom: "Standart" }] },
       images: {
         create: [
           { imagePublicId: "pic32_hjy8fx" },
@@ -738,4 +711,179 @@ async function insertProducts() {
   // );
 
   console.log("Produits insérés avec succès !");
+}
+
+async function insertOrders() {
+  const userId = (
+    await prisma.user.findUnique({
+      where: { email: "client@email.com" },
+    })
+  )?.id;
+
+  if (!userId) {
+    console.error("Impossible de récupérer l'ID de l'utilisateur.");
+    return;
+  }
+
+  await prisma.commande.create({
+    data: {
+      client: { connect: { id: userId } },
+      date: new Date(),
+      montant: 14500,
+      statut: CommandeStatut.LIVREE,
+      adresse: {
+        create: {
+          rue: "Rue de la liberté",
+          ville: "Béjaia",
+          wilaya: "Béjaia",
+          codePostal: "06000",
+        },
+      },
+      lignesCommande: {
+        createMany: {
+          data: [
+            {
+              nomProduit: "Pull simple",
+              quantite: 1,
+              prixUnit: 1500,
+              imagePublicId: "pic1_etcsri",
+              produitId: null,
+              tailleId: (
+                await prisma.taille.findUnique({ where: { nom: "L" } })
+              )?.id,
+              couleurId: (
+                await prisma.couleur.findUnique({ where: { nom: "Noir" } })
+              )?.id,
+            },
+            {
+              nomProduit: "Jean slim",
+              quantite: 2,
+              prixUnit: 4500,
+              imagePublicId: "pic2_vqzxsr",
+              produitId: null,
+              tailleId: (
+                await prisma.taille.findUnique({ where: { nom: "L" } })
+              )?.id,
+              couleurId: (
+                await prisma.couleur.findUnique({ where: { nom: "Bleu" } })
+              )?.id,
+            },
+            {
+              nomProduit: "Baskets sport",
+              quantite: 1,
+              prixUnit: 4000,
+              imagePublicId: "pic25_jji03o",
+              produitId: null,
+              tailleId: (
+                await prisma.taille.findUnique({ where: { nom: "42" } })
+              )?.id,
+              couleurId: (
+                await prisma.couleur.findUnique({ where: { nom: "Gris" } })
+              )?.id,
+            },
+          ],
+        },
+      },
+    },
+  });
+
+  await prisma.commande.create({
+    data: {
+      client: { connect: { id: userId } },
+      date: new Date(),
+      montant: 7000,
+      statut: CommandeStatut.EN_ATTENTE,
+      adresse: {
+        create: {
+          rue: "Rue Didouche Mourad",
+          ville: "Alger Centre",
+          wilaya: "Alger",
+          codePostal: "16000",
+        },
+      },
+      lignesCommande: {
+        createMany: {
+          data: [
+            {
+              nomProduit: "Pull moderne",
+              quantite: 1,
+              prixUnit: 2000,
+              imagePublicId: "pic9_cfvvky",
+              produitId: null,
+              tailleId: (
+                await prisma.taille.findUnique({ where: { nom: "M" } })
+              )?.id,
+              couleurId: (
+                await prisma.couleur.findUnique({ where: { nom: "Vert" } })
+              )?.id,
+            },
+            {
+              nomProduit: "Baskets blanches sportives",
+              quantite: 1,
+              prixUnit: 5000,
+              imagePublicId: "pic28_wnnyyd",
+              produitId: null,
+              tailleId: (
+                await prisma.taille.findUnique({ where: { nom: "42" } })
+              )?.id,
+              couleurId: (
+                await prisma.couleur.findUnique({ where: { nom: "Blanc" } })
+              )?.id,
+            },
+          ],
+        },
+      },
+    },
+  });
+
+  await prisma.commande.create({
+    data: {
+      client: { connect: { id: userId } },
+      date: new Date(),
+      montant: 6000,
+      statut: CommandeStatut.EXPEDIEE,
+      adresse: {
+        create: {
+          rue: "Boulevard Colonel Amirouche",
+          ville: "Béjaia",
+          wilaya: "Béjaia",
+          codePostal: "06000",
+        },
+      },
+      lignesCommande: {
+        createMany: {
+          data: [
+            {
+              nomProduit: "Pull avec col",
+              quantite: 1,
+              prixUnit: 2500,
+              imagePublicId: "pic12_wnptms",
+              produitId: null,
+              tailleId: (
+                await prisma.taille.findUnique({ where: { nom: "L" } })
+              )?.id,
+              couleurId: (
+                await prisma.couleur.findUnique({ where: { nom: "Bleu" } })
+              )?.id,
+            },
+            {
+              nomProduit: "Robe d'été",
+              quantite: 1,
+              prixUnit: 3500,
+              imagePublicId: "pic20_a81vv9",
+              produitId: null,
+              tailleId: (
+                await prisma.taille.findUnique({ where: { nom: "M" } })
+              )?.id,
+              couleurId: (
+                await prisma.couleur.findUnique({ where: { nom: "Violet" } })
+              )?.id,
+            },
+          ],
+        },
+      },
+    },
+  });
+
+  console.log("Commandes insérées avec succès !");
 }

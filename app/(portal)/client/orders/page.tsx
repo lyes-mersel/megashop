@@ -1,190 +1,180 @@
 "use client";
 
-import { useState } from "react";
-import { Package, Download, X } from "lucide-react";
-import { Montserrat } from "next/font/google";
-import { motion } from "framer-motion";
-import { toast } from "sonner";
+import { JSX, useEffect, useState } from "react";
 import * as XLSX from "xlsx";
-import Image from "next/image";
+import { toast } from "sonner";
 
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  weight: "800",
-  display: "swap",
-});
+// Components
+import PageHeader from "@/components/portal/client/orderspage/PageHeader";
+import SearchAndFilters from "@/components/portal/client/orderspage/SearchAndFilters";
+import OrderTable from "@/components/portal/client/orderspage/OrderTable";
+import EmptyState from "@/components/common/EmptyState";
+import OrderDetailModal from "@/components/portal/client/orderspage/OrdersDetailModel";
+import Pagination from "@/components/portal/client/orderspage/Pagination";
 
-interface OrderItem {
-  productName: string;
-  quantity: number;
-  color: string;
-  size: string;
-  price: number; // Prix unitaire en DA
-}
+// Types
+import { OrderFromAPI, SortConfig } from "@/lib/types/order.types";
+import { fetchPaginatedDataFromAPI } from "@/lib/utils/fetchData";
+import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 
-interface Order {
-  id: number;
-  sellerName: string; // Nom et prénom du vendeur
-  sellerEmail: string; // Email du vendeur
-  date: string;
-  total: number; // Total calculé à partir des items
-  items: OrderItem[];
-}
+export default function OrderHistoryPage(): JSX.Element {
+  const [orders, setOrders] = useState<OrderFromAPI[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [searchDebounced, setSearchDebounced] = useState<string>("");
+  const [selectedOrder, setSelectedOrder] = useState<OrderFromAPI | null>(null);
+  const [sortConfig, setSortConfig] = useState<SortConfig | null>(null);
+  const [isDateOpen, setIsDateOpen] = useState<boolean>(false);
+  const [isTotalOpen, setIsTotalOpen] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-export default function OrderHistoryPage() {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [orders, setOrders] = useState<Order[]>([
-    {
-      id: 1,
-      sellerName: "Karim Belkacem",
-      sellerEmail: "karim.belkacem@example.com",
-      date: "2024-03-15",
-      total: 15000,
-      items: [
-        {
-          productName: "Produit 1",
-          quantity: 2,
-          color: "Noir",
-          size: "M",
-          price: 7500,
-        },
-      ],
-    },
-    {
-      id: 2,
-      sellerName: "Amina Cherif",
-      sellerEmail: "amina.cherif@example.com",
-      date: "2024-03-16",
-      total: 7550,
-      items: [
-        {
-          productName: "Produit 2",
-          quantity: 1,
-          color: "Blanc",
-          size: "L",
-          price: 7550,
-        },
-      ],
-    },
-    {
-      id: 3,
-      sellerName: "Sofiane Merad",
-      sellerEmail: "sofiane.merad@example.com",
-      date: "2024-03-17",
-      total: 22500,
-      items: [
-        {
-          productName: "Produit 3",
-          quantity: 1,
-          color: "Gris",
-          size: "S",
-          price: 7500,
-        },
-        {
-          productName: "Produit 4",
-          quantity: 2,
-          color: "Bleu",
-          size: "M",
-          price: 7500,
-        },
-      ],
-    },
-    {
-      id: 4,
-      sellerName: "Leila Khedir",
-      sellerEmail: "leila.khedir@example.com",
-      date: "2024-03-18",
-      total: 18000,
-      items: [
-        {
-          productName: "Produit 5",
-          quantity: 3,
-          color: "Rouge",
-          size: "L",
-          price: 6000,
-        },
-      ],
-    },
-    {
-      id: 5,
-      sellerName: "Yanis Haddad",
-      sellerEmail: "yanis.haddad@example.com",
-      date: "2024-03-19",
-      total: 12000,
-      items: [
-        {
-          productName: "Produit 6",
-          quantity: 2,
-          color: "Vert",
-          size: "M",
-          price: 6000,
-        },
-      ],
-    },
-    {
-      id: 6,
-      sellerName: "Nadia Benali",
-      sellerEmail: "nadia.benali@example.com",
-      date: "2024-03-20",
-      total: 9000,
-      items: [
-        {
-          productName: "Produit 7",
-          quantity: 1,
-          color: "Jaune",
-          size: "S",
-          price: 9000,
-        },
-      ],
-    },
-  ]);
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(1);
+  const [totalItems, setTotalItems] = useState<number>(0);
+  const pageSize = 10;
 
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
-  const [sortConfig, setSortConfig] = useState<{
-    key: string;
-    direction: "asc" | "desc";
-  } | null>(null);
-  const [isDateOpen, setIsDateOpen] = useState(false);
-  const [isTotalOpen, setIsTotalOpen] = useState(false);
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const getFilteredOrders = () => {
-    const filtered = orders.filter(
-      (order) =>
-        order.id.toString().includes(searchQuery) ||
-        order.items.some((item) =>
-          item.productName.toLowerCase().includes(searchQuery.toLowerCase())
-        )
-    );
+  // Set initial states from URL parameters
+  useEffect(() => {
+    const page = parseInt(searchParams.get("page") || "1");
+    const search = searchParams.get("search") || "";
+    const sortBy = searchParams.get("sortBy") || "date";
+    const sortOrder = searchParams.get("sortOrder") || "desc";
 
-    if (sortConfig) {
-      filtered.sort((a, b) => {
-        const aValue = a[sortConfig.key as keyof Order];
-        const bValue = b[sortConfig.key as keyof Order];
-        if (aValue < bValue) return sortConfig.direction === "asc" ? -1 : 1;
-        if (aValue > bValue) return sortConfig.direction === "asc" ? 1 : -1;
-        return 0;
+    setCurrentPage(page);
+    setSearchQuery(search);
+    setSearchDebounced(search);
+
+    if (sortBy === "date" || sortBy === "montant") {
+      setSortConfig({
+        key: sortBy as keyof OrderFromAPI,
+        direction: sortOrder as "asc" | "desc",
       });
     }
+  }, [searchParams]);
 
-    return filtered;
-  };
+  // Debounce search query
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSearchDebounced(searchQuery);
+    }, 500);
 
-  const filteredOrders = getFilteredOrders();
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
 
-  const handleExport = () => {
-    const data = filteredOrders.map((order) => ({
+  // Update URL when filters change
+  useEffect(() => {
+    // Only update URL if the component is fully mounted and initial data is loaded
+    if (isLoading && status === "loading") return;
+
+    const params = new URLSearchParams();
+    params.set("page", currentPage.toString());
+
+    if (searchDebounced) {
+      params.set("search", searchDebounced);
+    }
+
+    if (sortConfig) {
+      params.set("sortBy", sortConfig.key.toString());
+      params.set("sortOrder", sortConfig.direction);
+    } else {
+      params.set("sortBy", "date");
+      params.set("sortOrder", "desc");
+    }
+
+    router.push(`?${params.toString()}`, { scroll: false });
+  }, [currentPage, searchDebounced, sortConfig, router, isLoading, status]);
+
+  useEffect(() => {
+    // Only proceed when the session status is known
+    if (status === "loading") return;
+
+    const userId = session?.user.id;
+
+    // Now check if userId exists
+    if (!userId) {
+      setIsLoading(false);
+      toast.error("Vous devez être connecté pour accéder à cette page.");
+      console.log("No user ID found in session");
+      return;
+    }
+
+    const fetchOrders = async () => {
+      setIsLoading(true);
+      try {
+        // Build query parameters
+        const queryParams = new URLSearchParams();
+        queryParams.set("page", currentPage.toString());
+        queryParams.set("pageSize", pageSize.toString());
+
+        if (sortConfig) {
+          queryParams.set("sortBy", sortConfig.key.toString());
+          queryParams.set("sortOrder", sortConfig.direction);
+        } else {
+          queryParams.set("sortBy", "date");
+          queryParams.set("sortOrder", "desc");
+        }
+
+        if (searchDebounced) {
+          queryParams.set("search", searchDebounced);
+        }
+
+        const endpoint = `/api/users/${userId}/orders?${queryParams.toString()}`;
+        console.log("Fetching orders from:", endpoint);
+        const ordersResult = await fetchPaginatedDataFromAPI<OrderFromAPI[]>(
+          endpoint
+        );
+
+        if (ordersResult.error) {
+          console.error(ordersResult.error);
+          toast.error("Erreur lors de la récupération des commandes.");
+          return;
+        }
+
+        const ordersData = ordersResult.data;
+        if (!ordersData) {
+          toast.error("Aucune commande trouvée.");
+          return;
+        }
+
+        setOrders(ordersData.data);
+        setTotalItems(ordersData.pagination.totalItems);
+        setTotalPages(ordersData.pagination.totalPages);
+        setCurrentPage(ordersData.pagination.currentPage);
+      } catch (error) {
+        console.error("Failed to fetch orders:", error);
+        toast.error(
+          "Une erreur est survenue lors de la récupération des commandes."
+        );
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, [session, status, currentPage, searchDebounced, sortConfig]);
+
+  const handleExport = (): void => {
+    const data = orders.map((order) => ({
       ID: order.id,
-      "Nom du Vendeur": order.sellerName,
-      "Email du Vendeur": order.sellerEmail,
       Date: order.date,
-      "Total (DA)": order.total.toFixed(2),
-      Articles: order.items
+      "Total (DA)": order.montant.toFixed(2),
+      Articles: order.produits
         .map(
-          (item) =>
-            `${item.productName} (${item.color}, ${item.size}): ${item.quantity} x ${item.price} DA`
+          (produit) =>
+            `${produit.nomProduit} (${produit.couleur?.id}, ${produit.taille?.nom}): ${produit.quantite} x ${produit.prixUnit} DA`
         )
         .join(", "),
+      Adresse: `${order.adresse?.rue ? order.adresse.rue + ", " : ""}${
+        order.adresse?.ville ? order.adresse.ville + ", " : ""
+      }${order.adresse?.wilaya || ""}${
+        order.adresse?.codePostal ? " - " + order.adresse.codePostal : ""
+      }`,
+      Statut: order.statut,
     }));
 
     const worksheet = XLSX.utils.json_to_sheet(data);
@@ -206,358 +196,77 @@ export default function OrderHistoryPage() {
     toast.success("Historique des commandes exporté avec succès !");
   };
 
-  const handleSort = (key: string, direction: "asc" | "desc" | "") => {
+  const handleSort = (
+    key: keyof OrderFromAPI,
+    direction: "asc" | "desc" | ""
+  ): void => {
     if (direction === "") {
       setSortConfig(null);
     } else {
       setSortConfig({ key, direction });
     }
+    // Reset to first page when sorting changes
+    setCurrentPage(1);
+  };
+
+  const handlePageChange = (page: number): void => {
+    setCurrentPage(page);
+  };
+
+  const toggleDateDropdown = (): void => setIsDateOpen(!isDateOpen);
+  const toggleTotalDropdown = (): void => setIsTotalOpen(!isTotalOpen);
+  const closeDropdowns = (): void => {
+    setIsDateOpen(false);
+    setIsTotalOpen(false);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-200 py-6 px-4 sm:pl-10 sm:pr-10">
+    <div
+      className="min-h-[calc(100dvh-130px)] bg-gradient-to-br from-gray-50 to-gray-200 py-6 px-4 sm:pl-10 sm:pr-10"
+      onClick={closeDropdowns}
+    >
       <div className="max-w-7xl mx-auto">
-        {/* Titre "Historique des Commandes" avec bouton Exporter */}
-        <div className="mb-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <Package className="h-6 w-6 sm:h-8 sm:w-8 text-black" />
-            <h1
-              className={`text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight ${montserrat.className}`}
-              style={{ fontFamily: "'Montserrat', sans-serif" }}
-            >
-              Historique des Commandes
-            </h1>
+        <PageHeader handleExport={handleExport} />
+
+        <SearchAndFilters
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          sortConfig={sortConfig}
+          handleSort={handleSort}
+          isDateOpen={isDateOpen}
+          isTotalOpen={isTotalOpen}
+          toggleDateDropdown={toggleDateDropdown}
+          toggleTotalDropdown={toggleTotalDropdown}
+          closeDropdowns={closeDropdowns}
+        />
+
+        {isLoading ? (
+          <div className="flex justify-center items-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
           </div>
-          <button
-            onClick={handleExport}
-            className="w-full sm:w-auto bg-black text-white px-4 sm:px-6 py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-800 transition-all duration-300 shadow-md text-sm sm:text-base"
-          >
-            <Download className="h-4 w-4 sm:h-5 sm:w-5" />
-            Exporter
-          </button>
-        </div>
-
-        {/* Texte descriptif */}
-        <p className="mb-6 text-base sm:text-lg text-gray-700">
-          Consultez l’historique de vos commandes et suivez vos achats.
-        </p>
-
-        {/* Barre de recherche et filtres */}
-        <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row items-center gap-3 sm:gap-4 w-full">
-          <div className="relative w-full">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Rechercher par ID ou produit..."
-              className="w-full px-4 py-2 sm:py-3 bg-white/80 backdrop-blur-md border border-gray-300 rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.05)] focus:ring-2 focus:ring-gradient-to-r focus:from-gray-400 focus:to-black focus:border-transparent transition-all duration-300 text-gray-800 placeholder-gray-500 hover:shadow-[0_6px_25px_rgba(0,0,0,0.1)] text-sm sm:text-base"
+        ) : orders.length > 0 ? (
+          <>
+            <OrderTable orders={orders} setSelectedOrder={setSelectedOrder} />
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+              totalItems={totalItems}
+              pageSize={pageSize}
             />
-            <svg
-              className="h-4 w-4 sm:h-5 sm:w-5 text-gray-700 absolute right-3 top-1/2 transform -translate-y-1/2 transition-all duration-300 hover:text-black"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
-          </div>
-
-          {/* Filtre Date */}
-          <div className="relative w-full sm:w-32">
-            <button
-              onClick={() => setIsDateOpen(!isDateOpen)}
-              className="w-full px-4 py-2 sm:py-3 bg-gradient-to-r from-white to-gray-100/80 backdrop-blur-md border border-gray-300 rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.1)] text-gray-800 text-sm hover:shadow-[0_6px_25px_rgba(0,0,0,0.15)] transition-all duration-300 transform hover:-translate-y-1"
-            >
-              {sortConfig?.key === "date"
-                ? sortConfig.direction === "asc"
-                  ? "Ancien"
-                  : "Récent"
-                : "Date"}
-            </button>
-            {isDateOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                className="absolute z-10 w-full mt-2 bg-white/95 backdrop-blur-md rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.15)] border border-gray-200 overflow-hidden"
-              >
-                <button
-                  onClick={() => {
-                    handleSort("date", "");
-                    setIsDateOpen(false);
-                  }}
-                  className="w-full px-4 py-2 text-gray-800 text-sm hover:bg-gray-100 transition-all duration-200"
-                >
-                  Date
-                </button>
-                <button
-                  onClick={() => {
-                    handleSort("date", "asc");
-                    setIsDateOpen(false);
-                  }}
-                  className="w-full px-4 py-2 text-gray-800 text-sm hover:bg-gray-100 transition-all duration-200"
-                >
-                  Ancien
-                </button>
-                <button
-                  onClick={() => {
-                    handleSort("date", "desc");
-                    setIsDateOpen(false);
-                  }}
-                  className="w-full px-4 py-2 text-gray-800 text-sm hover:bg-gray-100 transition-all duration-200"
-                >
-                  Récent
-                </button>
-              </motion.div>
-            )}
-          </div>
-
-          {/* Filtre Total */}
-          <div className="relative w-full sm:w-32">
-            <button
-              onClick={() => setIsTotalOpen(!isTotalOpen)}
-              className="w-full px-4 py-2 sm:py-3 bg-gradient-to-r from-white to-gray-100/80 backdrop-blur-md border border-gray-300 rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.1)] text-gray-800 text-sm hover:shadow-[0_6px_25px_rgba(0,0,0,0.15)] transition-all duration-300 transform hover:-translate-y-1"
-            >
-              {sortConfig?.key === "total"
-                ? sortConfig.direction === "asc"
-                  ? "Croissant"
-                  : "Décroissant"
-                : "Total"}
-            </button>
-            {isTotalOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                className="absolute z-10 w-full mt-2 bg-white/95 backdrop-blur-md rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.15)] border border-gray-200 overflow-hidden"
-              >
-                <button
-                  onClick={() => {
-                    handleSort("total", "");
-                    setIsTotalOpen(false);
-                  }}
-                  className="w-full px-4 py-2 text-gray-800 text-sm hover:bg-gray-100 transition-all duration-200"
-                >
-                  Total
-                </button>
-                <button
-                  onClick={() => {
-                    handleSort("total", "asc");
-                    setIsTotalOpen(false);
-                  }}
-                  className="w-full px-4 py-2 text-gray-800 text-sm hover:bg-gray-100 transition-all duration-200"
-                >
-                  Croissant
-                </button>
-                <button
-                  onClick={() => {
-                    handleSort("total", "desc");
-                    setIsTotalOpen(false);
-                  }}
-                  className="w-full px-4 py-2 text-gray-800 text-sm hover:bg-gray-100 transition-all duration-200"
-                >
-                  Décroissant
-                </button>
-              </motion.div>
-            )}
-          </div>
-        </div>
-
-        {/* Conteneur flex pour le tableau et l'image */}
-        {filteredOrders.length > 0 ? (
-          <div className="flex flex-col lg:flex-row gap-6 sm:gap-8">
-            {/* Tableau réduit (100% sur mobile, 60% sur desktop) */}
-            <div className="w-full lg:w-3/5 bg-white rounded-xl shadow-lg overflow-hidden">
-              {/* En-tête du tableau (fixe) */}
-              <table className="w-full divide-y divide-gray-200">
-                <thead className="bg-black text-white">
-                  <tr>
-                    <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold">
-                      ID
-                    </th>
-                    <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold">
-                      Nom du Vendeur
-                    </th>
-                    <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold">
-                      Date
-                    </th>
-                    <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold">
-                      Total
-                    </th>
-                  </tr>
-                </thead>
-              </table>
-              {/* Corps du tableau avec défilement (5 lignes maximum) */}
-              <div className="max-h-[20rem] overflow-y-auto">
-                <table className="w-full divide-y divide-gray-200">
-                  <tbody className="divide-y divide-gray-200">
-                    {filteredOrders.map((order) => (
-                      <tr
-                        key={order.id}
-                        className="hover:bg-gray-50 transition-all duration-200 cursor-pointer"
-                        onClick={() => setSelectedOrder(order)}
-                      >
-                        <td className="px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-gray-900">
-                          #{order.id}
-                        </td>
-                        <td className="px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-gray-900">
-                          <div>
-                            <span className="font-semibold">
-                              {order.sellerName}
-                            </span>
-                            <p className="text-xs text-gray-600">
-                              {order.sellerEmail}
-                            </p>
-                          </div>
-                        </td>
-                        <td className="px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-gray-900">
-                          {order.date}
-                        </td>
-                        <td className="px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-semibold text-green-600">
-                          {order.total.toFixed(2)} DA
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            {/* Image (100% sur mobile, 40% sur desktop) */}
-            <div className="w-full lg:w-2/5 flex items-center justify-center">
-              <Image
-                height={90}
-                width={90}
-                src="/images/a.png"
-                alt="Historique des commandes"
-                className="w-full sm:w-90 h-auto sm:h-90 object-contain"
-              />
-            </div>
-          </div>
+          </>
         ) : (
-          /* Message si aucune commande */
-          <div className="text-center py-12">
-            <Image
-              height={32}
-              width={32}
-              src="/images/b.png"
-              alt="Aucune commande"
-              className="mx-auto w-24 sm:w-32 h-24 sm:h-32 mb-4"
-            />
-            <p className="text-lg sm:text-xl font-semibold text-gray-800">
-              Aucune commande trouvée
-            </p>
-            <p className="text-gray-600 mt-2 text-sm sm:text-base">
-              Vous n’avez pas encore effectué de commande.
-            </p>
-          </div>
+          <EmptyState
+            title="Aucune commande trouvée"
+            description="Vous n'avez pas encore effectué de commande."
+          />
         )}
 
-        {/* Carte détaillée exceptionnelle */}
         {selectedOrder && (
-          <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50">
-            <motion.div
-              className="bg-white rounded-3xl shadow-2xl max-w-[90%] sm:max-w-3xl w-full p-4 sm:p-8 border border-gray-200 overflow-hidden"
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-            >
-              <button
-                onClick={() => setSelectedOrder(null)}
-                className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 transition-colors duration-200"
-              >
-                <X className="h-5 w-5 sm:h-6 sm:w-6" />
-              </button>
-              <div className="space-y-4 sm:space-y-6">
-                {/* En-tête de la commande */}
-                <div className="flex justify-between items-center border-b border-gray-200 pb-3 sm:pb-4">
-                  <h3 className="text-xl sm:text-2xl font-bold text-gray-900">
-                    Commande #{selectedOrder.id}
-                  </h3>
-                </div>
-
-                {/* Informations vendeur */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 bg-gray-50 p-3 sm:p-4 rounded-xl">
-                  <div>
-                    <span className="text-gray-700 font-medium text-sm sm:text-base">
-                      Nom du Vendeur :
-                    </span>
-                    <span className="text-gray-900 font-semibold block text-sm sm:text-base">
-                      {selectedOrder.sellerName}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-gray-700 font-medium text-sm sm:text-base">
-                      Email :
-                    </span>
-                    <span className="text-gray-900 block text-sm sm:text-base">
-                      {selectedOrder.sellerEmail}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-gray-700 font-medium text-sm sm:text-base">
-                      Date :
-                    </span>
-                    <span className="text-gray-900 block text-sm sm:text-base">
-                      {selectedOrder.date}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-gray-700 font-medium text-sm sm:text-base">
-                      Articles :
-                    </span>
-                    <span className="text-gray-900 font-semibold block text-sm sm:text-base">
-                      {selectedOrder.items.length}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Liste des produits */}
-                <div className="bg-white border border-gray-200 rounded-xl p-3 sm:p-4">
-                  <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-3">
-                    Détails des articles
-                  </h4>
-                  <div className="space-y-3">
-                    {selectedOrder.items.map((item, index) => (
-                      <div
-                        key={index}
-                        className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-gray-100 pb-2 last:border-b-0"
-                      >
-                        <div className="flex-1">
-                          <span className="text-gray-900 font-medium text-sm sm:text-base">
-                            {item.productName}
-                          </span>
-                          <p className="text-xs sm:text-sm text-gray-600">
-                            {item.color}, {item.size} - Quantité :{" "}
-                            {item.quantity}
-                          </p>
-                        </div>
-                        <span className="text-gray-900 font-semibold text-sm sm:text-base mt-1 sm:mt-0">
-                          {(item.price * item.quantity).toFixed(2)} DA
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Total */}
-                <div className="bg-green-50 p-3 sm:p-4 rounded-xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-                  <span className="text-green-700 font-medium text-base sm:text-lg">
-                    Total de la commande :
-                  </span>
-                  <span className="text-green-900 font-bold text-lg sm:text-2xl">
-                    {selectedOrder.total.toFixed(2)} DA
-                  </span>
-                </div>
-              </div>
-            </motion.div>
-          </div>
+          <OrderDetailModal
+            order={selectedOrder}
+            onClose={() => setSelectedOrder(null)}
+          />
         )}
       </div>
     </div>

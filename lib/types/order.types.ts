@@ -9,7 +9,7 @@ export type OrderFromAPI = {
   id: string;
   date: Date;
   montant: number;
-  statut: string | null;
+  statut: string;
   clientId: string | null;
   adresse: {
     id: string;
@@ -29,3 +29,8 @@ export type OrderFromAPI = {
     couleur?: { id: string; nom: string; code: string } | null;
   }[];
 };
+
+export interface SortConfig {
+  key: keyof OrderFromAPI;
+  direction: "asc" | "desc";
+}

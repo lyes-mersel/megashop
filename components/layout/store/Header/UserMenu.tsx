@@ -60,7 +60,7 @@ const UserMenu = () => {
           ) : session.user.role === "VENDEUR" ? (
             <>
               <DropdownMenuItem asChild>
-                <Link href="/seller/dashboard">Portail Vendeur</Link>
+                <Link href="/vendor/dashboard">Portail Vendeur</Link>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={handleLogout}>
                 Se déconnecter

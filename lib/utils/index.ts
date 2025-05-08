@@ -22,7 +22,7 @@ export function containsFilter(value: string) {
 
 export function extractDateString(dateInput: Date | string): string {
   const date = new Date(dateInput);
-  return date.toISOString().split("T")[0];
+  return date.toLocaleDateString("fr-FR");
 }
 
 export const getImageUrlFromPublicId = (imagePublicId: string) => {
