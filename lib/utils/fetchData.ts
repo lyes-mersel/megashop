@@ -12,17 +12,16 @@ export const fetchDataFromAPI = async <T>(
   try {
     const res = await fetch(url, options);
     const status = res.status;
+    const json: ApiResponse<T> = await res.json();
 
     if (!res.ok) {
-      const errorText = await res.text();
       return {
         data: null,
-        error: `Error ${status}: ${errorText || res.statusText}`,
+        error: `Error ${status}: ${json.message || res.statusText}`,
         status,
       };
     }
 
-    const json: ApiResponse<T> = await res.json();
     return {
       data: json.data,
       error: null,
@@ -46,17 +45,16 @@ export const fetchPaginatedDataFromAPI = async <T>(
   try {
     const res = await fetch(url, options);
     const status = res.status;
+    const json: PaginatedApiResponse<T> = await res.json();
 
     if (!res.ok) {
-      const errorText = await res.text();
       return {
         data: null,
-        error: `Error ${status}: ${errorText || res.statusText}`,
+        error: `Error ${status}: ${json.message || res.statusText}`,
         status,
       };
     }
 
-    const json: PaginatedApiResponse<T> = await res.json();
     return {
       data: json,
       error: null,

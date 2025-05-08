@@ -9,7 +9,7 @@ export type OrderFromAPI = {
   id: string;
   date: Date;
   montant: number;
-  statut: string | null;
+  statut: string;
   clientId: string | null;
   adresse: {
     id: string;
@@ -29,3 +29,26 @@ export type OrderFromAPI = {
     couleur?: { id: string; nom: string; code: string } | null;
   }[];
 };
+
+// Static Frontend Order Type
+export interface OrderItem {
+  productName: string;
+  color: string;
+  size: string;
+  quantity: number;
+  price: number;
+}
+
+export interface Order {
+  id: number;
+  vendorName: string;
+  vendorEmail: string;
+  date: string;
+  total: number;
+  items: OrderItem[];
+}
+
+export interface SortConfig {
+  key: keyof OrderFromAPI;
+  direction: "asc" | "desc";
+}

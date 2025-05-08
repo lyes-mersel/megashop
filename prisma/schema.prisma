@@ -62,7 +62,7 @@ model Commande {
   id                String             @id @default(cuid()) @db.VarChar(25)
   date              DateTime           @default(now())
   montant           Decimal            @db.Decimal(10, 2)
-  statut            CommandeStatut?    @default(EN_ATTENTE)
+  statut            CommandeStatut     @default(EN_ATTENTE)
   adresseId         String?            @map("adresse_id") @db.VarChar(25)
   panierId          String?            @map("panier_id") @db.VarChar(25)
   clientId          String?            @map("client_id") @db.VarChar(25)
