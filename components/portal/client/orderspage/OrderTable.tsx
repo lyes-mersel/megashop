@@ -38,16 +38,19 @@ export default function OrderTable({
             <table className="w-full table-fixed">
               <thead>
                 <tr>
-                  <th className="w-1/4 px-4 sm:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold">
-                    N° de Commande
+                  <th className="w-1/5 px-4 sm:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold">
+                    N°
                   </th>
-                  <th className="w-1/4 px-4 sm:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold">
+                  <th className="w-1/5 px-4 sm:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold">
                     Date
                   </th>
-                  <th className="w-1/4 px-4 sm:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold">
+                  <th className="w-1/5 px-4 sm:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold">
                     Statut
                   </th>
-                  <th className="w-1/4 px-4 sm:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold">
+                  <th className="w-1/5 px-4 sm:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold">
+                    Articles
+                  </th>
+                  <th className="w-1/5 px-4 sm:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold">
                     Total
                   </th>
                 </tr>
@@ -65,13 +68,13 @@ export default function OrderTable({
                     className="hover:bg-gray-50 transition-all duration-200 cursor-pointer border-b-1 border-gray-200"
                     onClick={() => setSelectedOrder(order)}
                   >
-                    <td className="w-1/4 px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-gray-900">
+                    <td className="w-1/5 px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-gray-900">
                       {index + 1}
                     </td>
-                    <td className="w-1/4 px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-gray-900">
+                    <td className="w-1/5 px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-gray-900">
                       {extractDateString(order.date)}
                     </td>
-                    <td className="w-1/4 px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">
+                    <td className="w-1/5 px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">
                       <span
                         className={`px-3 py-1 rounded-full font-medium ${getStatusColor(
                           order.statut!
@@ -80,7 +83,10 @@ export default function OrderTable({
                         {getStatusLabel(order.statut)}
                       </span>
                     </td>
-                    <td className="w-1/4 px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-semibold text-gray-900">
+                    <td className="w-1/5 px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-semibold text-gray-900">
+                      {order.produits.length}
+                    </td>
+                    <td className="w-1/5 px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-semibold text-gray-900">
                       {order.montant.toFixed(2)} DA
                     </td>
                   </tr>

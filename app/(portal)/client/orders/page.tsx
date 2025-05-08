@@ -166,7 +166,7 @@ export default function OrderHistoryPage(): JSX.Element {
       Articles: order.produits
         .map(
           (produit) =>
-            `${produit.nomProduit} (${produit.couleur}, ${produit.taille}): ${produit.quantite} x ${produit.prixUnit} DA`
+            `${produit.nomProduit} (${produit.couleur?.id}, ${produit.taille?.nom}): ${produit.quantite} x ${produit.prixUnit} DA`
         )
         .join(", "),
       Adresse: `${order.adresse?.rue ? order.adresse.rue + ", " : ""}${
