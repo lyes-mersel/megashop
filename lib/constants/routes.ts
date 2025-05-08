@@ -2,7 +2,7 @@ export const ROOT = "/";
 
 export const PUBLIC_ROUTES = ["/cart", "/catalog", "/order", "/product"];
 
-export const PRIVATE_ROUTES = ["/client", "/seller", "/admin"];
+export const PRIVATE_ROUTES = ["/client", "/vendor", "/admin"];
 
 export const AUTH_ROUTES = [
   "/auth/login",

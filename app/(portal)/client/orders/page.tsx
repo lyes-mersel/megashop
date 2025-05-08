@@ -24,8 +24,8 @@ interface OrderItem {
 
 interface Order {
   id: number;
-  sellerName: string; // Nom et prénom du vendeur
-  sellerEmail: string; // Email du vendeur
+  vendorName: string; // Nom et prénom du vendeur
+  vendorEmail: string; // Email du vendeur
   date: string;
   total: number; // Total calculé à partir des items
   items: OrderItem[];
@@ -36,8 +36,8 @@ export default function OrderHistoryPage() {
   const [orders, setOrders] = useState<Order[]>([
     {
       id: 1,
-      sellerName: "Karim Belkacem",
-      sellerEmail: "karim.belkacem@example.com",
+      vendorName: "Karim Belkacem",
+      vendorEmail: "karim.belkacem@example.com",
       date: "2024-03-15",
       total: 15000,
       items: [
@@ -52,8 +52,8 @@ export default function OrderHistoryPage() {
     },
     {
       id: 2,
-      sellerName: "Amina Cherif",
-      sellerEmail: "amina.cherif@example.com",
+      vendorName: "Amina Cherif",
+      vendorEmail: "amina.cherif@example.com",
       date: "2024-03-16",
       total: 7550,
       items: [
@@ -68,8 +68,8 @@ export default function OrderHistoryPage() {
     },
     {
       id: 3,
-      sellerName: "Sofiane Merad",
-      sellerEmail: "sofiane.merad@example.com",
+      vendorName: "Sofiane Merad",
+      vendorEmail: "sofiane.merad@example.com",
       date: "2024-03-17",
       total: 22500,
       items: [
@@ -91,8 +91,8 @@ export default function OrderHistoryPage() {
     },
     {
       id: 4,
-      sellerName: "Leila Khedir",
-      sellerEmail: "leila.khedir@example.com",
+      vendorName: "Leila Khedir",
+      vendorEmail: "leila.khedir@example.com",
       date: "2024-03-18",
       total: 18000,
       items: [
@@ -107,8 +107,8 @@ export default function OrderHistoryPage() {
     },
     {
       id: 5,
-      sellerName: "Yanis Haddad",
-      sellerEmail: "yanis.haddad@example.com",
+      vendorName: "Yanis Haddad",
+      vendorEmail: "yanis.haddad@example.com",
       date: "2024-03-19",
       total: 12000,
       items: [
@@ -123,8 +123,8 @@ export default function OrderHistoryPage() {
     },
     {
       id: 6,
-      sellerName: "Nadia Benali",
-      sellerEmail: "nadia.benali@example.com",
+      vendorName: "Nadia Benali",
+      vendorEmail: "nadia.benali@example.com",
       date: "2024-03-20",
       total: 9000,
       items: [
@@ -175,8 +175,8 @@ export default function OrderHistoryPage() {
   const handleExport = () => {
     const data = filteredOrders.map((order) => ({
       ID: order.id,
-      "Nom du Vendeur": order.sellerName,
-      "Email du Vendeur": order.sellerEmail,
+      "Nom du Vendeur": order.vendorName,
+      "Email du Vendeur": order.vendorEmail,
       Date: order.date,
       "Total (DA)": order.total.toFixed(2),
       Articles: order.items
@@ -408,10 +408,10 @@ export default function OrderHistoryPage() {
                         <td className="px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-gray-900">
                           <div>
                             <span className="font-semibold">
-                              {order.sellerName}
+                              {order.vendorName}
                             </span>
                             <p className="text-xs text-gray-600">
-                              {order.sellerEmail}
+                              {order.vendorEmail}
                             </p>
                           </div>
                         </td>
@@ -489,7 +489,7 @@ export default function OrderHistoryPage() {
                       Nom du Vendeur :
                     </span>
                     <span className="text-gray-900 font-semibold block text-sm sm:text-base">
-                      {selectedOrder.sellerName}
+                      {selectedOrder.vendorName}
                     </span>
                   </div>
                   <div>
@@ -497,7 +497,7 @@ export default function OrderHistoryPage() {
                       Email :
                     </span>
                     <span className="text-gray-900 block text-sm sm:text-base">
-                      {selectedOrder.sellerEmail}
+                      {selectedOrder.vendorEmail}
                     </span>
                   </div>
                   <div>

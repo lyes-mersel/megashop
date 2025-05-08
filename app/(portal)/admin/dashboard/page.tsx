@@ -36,7 +36,7 @@ interface Stats {
   totalSales: number;
   totalProducts: number;
   totalItems: number;
-  totalUsers: { clients: number; sellers: number };
+  totalUsers: { clients: number; vendors: number };
   topSellingProduct: { name: string; sold: number };
   mostProfitableProduct: { name: string; profit: number };
   soldProducts: { products: number; items: number };
@@ -51,7 +51,7 @@ export default function DashboardPage() {
     totalSales: 125000,
     totalProducts: 50,
     totalItems: 320,
-    totalUsers: { clients: 120, sellers: 15 },
+    totalUsers: { clients: 120, vendors: 15 },
     topSellingProduct: { name: "T-shirt Vintage", sold: 45 },
     mostProfitableProduct: { name: "Chaussures Sport", profit: 15000 },
     soldProducts: { products: 30, items: 150 },
@@ -214,10 +214,10 @@ export default function DashboardPage() {
                   Utilisateurs
                 </h3>
                 <p className="text-xl sm:text-2xl font-bold text-gray-900 mt-1">
-                  {stats.totalUsers.clients + stats.totalUsers.sellers}
+                  {stats.totalUsers.clients + stats.totalUsers.vendors}
                 </p>
                 <p className="text-xs sm:text-sm text-gray-600">
-                  {stats.totalUsers.clients} clients, {stats.totalUsers.sellers}{" "}
+                  {stats.totalUsers.clients} clients, {stats.totalUsers.vendors}{" "}
                   vendeurs
                 </p>
               </div>

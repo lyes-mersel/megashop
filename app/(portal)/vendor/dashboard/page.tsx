@@ -42,7 +42,7 @@ interface Stats {
   };
 }
 
-interface Seller {
+interface Vendor {
   firstName: string;
   lastName: string;
 }
@@ -177,7 +177,7 @@ export default function DashboardPage() {
     },
   });
 
-  const [seller] = useState<Seller>({
+  const [vendor] = useState<Vendor>({
     firstName: "Billal",
     lastName: "Mechekour",
   });
@@ -350,7 +350,7 @@ export default function DashboardPage() {
                 <p
                   className={`name-text text-lg sm:text-xl mt-2 sm:mt-4 ${montserrat.className}`}
                 >
-                  {seller.firstName} {seller.lastName}
+                  {vendor.firstName} {vendor.lastName}
                 </p>
                 <p className="greeting-text text-base sm:text-lg mt-2 sm:mt-4 text-gray-300">
                   Journée pleine de bonheur
@@ -359,7 +359,7 @@ export default function DashboardPage() {
               <div className="flex-shrink-0">
                 <Image
                   src="/images/image.png"
-                  alt="Seller Dashboard Illustration"
+                  alt="Vendor Dashboard Illustration"
                   width={251}
                   height={191}
                   className={`welcome-image w-32 sm:w-40 md:w-48 lg:w-64 h-auto object-contain opacity-100 transition-all duration-300 hover:opacity-100 ${

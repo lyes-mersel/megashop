@@ -266,9 +266,9 @@ export const topSellingData: ProductFromAPI[] = [
     id: "9",
     type: null,
     nom: "Vertical Striped Shirt",
-    objet: "Chemise à rayures verticales bestseller",
+    objet: "Chemise à rayures verticales bestvendor",
     description:
-      "Notre chemise à rayures verticales bestseller. Élégante et confortable pour toutes les occasions.",
+      "Notre chemise à rayures verticales bestvendor. Élégante et confortable pour toutes les occasions.",
     prix: 232,
     qteStock: 15,
     noteMoyenne: 5.0,
@@ -298,7 +298,7 @@ export const topSellingData: ProductFromAPI[] = [
     id: "10",
     type: null,
     nom: "Courage Graphic T-shirt",
-    objet: "T-shirt bestseller",
+    objet: "T-shirt bestvendor",
     description:
       "T-shirt graphique 'Courage' très populaire. Design moderne et inspirant sur un coton de haute qualité.",
     prix: 145,
@@ -356,7 +356,7 @@ export const topSellingData: ProductFromAPI[] = [
     id: "12",
     type: null,
     nom: "Faded Skinny Jeans",
-    objet: "Jean skinny bestseller",
+    objet: "Jean skinny bestvendor",
     description:
       "Notre jean skinny délavé le plus vendu. Coupe parfaite et confort optimal pour un style tendance.",
     prix: 210,

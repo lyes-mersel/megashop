@@ -49,7 +49,7 @@ interface Client extends BaseUser {
   totalSpent: number;
 }
 
-interface Seller extends BaseUser {
+interface Vendor extends BaseUser {
   shopName: string;
   reportsCount: number;
   productsCount: number;
@@ -90,7 +90,7 @@ export default function UsersPage() {
     },
   ]);
 
-  const [sellers, setSellers] = useState<Seller[]>([
+  const [vendors,setVendors] = useState<Vendor[]>([
     {
       id: 1,
       firstName: "Karim",
@@ -132,16 +132,16 @@ export default function UsersPage() {
   ]);
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [userType, setUserType] = useState<"client" | "seller">("client");
+  const [userType, setUserType] = useState<"client" | "vendor">("client");
   const [showFilters, setShowFilters] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showWarningModal, setShowWarningModal] = useState(false);
   const [userToDelete, setUserToDelete] = useState<{
     id: number;
-    type: "client" | "seller";
+    type: "client" | "vendor";
   } | null>(null);
-  const [userToWarn, setUserToWarn] = useState<Seller | null>(null);
-  const [selectedUser, setSelectedUser] = useState<Client | Seller | null>(
+  const [userToWarn, setUserToWarn] = useState<Vendor | null>(null);
+  const [selectedUser, setSelectedUser] = useState<Client | Vendor | null>(
     null
   );
   const [sortConfig, setSortConfig] = useState<{
@@ -151,7 +151,7 @@ export default function UsersPage() {
   const [warningMessage, setWarningMessage] = useState("");
 
   const getFilteredUsers = () => {
-    let users = userType === "client" ? [...clients] : [...sellers];
+    let users = userType === "client" ? [...clients] : [...vendors];
 
     users = users.filter((user) => {
       const searchTerms = searchQuery.toLowerCase();
@@ -160,7 +160,7 @@ export default function UsersPage() {
         fullName.includes(searchTerms) ||
         user.email.toLowerCase().includes(searchTerms)
       );
-    }) as Client[] | Seller[];
+    }) as Client[] | Vendor[];
 
     if (sortConfig) {
       users.sort((a, b) => {
@@ -205,18 +205,18 @@ export default function UsersPage() {
           "Total dépensé": client.totalSpent.toFixed(2),
         };
       } else {
-        const seller = user as Seller;
+        const vendor = user as Vendor;
         return {
-          ID: seller.id,
-          Prénom: seller.firstName,
-          Nom: seller.lastName,
-          Email: seller.email,
-          "Date de création": seller.createdAt,
-          Téléphone: seller.phone || "Non renseigné",
+          ID: vendor.id,
+          Prénom: vendor.firstName,
+          Nom: vendor.lastName,
+          Email: vendor.email,
+          "Date de création": vendor.createdAt,
+          Téléphone: vendor.phone || "Non renseigné",
           Adresse: address,
-          "Nom de la boutique": seller.shopName,
-          Signalements: seller.reportsCount,
-          Note: seller.rating.toFixed(1),
+          "Nom de la boutique": vendor.shopName,
+          Signalements: vendor.reportsCount,
+          Note: vendor.rating.toFixed(1),
         };
       }
     });
@@ -253,7 +253,7 @@ export default function UsersPage() {
     );
   };
 
-  const handleDeleteUser = (id: number, type: "client" | "seller") => {
+  const handleDeleteUser = (id: number, type: "client" | "vendor") => {
     setUserToDelete({ id, type });
     setShowDeleteModal(true);
   };
@@ -263,7 +263,7 @@ export default function UsersPage() {
       if (userToDelete.type === "client") {
         setClients(clients.filter((client) => client.id !== userToDelete.id));
       } else {
-        setSellers(sellers.filter((seller) => seller.id !== userToDelete.id));
+        setVendors(vendors.filter((vendor) => vendor.id !== userToDelete.id));
       }
       toast.success("Utilisateur supprimé avec succès");
     }
@@ -276,8 +276,8 @@ export default function UsersPage() {
     setUserToDelete(null);
   };
 
-  const handleWarnSeller = (seller: Seller) => {
-    setUserToWarn(seller);
+  const handleWarnVendor = (vendor: Vendor) => {
+    setUserToWarn(vendor);
     setShowWarningModal(true);
   };
 
@@ -296,7 +296,7 @@ export default function UsersPage() {
     }, 700);
   };
 
-  const handleUserClick = (user: Client | Seller) => {
+  const handleUserClick = (user: Client | Vendor) => {
     setSelectedUser(user);
   };
 
@@ -365,9 +365,9 @@ export default function UsersPage() {
                     Clients
                   </button>
                   <button
-                    onClick={() => setUserType("seller")}
+                    onClick={() => setUserType("vendor")}
                     className={`px-3 py-1 sm:px-4 sm:py-2 rounded-md text-xs sm:text-sm font-medium transition ${
-                      userType === "seller"
+                      userType === "vendor"
                         ? "bg-indigo-100 text-indigo-700"
                         : "text-gray-600 hover:bg-gray-100"
                     }`}
@@ -568,19 +568,19 @@ export default function UsersPage() {
                     <>
                       <div className="flex items-center gap-2 text-xs text-gray-600 mb-1">
                         <Store className="h-3 w-3 text-indigo-600" />
-                        <span>{(user as Seller).shopName}</span>
+                        <span>{(user as Vendor).shopName}</span>
                       </div>
                       <div className="text-xs text-gray-600 mb-2">
-                        Note: {(user as Seller).rating.toFixed(1)}
+                        Note: {(user as Vendor).rating.toFixed(1)}
                       </div>
                     </>
                   )}
                   <div className="flex items-center justify-end gap-2">
-                    {userType === "seller" && (
+                    {userType === "vendor" && (
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          handleWarnSeller(user as Seller);
+                          handleWarnVendor(user as Vendor);
                         }}
                         className="bg-yellow-500 text-white p-2 rounded-md hover:bg-yellow-600 transition-all duration-200 shadow-sm"
                       >
@@ -783,24 +783,24 @@ export default function UsersPage() {
                             <div className="flex items-center gap-2">
                               <Store className="h-4 w-4 text-indigo-600" />
                               <span className="text-xs sm:text-sm font-medium text-gray-800">
-                                {(user as Seller).shopName}
+                                {(user as Vendor).shopName}
                               </span>
                             </div>
                           </td>
                           <td className="px-4 py-3 whitespace-nowrap hidden xl:table-cell">
                             <div className="text-xs sm:text-sm font-medium text-gray-900">
-                              {(user as Seller).rating.toFixed(1)}
+                              {(user as Vendor).rating.toFixed(1)}
                             </div>
                           </td>
                         </>
                       )}
                       <td className="px-4 py-3 whitespace-nowrap text-right">
                         <div className="flex items-center justify-end gap-2">
-                          {userType === "seller" && (
+                          {userType === "vendor" && (
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
-                                handleWarnSeller(user as Seller);
+                                handleWarnVendor(user as Vendor);
                               }}
                               className="bg-yellow-500 text-white p-2 sm:px-3 sm:py-1 rounded-md hover:bg-yellow-600 transition-all duration-200 shadow-sm"
                             >
