@@ -379,4 +379,5 @@ enum NotificationType {
   SIGNALEMENT
   EVALUATION
   MESSAGE
+  SECURITE
 }
