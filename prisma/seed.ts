@@ -932,6 +932,15 @@ async function insertNotifications() {
         urlRedirection: undefined,
       },
       {
+        type: "EVALUATION",
+        objet: "Nouvelle réponse à votre évaluation",
+        text: "Le vendeur a répondu à votre évaluation.",
+        estLu: false,
+        userId: userId,
+        date: new Date(),
+        urlRedirection: "/product/cmag1sbe0001s3o6izl8lpxqi",
+      },
+      {
         type: "SECURITE",
         objet: "Alerte de sécurité",
         text: "Un nouvel appareil a été connecté à votre compte.",
@@ -949,15 +958,8 @@ async function insertNotifications() {
         date: new Date(),
         urlRedirection: undefined,
       },
-      {
-        type: "EVALUATION",
-        objet: "Nouvelle réponse à votre évaluation",
-        text: "Le vendeur a répondu à votre évaluation.",
-        estLu: false,
-        userId: userId,
-        date: new Date(),
-        urlRedirection: "/product/cmag1sbe0001s3o6izl8lpxqi",
-      }
     ],
   });
+
+  console.log("Notifications insérées avec succès !");
 }

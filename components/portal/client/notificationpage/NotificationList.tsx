@@ -24,7 +24,7 @@ export default function NotificationList({
 
   if (notifications.length === 0) {
     return (
-      <div className="text-center py-12">
+      <div className="flex-1 flex flex-col items-center justify-center text-center py-12">
         <Bell className="mx-auto h-16 w-16 sm:h-24 sm:w-24 text-gray-400" />
         <p className="text-xl sm:text-2xl font-semibold text-gray-800 mt-4">
           Aucune notification trouvée
