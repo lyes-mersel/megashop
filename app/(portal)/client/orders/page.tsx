@@ -1,8 +1,10 @@
 "use client";
 
-import { JSX, useEffect, useState } from "react";
 import * as XLSX from "xlsx";
 import { toast } from "sonner";
+import { useSession } from "next-auth/react";
+import { JSX, useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 // Components
 import PageHeader from "@/components/portal/client/orderspage/PageHeader";
@@ -12,11 +14,10 @@ import EmptyState from "@/components/common/EmptyState";
 import OrderDetailModal from "@/components/portal/client/orderspage/OrdersDetailModel";
 import Pagination from "@/components/portal/client/orderspage/Pagination";
 
-// Types
+// Types & Utils
 import { OrderFromAPI, SortConfig } from "@/lib/types/order.types";
 import { fetchPaginatedDataFromAPI } from "@/lib/utils/fetchData";
-import { useSession } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { extractDateString } from "@/lib/utils";
 
 export default function OrderHistoryPage(): JSX.Element {
   const [orders, setOrders] = useState<OrderFromAPI[]>([]);
@@ -161,14 +162,14 @@ export default function OrderHistoryPage(): JSX.Element {
   const handleExport = (): void => {
     const data = orders.map((order) => ({
       ID: order.id,
-      Date: order.date,
+      Date: extractDateString(order.date),
       "Total (DA)": order.montant.toFixed(2),
       Articles: order.produits
         .map(
           (produit) =>
-            `${produit.nomProduit} (${produit.couleur?.id}, ${produit.taille?.nom}): ${produit.quantite} x ${produit.prixUnit} DA`
+            `${produit.nomProduit} (${produit.couleur?.nom}, ${produit.taille?.nom}): ${produit.quantite} x ${produit.prixUnit} DA`
         )
-        .join(", "),
+        .join(" | "),
       Adresse: `${order.adresse?.rue ? order.adresse.rue + ", " : ""}${
         order.adresse?.ville ? order.adresse.ville + ", " : ""
       }${order.adresse?.wilaya || ""}${
