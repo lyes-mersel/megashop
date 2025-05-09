@@ -16,6 +16,7 @@ import {
 import Image from "next/image";
 import { Montserrat } from "next/font/google";
 import { motion } from "framer-motion";
+import wilayas from "@/lib/data/wilayasData";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -32,7 +33,7 @@ interface PersonalInfo {
 interface AddressInfo {
   address: string;
   city: string;
-  province: string;
+  wilaya: string;
   postalCode: string;
 }
 
@@ -50,7 +51,7 @@ interface PasswordData {
 interface VendorInfo {
   businessName: string;
   accountNumber: string;
-  routingNumber: string;
+  bankName: string;
   bio: string;
 }
 
@@ -71,7 +72,7 @@ export default function SettingsPage() {
   const [addressInfo, setAddressInfo] = useState<AddressInfo>({
     address: "123 Rue Principale",
     city: "Alger", // Changé de "Paris" à "Alger"
-    province: "Alger",
+    wilaya: "Alger",
     postalCode: "16000", // Changé de "75001" à "16000" (code postal d'Alger)
   });
 
@@ -89,101 +90,34 @@ export default function SettingsPage() {
   const [vendorInfo, setVendorInfo] = useState<VendorInfo>({
     businessName: "",
     accountNumber: "",
-    routingNumber: "",
+    bankName: "",
     bio: "",
   });
 
-  // Liste des provinces
-  const provinces = [
-    "Adrar",
-    "Chlef",
-    "Laghouat",
-    "Oum El Bouaghi",
-    "Batna",
-    "Béjaïa",
-    "Biskra",
-    "Béchar",
-    "Blida",
-    "Bouira",
-    "Tamanrasset",
-    "Tébessa",
-    "Tlemcen",
-    "Tiaret",
-    "Tizi Ouzou",
-    "Alger",
-    "Djelfa",
-    "Jijel",
-    "Sétif",
-    "Saïda",
-    "Skikda",
-    "Sidi Bel Abbès",
-    "Annaba",
-    "Guelma",
-    "Constantine",
-    "Médéa",
-    "Mostaganem",
-    "M’Sila",
-    "Mascara",
-    "Ouargla",
-    "Oran",
-    "El Bayadh",
-    "Illizi",
-    "Bordj Bou Arreridj",
-    "Boumerdès",
-    "El Tarf",
-    "Tindouf",
-    "Tissemsilt",
-    "El Oued",
-    "Khenchela",
-    "Souk Ahras",
-    "Tipaza",
-    "Mila",
-    "Aïn Defla",
-    "Naâma",
-    "Aïn Témouchent",
-    "Ghardaïa",
-    "Relizane",
-    "Timimoun",
-    "Bordj Badji Mokhtar",
-    "Ouled Djellal",
-    "Béni Abbès",
-    "In Salah",
-    "In Guezzam",
-    "Touggourt",
-    "Djanet",
-    "El M’Ghair",
-    "El Meniaa",
-  ];
-
-  // État pour gérer l'input de recherche/filtrage des provinces
-  const [provinceInput, setProvinceInput] = useState<string>(
-    addressInfo.province
-  );
-  const [filteredProvinces, setFilteredProvinces] =
-    useState<string[]>(provinces);
-  const [isProvinceDropdownOpen, setIsProvinceDropdownOpen] =
+  // État pour gérer l'input de recherche/filtrage des wilayas
+  const [wilayaInput, setWilayaInput] = useState<string>(addressInfo.wilaya);
+  const [filteredWilayas, setFilteredWilayas] = useState<string[]>(wilayas);
+  const [isWilayaDropdownOpen, setIsWilayaDropdownOpen] =
     useState<boolean>(false);
 
-  // Filtrer les provinces en fonction de l'input
-  const handleProvinceInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  // Filtrer les wilayas en fonction de l'input
+  const handleWilayaInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setProvinceInput(value);
-    setAddressInfo({ ...addressInfo, province: value });
+    setWilayaInput(value);
+    setAddressInfo({ ...addressInfo, wilaya: value });
 
-    const filtered = provinces.filter((province) =>
-      province.toLowerCase().startsWith(value.toLowerCase())
+    const filtered = wilayas.filter((wilaya) =>
+      wilaya.toLowerCase().startsWith(value.toLowerCase())
     );
-    setFilteredProvinces(filtered);
-    setIsProvinceDropdownOpen(true);
+    setFilteredWilayas(filtered);
+    setIsWilayaDropdownOpen(true);
   };
 
-  // Sélectionner une province depuis la liste
-  const handleProvinceSelect = (province: string) => {
-    setProvinceInput(province);
-    setAddressInfo({ ...addressInfo, province });
-    setIsProvinceDropdownOpen(false);
+  // Sélectionner une wilaya depuis la liste
+  const handleWilayaSelect = (wilaya: string) => {
+    setWilayaInput(wilaya);
+    setAddressInfo({ ...addressInfo, wilaya });
+    setIsWilayaDropdownOpen(false);
   };
 
   const handlePersonalInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -295,7 +229,7 @@ export default function SettingsPage() {
     if (
       !vendorInfo.businessName ||
       !vendorInfo.accountNumber ||
-      !vendorInfo.routingNumber
+      !vendorInfo.bankName
     ) {
       toast.error("Veuillez remplir tous les champs obligatoires");
       return;
@@ -527,43 +461,43 @@ export default function SettingsPage() {
                     </div>
                     <div className="space-y-2">
                       <label
-                        htmlFor="province"
+                        htmlFor="wilaya"
                         className="block text-sm font-medium"
                       >
-                        Province
+                        Wilaya
                       </label>
                       <div className="relative">
                         <input
-                          id="province"
-                          name="province"
+                          id="wilaya"
+                          name="wilaya"
                           type="text"
-                          value={provinceInput}
-                          onChange={handleProvinceInputChange}
-                          onFocus={() => setIsProvinceDropdownOpen(true)}
+                          value={wilayaInput}
+                          onChange={handleWilayaInputChange}
+                          onFocus={() => setIsWilayaDropdownOpen(true)}
                           onBlur={() =>
                             setTimeout(
-                              () => setIsProvinceDropdownOpen(false),
+                              () => setIsWilayaDropdownOpen(false),
                               200
                             )
                           }
                           className="w-full px-3 py-2 border rounded-md"
                           autoComplete="off"
                         />
-                        {isProvinceDropdownOpen && (
+                        {isWilayaDropdownOpen && (
                           <ul className="absolute z-10 w-full bg-white border rounded-md max-h-60 overflow-y-auto shadow-lg">
-                            {filteredProvinces.length > 0 ? (
-                              filteredProvinces.map((province) => (
+                            {filteredWilayas.length > 0 ? (
+                              filteredWilayas.map((wilaya) => (
                                 <li
-                                  key={province}
-                                  onClick={() => handleProvinceSelect(province)}
+                                  key={wilaya}
+                                  onClick={() => handleWilayaSelect(wilaya)}
                                   className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
                                 >
-                                  {province}
+                                  {wilaya}
                                 </li>
                               ))
                             ) : (
                               <li className="px-3 py-2 text-gray-500">
-                                Aucune province trouvée
+                                Aucune wilaya trouvée
                               </li>
                             )}
                           </ul>
@@ -798,7 +732,7 @@ export default function SettingsPage() {
                             htmlFor="businessName"
                             className="block text-sm font-medium"
                           >
-                            Nom de l&apos;entreprise
+                            Nom de votre boutique en ligne
                           </label>
                           <input
                             id="businessName"
@@ -841,6 +775,22 @@ export default function SettingsPage() {
                         <div className="grid gap-6 sm:grid-cols-2">
                           <div className="space-y-2">
                             <label
+                              htmlFor="bankName"
+                              className="block text-sm font-medium"
+                            >
+                              Nom de la banque
+                            </label>
+                            <input
+                              id="bankName"
+                              name="bankName"
+                              value={vendorInfo.bankName}
+                              onChange={handleVendorInfoChange}
+                              required
+                              className="w-full px-3 py-2 border rounded-md"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <label
                               htmlFor="accountNumber"
                               className="block text-sm font-medium"
                             >
@@ -850,22 +800,6 @@ export default function SettingsPage() {
                               id="accountNumber"
                               name="accountNumber"
                               value={vendorInfo.accountNumber}
-                              onChange={handleVendorInfoChange}
-                              required
-                              className="w-full px-3 py-2 border rounded-md"
-                            />
-                          </div>
-                          <div className="space-y-2">
-                            <label
-                              htmlFor="routingNumber"
-                              className="block text-sm font-medium"
-                            >
-                              Code banque
-                            </label>
-                            <input
-                              id="routingNumber"
-                              name="routingNumber"
-                              value={vendorInfo.routingNumber}
                               onChange={handleVendorInfoChange}
                               required
                               className="w-full px-3 py-2 border rounded-md"

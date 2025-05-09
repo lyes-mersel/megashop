@@ -17,8 +17,6 @@ export type UserFromAPI = {
   emailEnAttente?: string | null;
   dateCreation: Date;
   adresse?: Adresse | null;
-  // admin?: { userId: string } | null;
-  // client?: { id?: string } | null;
   vendeur?: {
     nomBoutique: string;
     description?: string | null;
