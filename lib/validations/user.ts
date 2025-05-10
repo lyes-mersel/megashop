@@ -4,11 +4,11 @@ import {
 } from "@/lib/constants/settings";
 import { z } from "zod";
 
-// Schema for updating user information (Patch request)
 export const updateUserSchema = z
   .object({
     email: z.string().email("Email invalide").optional(),
-    password: z
+    currentPassword: z.string().optional(),
+    newPassword: z
       .string()
       .min(6, "Le mot de passe doit contenir au moins 6 caractères")
       .optional(),
@@ -19,7 +19,17 @@ export const updateUserSchema = z
       .regex(/^[0-9+\-().\s]{7,20}$/, "Numéro de téléphone invalide")
       .optional(),
   })
-  .strict();
+  .strict()
+  .refine(
+    (data) =>
+      (!data.newPassword && !data.currentPassword) ||
+      (data.newPassword && data.currentPassword),
+    {
+      message:
+        "Les champs 'mot de passe actuel' et 'nouveau mot de passe' doivent être fournis ensemble.",
+      path: ["newPassword"],
+    }
+  );
 
 // Schema for updating user address
 export const updateAddressSchema = z.object({

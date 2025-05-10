@@ -714,6 +714,7 @@ async function insertProducts() {
   console.log("Produits insérés avec succès !");
 }
 
+// Insertion des commandes
 async function insertOrders() {
   const userId = (
     await prisma.user.findUnique({

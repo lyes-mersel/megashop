@@ -17,7 +17,7 @@ export const fetchDataFromAPI = async <T>(
     if (!res.ok) {
       return {
         data: null,
-        error: `Error ${status}: ${json.message || res.statusText}`,
+        error: `Error ${status}: ${json.message || json.error || res.statusText}`,
         status,
       };
     }

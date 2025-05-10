@@ -72,10 +72,10 @@ const UserMenu = () => {
                 <Link href="/client/settings">Paramètres</Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link href="/client/orders">Commandes</Link>
+                <Link href="/client/notifications">Notifications</Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link href="/client/notifications">Notifications</Link>
+                <Link href="/client/orders">Commandes</Link>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={handleLogout}>
                 Se déconnecter
