@@ -73,7 +73,7 @@
 
 - `GET    /api/users/{userId}/settings/vendor-status` - Get a vendor status details (concernedUser)✅
 - `POST   /api/users/{userId}/settings/vendor-status` - Client becomes a vendor (concernedUser) ✅
-- `PUT    /api/users/{userId}/settings/vendor-status` - Update a vendor infos (concernedUser) ✅
+- `PATCH  /api/users/{userId}/settings/vendor-status` - Update a vendor infos (concernedUser) ✅
 
 ---
 

@@ -222,13 +222,29 @@ export async function PATCH(
       );
     }
 
-    await prisma.vendeur.update({
+    const updatedVendor = await prisma.vendeur.update({
       where: { id: userId },
       data: parsed.data,
+      select: {
+        nomBoutique: true,
+        description: true,
+        nomBanque: true,
+        rib: true,
+      },
     });
 
+    if (!updatedVendor) {
+      return NextResponse.json(
+        { error: "Erreur lors de la mise à jour du profil vendeur" },
+        { status: 500 }
+      );
+    }
+
     return NextResponse.json(
-      { message: "Profil vendeur mis à jour avec succès" },
+      {
+        message: "Profil vendeur mis à jour avec succès",
+        data: updatedVendor,
+      },
       { status: 200 }
     );
   } catch (error) {

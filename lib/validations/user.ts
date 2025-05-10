@@ -67,6 +67,7 @@ export const updateVendorSchema = z
     nomBanque: z.string().max(50).optional(),
     rib: z.string().max(50).optional(),
   })
+  .strict()
   .refine((data) => Object.keys(data).length > 0, {
     message: "Au moins un champ doit être renseigné.",
   });

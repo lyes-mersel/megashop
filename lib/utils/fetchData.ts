@@ -16,23 +16,28 @@ export const fetchDataFromAPI = async <T>(
 
     if (!res.ok) {
       return {
-        data: null,
-        error: `Error ${status}: ${json.message || json.error || res.statusText}`,
         status,
+        message: null,
+        error: `${
+          json.message || json.error || res.statusText
+        } (Error ${status})`,
+        data: null,
       };
     }
 
     return {
-      data: json.data,
-      error: null,
       status,
+      message: json.message,
+      error: null,
+      data: json.data,
     };
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : String(error);
     return {
-      data: null,
-      error: `Network error: ${errorMessage}`,
       status: null,
+      message: null,
+      error: `Network error: ${errorMessage}`,
+      data: null,
     };
   }
 };
@@ -49,23 +54,28 @@ export const fetchPaginatedDataFromAPI = async <T>(
 
     if (!res.ok) {
       return {
-        data: null,
-        error: `Error ${status}: ${json.message || res.statusText}`,
         status,
+        message: null,
+        data: null,
+        error: `${
+          json.message || json.error || res.statusText
+        } (Error ${status})`,
       };
     }
 
     return {
-      data: json,
-      error: null,
       status,
+      message: json.message,
+      error: null,
+      data: json,
     };
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : String(error);
     return {
-      data: null,
-      error: `Network error: ${errorMessage}`,
       status: null,
+      message: null,
+      error: `Network error: ${errorMessage}`,
+      data: null,
     };
   }
 };

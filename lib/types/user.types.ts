@@ -16,7 +16,7 @@ export type UserFromAPI = {
   emailVerifie: boolean;
   emailEnAttente?: string | null;
   dateCreation: Date;
-  adresse?: Adresse | null;
+  adresse: Adresse | null;
   vendeur?: {
     nomBoutique: string;
     description?: string | null;

@@ -10,7 +10,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import PageHeader from "@/components/portal/client/orderspage/PageHeader";
 import SearchAndFilters from "@/components/portal/client/orderspage/SearchAndFilters";
 import OrderTable from "@/components/portal/client/orderspage/OrderTable";
-import EmptyState from "@/components/common/EmptyState";
+import EmptyState from "@/components/portal/client/orderspage/EmptyState";
 import OrderDetailModal from "@/components/portal/client/orderspage/OrdersDetailModel";
 import Pagination from "@/components/portal/client/orderspage/Pagination";
 
