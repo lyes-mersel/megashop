@@ -1,6 +1,7 @@
 import RestrictedAccess from "@/components/common/RestrictedAccess";
 import ReviewCard from "@/components/store/productpage/WriteReview";
 import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 export default async function WriteReviewPage({
   params,
@@ -12,6 +13,14 @@ export default async function WriteReviewPage({
 
   if (!session) {
     return <RestrictedAccess />;
+  }
+
+  if (!session.user.emailVerifie) {
+    redirect(
+      `/auth/verify-email?callbackUrl=${encodeURIComponent(
+        `/product/${productId}/write-review`
+      )}`
+    );
   }
 
   return (

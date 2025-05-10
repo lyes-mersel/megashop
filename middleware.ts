@@ -30,8 +30,10 @@ export async function middleware(req: NextRequest) {
     }
 
     // Email not verified
-    if (!session.user.emailVerifie && pathname !== VERIFY_EMAIL) {
-      return NextResponse.redirect(new URL("/auth/verify-email", req.url));
+    if (!session.user.emailVerifie) {
+      return NextResponse.redirect(
+        new URL(`${VERIFY_EMAIL}?refresh=true`, req.url)
+      );
     }
 
     // Already verified, shouldn't access verify-email page

@@ -31,6 +31,13 @@ export default function VerifyEmail({ user }: VerifyEmailProps) {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   useEffect(() => {
+    const refresh = searchParams.get("refresh");
+    if (refresh) {
+      router.replace("/auth/verify-email");
+    }
+  }, [searchParams, router]);
+
+  useEffect(() => {
     if (countdown > 0) {
       const timer = setTimeout(() => setCountdown((prev) => prev - 1), 1000);
       return () => clearTimeout(timer);
