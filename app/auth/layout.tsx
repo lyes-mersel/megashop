@@ -9,7 +9,7 @@ export default function AuthLayout({
   return (
     <>
       <StoreHeader />
-      <main className="flex min-h-[calc(100dvh-130px)] bg-[#ebedf0] w-full items-center justify-center p-6 md:p-10">
+      <main className="flex min-h-[calc(100dvh-125px)] bg-[#ebedf0] w-full items-center justify-center p-6 md:p-10">
         {children}
       </main>
       <AuthFooter />

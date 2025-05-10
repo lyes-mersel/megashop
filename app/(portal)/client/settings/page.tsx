@@ -112,7 +112,7 @@ export default function SettingsPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-[calc(100dvh-130px)] bg-[#edeef1] flex items-center justify-center text-center py-12">
+      <div className="min-h-[calc(100dvh-125px)] bg-[#edeef1] flex items-center justify-center text-center py-12">
         <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-gray-800 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
         <span className="sr-only">Chargement...</span>
       </div>
@@ -120,13 +120,13 @@ export default function SettingsPage() {
   }
   if (!user)
     return (
-      <div className="min-h-[calc(100dvh-130px)] bg-[#edeef1] flex items-center justify-center text-center py-12">
+      <div className="min-h-[calc(100dvh-125px)] bg-[#edeef1] flex items-center justify-center text-center py-12">
         <div>Erreur: utilisateur non trouvé</div>
       </div>
     );
 
   return (
-    <div className="min-h-[calc(100dvh-130px)] bg-gradient-to-br from-gray-50 to-gray-200 py-6 px-4 sm:pl-10 sm:pr-10">
+    <div className="min-h-[calc(100dvh-125px)] bg-gradient-to-br from-gray-50 to-gray-200 py-6 px-4 sm:pl-10 sm:pr-10">
       <div className="max-w-6xl mx-auto">
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-4">

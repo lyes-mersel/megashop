@@ -222,7 +222,7 @@ export default function OrderHistoryPage(): JSX.Element {
 
   return (
     <div
-      className="min-h-[calc(100dvh-130px)] bg-gradient-to-br from-gray-50 to-gray-200 py-6 px-4 sm:pl-10 sm:pr-10"
+      className="min-h-[calc(100dvh-125px)] bg-gradient-to-br from-gray-50 to-gray-200 py-6 px-4 sm:pl-10 sm:pr-10"
       onClick={closeDropdowns}
     >
       <div className="max-w-7xl mx-auto">

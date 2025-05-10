@@ -15,7 +15,7 @@ export default async function WriteReviewPage({
   }
 
   return (
-    <div className="min-h-[calc(100dvh-130px)] bg-[#ebedf0] pt-12 pb-8 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+    <div className="min-h-[calc(100dvh-125px)] bg-[#ebedf0] pt-12 pb-8 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
       <ReviewCard productId={productId} />
     </div>
   );
