@@ -39,9 +39,15 @@ export default function OrderHistoryPage(): JSX.Element {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  // Set initial states from URL parameters
+  // Derived state
+  const userId = session?.user?.id;
+  const sessionReady = status === "authenticated" && !!userId;
+
+  /**
+   * On first load, parse initial values from URL
+   */
   useEffect(() => {
-    const page = parseInt(searchParams.get("page") || "1");
+    const page = parseInt(searchParams.get("page") || "1", 10);
     const search = searchParams.get("search") || "";
     const sortBy = searchParams.get("sortBy") || "date";
     const sortOrder = searchParams.get("sortOrder") || "desc";
@@ -58,7 +64,9 @@ export default function OrderHistoryPage(): JSX.Element {
     }
   }, [searchParams]);
 
-  // Debounce search query
+  /**
+   * Debounce search input before triggering filtering
+   */
   useEffect(() => {
     const timer = setTimeout(() => {
       setSearchDebounced(searchQuery);
@@ -67,17 +75,16 @@ export default function OrderHistoryPage(): JSX.Element {
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
-  // Update URL when filters change
+  /**
+   * Update URL query string based on filters (search, sort, pagination)
+   */
   useEffect(() => {
-    // Only update URL if the component is fully mounted and initial data is loaded
-    if (isLoading && status === "loading") return;
+    if (isLoading || status === "loading") return;
 
     const params = new URLSearchParams();
     params.set("page", currentPage.toString());
 
-    if (searchDebounced) {
-      params.set("search", searchDebounced);
-    }
+    if (searchDebounced) params.set("search", searchDebounced);
 
     if (sortConfig) {
       params.set("sortBy", sortConfig.key.toString());
@@ -88,26 +95,17 @@ export default function OrderHistoryPage(): JSX.Element {
     }
 
     router.push(`?${params.toString()}`, { scroll: false });
-  }, [currentPage, searchDebounced, sortConfig, router, isLoading, status]);
+  }, [currentPage, searchDebounced, sortConfig, isLoading, status, router]);
 
+  /**
+   * Fetch orders from API once session is ready and filters change
+   */
   useEffect(() => {
-    // Only proceed when the session status is known
-    if (status === "loading") return;
-
-    const userId = session?.user.id;
-
-    // Now check if userId exists
-    if (!userId) {
-      setIsLoading(false);
-      toast.error("Vous devez être connecté pour accéder à cette page.");
-      console.log("No user ID found in session");
-      return;
-    }
+    if (!sessionReady || !userId) return;
 
     const fetchOrders = async () => {
       setIsLoading(true);
       try {
-        // Build query parameters
         const queryParams = new URLSearchParams();
         queryParams.set("page", currentPage.toString());
         queryParams.set("pageSize", pageSize.toString());
@@ -126,6 +124,7 @@ export default function OrderHistoryPage(): JSX.Element {
 
         const endpoint = `/api/users/${userId}/orders?${queryParams.toString()}`;
         console.log("Fetching orders from:", endpoint);
+
         const ordersResult = await fetchPaginatedDataFromAPI<OrderFromAPI[]>(
           endpoint
         );
@@ -157,7 +156,7 @@ export default function OrderHistoryPage(): JSX.Element {
     };
 
     fetchOrders();
-  }, [session, status, currentPage, searchDebounced, sortConfig]);
+  }, [sessionReady, userId, currentPage, searchDebounced, sortConfig]);
 
   const handleExport = (): void => {
     const data = orders.map((order) => ({
