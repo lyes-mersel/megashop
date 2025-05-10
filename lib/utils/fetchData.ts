@@ -15,10 +15,9 @@ export const fetchDataFromAPI = async <T>(
     const json: ApiResponse<T> = await res.json();
 
     if (!res.ok) {
-      console.error("API Error:", json);
       return {
         data: null,
-        error: `Error ${status}: ${json.message || res.statusText}`,
+        error: `Error ${status}: ${json.message || json.error || res.statusText}`,
         status,
       };
     }

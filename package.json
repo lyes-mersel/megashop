@@ -29,6 +29,7 @@
     "@radix-ui/react-tabs": "^1.1.4",
     "@reduxjs/toolkit": "^2.6.1",
     "@tailwindcss/typography": "^0.5.16",
+    "@uiw/react-md-editor": "^4.0.6",
     "bcryptjs": "^3.0.2",
     "class-variance-authority": "^0.7.1",
     "cloudinary": "^2.6.0",

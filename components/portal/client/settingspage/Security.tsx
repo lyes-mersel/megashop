@@ -2,12 +2,16 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { fetchDataFromAPI } from "@/lib/utils/fetchData";
 import { Shield } from "lucide-react";
+import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 interface SecurityProps {
   userId: string;
 }
 
 export default function Security({ userId }: SecurityProps) {
+  const router = useRouter();
+
   const [passwordData, setPasswordData] = useState({
     currentPassword: "",
     newPassword: "",
@@ -64,8 +68,10 @@ export default function Security({ userId }: SecurityProps) {
       if (result.error) {
         toast.error(result.error);
       } else {
+        await signOut({ redirect: false });
         toast.success("Compte supprimé avec succès");
-        // Redirect logic could be added here, e.g., router.push("/login")
+        router.push("/");
+        router.refresh();
       }
       setIsLoading(false);
     }

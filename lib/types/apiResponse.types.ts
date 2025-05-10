@@ -7,6 +7,7 @@ export type FetchResult<T> = {
 export type ApiResponse<T> = {
   message: string;
   data: T;
+  error?: string;
 };
 
 export type PaginatedApiResponse<T> = {

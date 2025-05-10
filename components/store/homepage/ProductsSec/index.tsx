@@ -10,10 +10,10 @@ const ProductsSec = async () => {
   // Fetch data for shop and marketplace products
   const [shopProductsResult, marketplaceProductsResult] = await Promise.all([
     fetchPaginatedDataFromAPI<ProductFromAPI[]>(
-      `${process.env.NEXT_PUBLIC_API_URL}/products?sortBy=noteMoyenne&page=1&pageSize=4&type=boutique`
+      `${process.env.NEXT_PUBLIC_API_URL}/products?sortBy=noteMoyenne&sortOrder=desc&page=1&pageSize=4&type=boutique`
     ),
     fetchPaginatedDataFromAPI<ProductFromAPI[]>(
-      `${process.env.NEXT_PUBLIC_API_URL}/products?sortBy=noteMoyenne&page=1&pageSize=4&type=marketplace`
+      `${process.env.NEXT_PUBLIC_API_URL}/products?sortBy=noteMoyenne&sortOrder=desc&page=1&pageSize=4&type=marketplace`
     ),
   ]);
 

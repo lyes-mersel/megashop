@@ -1,8 +1,13 @@
+"use client";
+
 import { useState } from "react";
 import { toast } from "sonner";
 import { fetchDataFromAPI } from "@/lib/utils/fetchData";
 import { UserFromAPI } from "@/lib/types/user.types";
 import { CreditCard, Building, BadgeCheck } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import MDEditor from "@uiw/react-md-editor";
 
 interface VendorSettingsProps {
   user: UserFromAPI;
@@ -13,17 +18,24 @@ export default function VendorSettings({
   user,
   onUpdate,
 }: VendorSettingsProps) {
-  const [isVendorActive, setIsVendorActive] = useState(!!user.vendeur);
+  const { data: session, update } = useSession();
+  const router = useRouter();
+
+  const [isVendorActive, setIsVendorActive] = useState(false);
   const [vendorInfo, setVendorInfo] = useState({
-    nomBoutique: user.vendeur?.nomBoutique || "",
-    description: user.vendeur?.description || "",
-    nomBanque: user.vendeur?.nomBanque || "",
-    rib: user.vendeur?.rib || "",
+    nomBoutique: "",
+    description: "",
+    nomBanque: "",
+    rib: "",
   });
   const [isLoading, setIsLoading] = useState(false);
 
   const handleVendorInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setVendorInfo({ ...vendorInfo, [e.target.name]: e.target.value });
+  };
+
+  const handleDescriptionChange = (value?: string) => {
+    setVendorInfo({ ...vendorInfo, description: value || "" });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -33,46 +45,27 @@ export default function VendorSettings({
       return;
     }
     setIsLoading(true);
-    if (!user.vendeur) {
-      const result = await fetchDataFromAPI<UserFromAPI>(
-        `/api/users/${user.id}/settings/vendor-status`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            nomBoutique: vendorInfo.nomBoutique,
-            nomBanque: vendorInfo.nomBanque,
-            rib: vendorInfo.rib,
-          }),
-        }
-      );
-      if (result.error) {
-        toast.error(result.error);
-      } else {
-        onUpdate({
-          ...user,
-          vendeur: {
-            ...vendorInfo,
-            description: vendorInfo.description || null,
-          },
-        });
-        toast.success("Vous êtes maintenant un vendeur");
+    const result = await fetchDataFromAPI<UserFromAPI>(
+      `/api/users/${user.id}/settings/vendor-status`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nomBoutique: vendorInfo.nomBoutique,
+          description: vendorInfo.description,
+          nomBanque: vendorInfo.nomBanque,
+          rib: vendorInfo.rib,
+        }),
       }
+    );
+    if (result.error) {
+      toast.error(result.error);
     } else {
-      const result = await fetchDataFromAPI<UserFromAPI>(
-        `/api/users/${user.id}`,
-        {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ vendeur: vendorInfo }),
-        }
-      );
-      if (result.error) {
-        toast.error(result.error);
-      } else {
-        onUpdate(result.data!);
-        toast.success("Informations du vendeur mises à jour");
-      }
+      // onUpdate(result.data!);
+      await update({ ...session });
+      toast.success("Vous êtes maintenant un vendeur");
+      router.push("/vendor/dashboard");
+      router.refresh();
     }
     setIsLoading(false);
   };
@@ -147,19 +140,17 @@ export default function VendorSettings({
                   className="w-full px-3 py-2 border rounded-md"
                 />
               </div>
-              <div className="space-y-2">
+              <div className="space-y-2" data-color-mode="light">
                 <label
                   htmlFor="description"
                   className="block text-sm font-medium"
                 >
                   Bio (description)
                 </label>
-                <input
-                  id="description"
-                  name="description"
+                <MDEditor
                   value={vendorInfo.description}
-                  onChange={handleVendorInfoChange}
-                  className="w-full px-3 py-2 border rounded-md"
+                  onChange={handleDescriptionChange}
+                  style={{ height: "200px" }}
                 />
               </div>
             </div>

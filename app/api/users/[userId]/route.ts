@@ -200,18 +200,13 @@ export async function PATCH(
       );
     }
 
-    const { email, password, nom, prenom, tel } = parsedData.data;
-
-    // Hash password if provided
-    let hashedPassword: string | undefined = undefined;
-    if (password) {
-      hashedPassword = await bcrypt.hash(password, 10);
-    }
+    const { email, nom, prenom, tel, newPassword, currentPassword } =
+      parsedData.data;
 
     // Fetch current user to compare emails
     const currentUser = await prisma.user.findUnique({
       where: { id: userId },
-      select: { email: true },
+      select: { email: true, password: true },
     });
 
     if (!currentUser) {
@@ -219,6 +214,26 @@ export async function PATCH(
         { error: "Utilisateur introuvable." },
         { status: 404 }
       );
+    }
+
+    // Verify current password if asked to change the password
+    if (newPassword && currentPassword) {
+      const isPasswordValid = await bcrypt.compare(
+        currentPassword,
+        currentUser.password
+      );
+      if (!isPasswordValid) {
+        return NextResponse.json(
+          { error: "Mot de passe actuel incorrect." },
+          { status: 401 }
+        );
+      }
+    }
+
+    // Hash password if provided
+    let hashedPassword: string | undefined = undefined;
+    if (newPassword) {
+      hashedPassword = await bcrypt.hash(newPassword, 10);
     }
 
     const updateData: Partial<{
