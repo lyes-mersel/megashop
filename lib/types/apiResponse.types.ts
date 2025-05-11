@@ -1,7 +1,8 @@
 export type FetchResult<T> = {
-  data: T | null;
-  error: string | null;
   status: number | null;
+  message: string | null;
+  error: string | null;
+  data: T | null;
 };
 
 export type ApiResponse<T> = {
@@ -19,4 +20,5 @@ export type PaginatedApiResponse<T> = {
     pageSize: number;
   };
   data: T;
+  error?: string;
 };

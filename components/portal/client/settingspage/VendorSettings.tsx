@@ -8,10 +8,11 @@ import { CreditCard, Building, BadgeCheck } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import MDEditor from "@uiw/react-md-editor";
+import { Vendeur } from "@prisma/client";
 
 interface VendorSettingsProps {
   user: UserFromAPI;
-  onUpdate: (updatedUser: UserFromAPI) => void;
+  onUpdate: (updatedVendorInfo: Vendeur) => void;
 }
 
 export default function VendorSettings({
@@ -45,7 +46,7 @@ export default function VendorSettings({
       return;
     }
     setIsLoading(true);
-    const result = await fetchDataFromAPI<UserFromAPI>(
+    const result = await fetchDataFromAPI<null>(
       `/api/users/${user.id}/settings/vendor-status`,
       {
         method: "POST",
@@ -61,7 +62,7 @@ export default function VendorSettings({
     if (result.error) {
       toast.error(result.error);
     } else {
-      // onUpdate(result.data!);
+      onUpdate(result.data!);
       await update({ ...session });
       toast.success("Vous êtes maintenant un vendeur");
       router.push("/vendor/dashboard");

@@ -216,6 +216,19 @@ export async function PATCH(
       );
     }
 
+    // Check if the new email is not already taken
+    if (email && email !== currentUser.email) {
+      const existingUser = await prisma.user.findUnique({
+        where: { email },
+      });
+      if (existingUser) {
+        return NextResponse.json(
+          { error: "Cette adresse e-mail est déjà utilisée." },
+          { status: 409 }
+        );
+      }
+    }
+
     // Verify current password if asked to change the password
     if (newPassword && currentPassword) {
       const isPasswordValid = await bcrypt.compare(
@@ -253,8 +266,6 @@ export async function PATCH(
     // Handle email update safely via emailEnAttente
     if (email && email !== currentUser.email) {
       updateData.emailEnAttente = email;
-      updateData.emailVerifie = false;
-
       await triggerEmailVerification(userId, email, true);
     }
 

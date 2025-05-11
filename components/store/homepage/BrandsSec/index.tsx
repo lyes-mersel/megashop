@@ -35,7 +35,7 @@ const BrandsSec = () => {
             height={0}
             width={0}
             alt={brand.id}
-            className="h-auto w-auto max-w-[116px] lg:max-w-48 max-h-[26px] lg:max-h-9 my-5 md:my-6"
+            className="h-auto w-auto max-w-[116px] lg:max-w-48 max-h-[26px] lg:max-h-8 my-5 md:my-6"
           />
         ))}
       </div>

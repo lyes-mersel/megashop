@@ -10,7 +10,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import PageHeader from "@/components/portal/client/orderspage/PageHeader";
 import SearchAndFilters from "@/components/portal/client/orderspage/SearchAndFilters";
 import OrderTable from "@/components/portal/client/orderspage/OrderTable";
-import EmptyState from "@/components/common/EmptyState";
+import EmptyState from "@/components/portal/client/orderspage/EmptyState";
 import OrderDetailModal from "@/components/portal/client/orderspage/OrdersDetailModel";
 import Pagination from "@/components/portal/client/orderspage/Pagination";
 
@@ -222,7 +222,7 @@ export default function OrderHistoryPage(): JSX.Element {
 
   return (
     <div
-      className="min-h-[calc(100dvh-130px)] bg-gradient-to-br from-gray-50 to-gray-200 py-6 px-4 sm:pl-10 sm:pr-10"
+      className="min-h-[calc(100dvh-125px)] bg-gradient-to-br from-gray-50 to-gray-200 py-6 px-4 sm:pl-10 sm:pr-10"
       onClick={closeDropdowns}
     >
       <div className="max-w-7xl mx-auto">

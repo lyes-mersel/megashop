@@ -7,7 +7,7 @@ const RestrictedAccess = () => {
   const callbackUrl = encodeURIComponent(pathname || "/");
 
   return (
-    <div className="min-h-[calc(100dvh-130px)] bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center px-4">
+    <div className="min-h-[calc(100dvh-125px)] bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center px-4">
       <div className="bg-white shadow-lg rounded-2xl p-8 max-w-md text-center">
         <h1 className="text-2xl font-semibold text-gray-900">
           🔒 Accès restreint

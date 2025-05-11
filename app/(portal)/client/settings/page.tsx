@@ -17,8 +17,6 @@ import {
   CreditCard,
   Settings,
 } from "lucide-react";
-
-// Components
 import { motion } from "framer-motion";
 import PersonalInfo from "@/components/portal/client/settingspage/PersonalInfo";
 import AddressInfo from "@/components/portal/client/settingspage/AddressInfo";
@@ -26,27 +24,15 @@ import ContactInfo from "@/components/portal/client/settingspage/ContactInfo";
 import Security from "@/components/portal/client/settingspage/Security";
 import VendorSettings from "@/components/portal/client/settingspage/VendorSettings";
 
-type Address = {
-  id: string;
-  wilaya: string;
-  rue: string;
-  ville: string;
-  codePostal: string;
-};
-
 export default function SettingsPage() {
-  const { data: session, status } = useSession() as {
-    data: { user: { id: string } } | null;
-    status: "authenticated" | "loading" | "unauthenticated";
-  };
+  const { data: session, status } = useSession();
   const [user, setUser] = useState<UserFromAPI | null>(null);
-  const [address, setAddress] = useState<Address | null>(null);
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<string>("personal");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const hasFetchedRef = useRef(false); // To prevent multiple fetches
+  const hasFetchedRef = useRef(false);
   useEffect(() => {
     if (status === "loading" || hasFetchedRef.current) return;
     const userId = session?.user.id;
@@ -58,10 +44,9 @@ export default function SettingsPage() {
     }
     const fetchData = async () => {
       setIsLoading(true);
-      const [userResult, addressResult] = await Promise.all([
-        fetchDataFromAPI<UserFromAPI>(`/api/users/${userId}`),
-        fetchDataFromAPI<Address>(`/api/users/${userId}/settings/address`),
-      ]);
+      const userResult = await fetchDataFromAPI<UserFromAPI>(
+        `/api/users/${userId}`
+      );
       if (userResult.error) {
         toast.error(userResult.error);
         console.error(userResult.error);
@@ -72,11 +57,6 @@ export default function SettingsPage() {
             getImageUrlFromPublicId(userResult.data.imagePublicId)
           );
         }
-      }
-      if (addressResult.error) {
-        console.error(addressResult.error);
-      } else {
-        setAddress(addressResult.data);
       }
       setIsLoading(false);
       hasFetchedRef.current = true;
@@ -112,7 +92,7 @@ export default function SettingsPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-[calc(100dvh-130px)] bg-[#edeef1] flex items-center justify-center text-center py-12">
+      <div className="min-h-[calc(100dvh-125px)] bg-[#edeef1] flex items-center justify-center text-center py-12">
         <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-gray-800 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
         <span className="sr-only">Chargement...</span>
       </div>
@@ -120,13 +100,13 @@ export default function SettingsPage() {
   }
   if (!user)
     return (
-      <div className="min-h-[calc(100dvh-130px)] bg-[#edeef1] flex items-center justify-center text-center py-12">
+      <div className="min-h-[calc(100dvh-125px)] bg-[#edeef1] flex items-center justify-center text-center py-12">
         <div>Erreur: utilisateur non trouvé</div>
       </div>
     );
 
   return (
-    <div className="min-h-[calc(100dvh-130px)] bg-gradient-to-br from-gray-50 to-gray-200 py-6 px-4 sm:pl-10 sm:pr-10">
+    <div className="min-h-[calc(100dvh-125px)] bg-gradient-to-br from-gray-50 to-gray-200 py-6 px-4 sm:pl-10 sm:pr-10">
       <div className="max-w-6xl mx-auto">
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -219,9 +199,11 @@ export default function SettingsPage() {
             )}
             {activeTab === "address" && (
               <AddressInfo
-                address={address}
+                address={user.adresse}
                 userId={user.id}
-                onUpdate={setAddress}
+                onUpdate={(updatedAddress) =>
+                  setUser({ ...user, adresse: updatedAddress })
+                }
               />
             )}
             {activeTab === "contact" && (
@@ -229,7 +211,12 @@ export default function SettingsPage() {
             )}
             {activeTab === "security" && <Security userId={user.id} />}
             {activeTab === "vendor" && (
-              <VendorSettings user={user} onUpdate={setUser} />
+              <VendorSettings
+                user={user}
+                onUpdate={(updatedVendorStatus) =>
+                  setUser({ ...user, vendeur: updatedVendorStatus })
+                }
+              />
             )}
           </div>
         </div>

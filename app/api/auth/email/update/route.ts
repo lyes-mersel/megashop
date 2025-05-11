@@ -94,11 +94,11 @@ export async function POST(req: Request) {
       );
     }
 
-    // Mark email as verified and delete the TOTP secret
+    // Update the user's email and delete the TOTP secret
     await prisma.$transaction([
       prisma.user.update({
         where: { id: user.id },
-        data: { email: newEmail, emailVerifie: true, emailEnAttente: null },
+        data: { email: newEmail, emailEnAttente: null },
       }),
       prisma.tOTPSecret.delete({
         where: { userId: user.id },

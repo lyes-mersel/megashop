@@ -56,7 +56,7 @@ const ReviewCard = ({
       <p className="text-sm sm:text-base text-black/60">{review.text}</p>
       {isDate && (
         <p className="text-black/60 text-sm font-medium mt-4 sm:mt-6">
-          Posted on {extractDateString(review.date)}
+          Publié le {extractDateString(review.date)}
         </p>
       )}
     </div>

@@ -155,7 +155,7 @@ export default function NotificationsPage() {
   };
 
   return (
-    <div className="min-h-[calc(100dvh-130px)] bg-gradient-to-br from-gray-50 to-gray-200 py-6 px-4 sm:pl-10 sm:pr-10 flex flex-col">
+    <div className="min-h-[calc(100dvh-125px)] bg-gradient-to-br from-gray-50 to-gray-200 py-6 px-4 sm:pl-10 sm:pr-10 flex flex-col">
       <div className="lg:min-w-4xl xl:min-w-6xl max-w-7xl mx-auto flex flex-col flex-1">
         {/* Header */}
         <div className="mb-4 flex items-center gap-4">
