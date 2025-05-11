@@ -266,8 +266,6 @@ export async function PATCH(
     // Handle email update safely via emailEnAttente
     if (email && email !== currentUser.email) {
       updateData.emailEnAttente = email;
-      updateData.emailVerifie = false;
-
       await triggerEmailVerification(userId, email, true);
     }
 

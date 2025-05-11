@@ -25,10 +25,7 @@ import Security from "@/components/portal/client/settingspage/Security";
 import VendorSettings from "@/components/portal/client/settingspage/VendorSettings";
 
 export default function SettingsPage() {
-  const { data: session, status } = useSession() as {
-    data: { user: { id: string } } | null;
-    status: "authenticated" | "loading" | "unauthenticated";
-  };
+  const { data: session, status } = useSession();
   const [user, setUser] = useState<UserFromAPI | null>(null);
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);

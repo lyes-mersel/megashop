@@ -2,11 +2,8 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
+import { motion } from "framer-motion";
 import { toast } from "sonner";
-import { montserrat } from "@/styles/fonts";
-import { fetchDataFromAPI } from "@/lib/utils/fetchData";
-import { UserFromAPI } from "@/lib/types/user.types";
-import { getImageUrlFromPublicId } from "@/lib/utils";
 import Image from "next/image";
 import {
   Camera,
@@ -17,18 +14,26 @@ import {
   CreditCard,
   Settings,
 } from "lucide-react";
-import { motion } from "framer-motion";
+
+// Fonts
+import { montserrat } from "@/styles/fonts";
+
+// Types & utils
+import { UserFromAPI } from "@/lib/types/user.types";
+import { getImageUrlFromPublicId } from "@/lib/utils";
+import { fetchDataFromAPI } from "@/lib/utils/fetchData";
+
+// Components
 import PersonalInfo from "@/components/portal/vendor/settingspage/PersonalInfo";
 import AddressInfo from "@/components/portal/vendor/settingspage/AddressInfo";
 import ContactInfo from "@/components/portal/vendor/settingspage/ContactInfo";
 import Security from "@/components/portal/vendor/settingspage/Security";
 import VendorSettings from "@/components/portal/vendor/settingspage/VendorSettings";
+import IsLoading from "@/components/portal/IsLoading";
+import UserNotFound from "@/components/portal/UserNotFound";
 
 export default function SettingsPage() {
-  const { data: session, status } = useSession() as {
-    data: { user: { id: string } } | null;
-    status: "authenticated" | "loading" | "unauthenticated";
-  };
+  const { data: session, status } = useSession();
   const [user, setUser] = useState<UserFromAPI | null>(null);
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -93,20 +98,8 @@ export default function SettingsPage() {
     }
   };
 
-  if (isLoading) {
-    return (
-      <div className="min-h-[100dvh] bg-[#edeef1] flex items-center justify-center text-center py-12">
-        <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-gray-800 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
-        <span className="sr-only">Chargement...</span>
-      </div>
-    );
-  }
-  if (!user)
-    return (
-      <div className="min-h-[100dvh] bg-[#edeef1] flex items-center justify-center text-center py-12">
-        <div>Erreur: utilisateur non trouvé</div>
-      </div>
-    );
+  if (isLoading) return <IsLoading />;
+  if (!user) return <UserNotFound />;
 
   return (
     <div className="min-h-[100dvh] bg-gradient-to-br from-gray-50 to-gray-200 py-6 px-4 sm:pl-10 sm:pr-10">
