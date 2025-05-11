@@ -33,7 +33,7 @@ import IsLoading from "@/components/portal/IsLoading";
 import UserNotFound from "@/components/portal/UserNotFound";
 
 export default function SettingsPage() {
-  const { data: session, status } = useSession();
+  const { data: session, status, update } = useSession();
   const [user, setUser] = useState<UserFromAPI | null>(null);
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -90,6 +90,7 @@ export default function SettingsPage() {
       if (result.error) {
         toast.error(result.error);
       } else {
+        await update({ ...session });
         const newImageUrl = getImageUrlFromPublicId(result.data!.imagePublicId);
         setProfileImage(newImageUrl);
         setUser({ ...user, imagePublicId: result.data!.imagePublicId });

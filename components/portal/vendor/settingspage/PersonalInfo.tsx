@@ -40,6 +40,7 @@ export default function PersonalInfo({ user, onUpdate }: PersonalInfoProps) {
       toast.error(result.error);
     } else {
       onUpdate(result.data!);
+      await update({ ...session });
       toast.success("Informations personnelles mises à jour avec succès");
     }
     setIsLoading(false);
@@ -66,10 +67,10 @@ export default function PersonalInfo({ user, onUpdate }: PersonalInfoProps) {
     if (result.error) {
       toast.error(result.error);
     } else {
-      toast.success("Email vérifié avec succès");
       setVerificationCode("");
       onUpdate({ ...user, email: user.emailEnAttente!, emailEnAttente: null });
       await update({ ...session });
+      toast.success("Email vérifié avec succès");
     }
     setIsVerifying(false);
   };

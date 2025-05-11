@@ -32,6 +32,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         return {
           id: user.id,
           email: user.email,
+          nom: user.nom,
+          prenom: user.prenom,
           role: user.role,
           emailVerifie: user.emailVerifie,
           imagePublicId: user.imagePublicId,
@@ -60,6 +62,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (trigger === "signIn" && user) {
         token.id = user.id!;
         token.email = user.email!;
+        token.nom = user.nom;
+        token.prenom = user.prenom;
         token.role = user.role;
         token.emailVerifie = user.emailVerifie;
         token.imagePublicId = user.imagePublicId;
@@ -72,6 +76,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           select: {
             id: true,
             email: true,
+            nom: true,
+            prenom: true,
             role: true,
             emailVerifie: true,
             imagePublicId: true,
@@ -81,6 +87,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         if (dbUser) {
           token.id = dbUser.id;
           token.email = dbUser.email;
+          token.nom = dbUser.nom;
+          token.prenom = dbUser.prenom;
           token.role = dbUser.role;
           token.emailVerifie = dbUser.emailVerifie;
           token.imagePublicId = dbUser.imagePublicId;
@@ -93,6 +101,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async session({ session, token }) {
       session.user.id = token.id;
       session.user.email = token.email;
+      session.user.nom = token.nom;
+      session.user.prenom = token.prenom;
       session.user.role = token.role;
       session.user.emailVerifie = token.emailVerifie;
       session.user.imagePublicId = token.imagePublicId;

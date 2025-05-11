@@ -1,16 +1,28 @@
-import SidebarLayout from "@/components/layout/portal/Sidebar";
+"use client";
+
+import { useSession } from "next-auth/react";
 import { NavItem } from "@/lib/types/ui/portalSideBar.types";
+import { getImageUrlFromPublicId } from "@/lib/utils";
+
+// Components
+import SidebarLayout from "@/components/layout/portal/Sidebar";
 
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  // Get session data: session !== null bcz we are in a protected route
+  const { data: session } = useSession();
+  const user = session?.user;
+
   // Admin user information
   const adminInfo = {
-    name: "Admin",
-    email: "admin@example.com",
-    photoUrl: null,
+    name: `${user?.prenom} ${user?.nom}`,
+    email: user?.email as string,
+    photoUrl: user?.imagePublicId
+      ? getImageUrlFromPublicId(user?.imagePublicId)
+      : null,
     role: "Administrateur" as const,
     badgeColor: "bg-blue-100 text-blue-800",
   };
