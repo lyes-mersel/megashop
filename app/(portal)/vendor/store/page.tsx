@@ -5,15 +5,15 @@ import { toast } from "sonner";
 import Image from "next/image";
 
 // Components
-import { StoreHeader } from "@/components/portal/admin/storepage/StoreHeader";
-import { ProductList } from "@/components/portal/admin/storepage/ProductList";
-import { Pagination } from "@/components/portal/admin/storepage/Pagination";
-import { ProductForm } from "@/components/portal/admin/storepage/ProductForm";
-import { DeleteModal } from "@/components/portal/admin/storepage/DeleteModal";
-import { DetailsModal } from "@/components/portal/admin/storepage/DetailsModal";
+import { StoreHeader } from "@/components/portal/vendor/storepage/StoreHeader";
+import { ProductList } from "@/components/portal/vendor/storepage/ProductList";
+import { Pagination } from "@/components/portal/vendor/storepage/Pagination";
+import { ProductForm } from "@/components/portal/vendor/storepage/ProductForm";
+import { DeleteModal } from "@/components/portal/vendor/storepage/DeleteModal";
+import { DetailsModal } from "@/components/portal/vendor/storepage/DetailsModal";
 
 // Hooks
-import { useAdminStoreData } from "@/hooks/useAdminStoreData";
+import { useVendorStoreData } from "@/hooks/useVendorStoreData";
 
 // Types
 import { ProductFromAPI } from "@/lib/types/product.types";
@@ -35,7 +35,7 @@ export default function ShopPage() {
     pagination,
     setPagination,
     setRefresh,
-  } = useAdminStoreData();
+  } = useVendorStoreData();
 
   const [isDeleting, setIsDeleting] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);

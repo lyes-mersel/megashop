@@ -23,6 +23,7 @@
 - `POST   /api/products` - Add a new product (admin|vendor) ✅
 - `DELETE /api/products` - Delete all products (admin|vendor) ✅
 - `GET    /api/products/search` - Search for products (public) ✅
+- `GET    /api/products/mine` - Search for my products (vendor) ✅
 
 ---
 

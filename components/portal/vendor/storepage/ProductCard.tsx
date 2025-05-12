@@ -4,7 +4,6 @@ import { Edit, Trash2, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { montserrat } from "@/styles/fonts";
 import { getImageUrlFromPublicId } from "@/lib/utils";
-import { toast } from "sonner";
 
 interface ProductCardProps {
   product: ProductFromAPI;
@@ -37,7 +36,7 @@ export const ProductCard = ({
       style={{ animationDelay: `${index * 0.1}s` }}
       onClick={() => isMobile && setShowActions(!showActions)}
     >
-      <div className="relative h-65 w-full">
+      <div className="relative h-60 w-full">
         <Image
           fill
           src={
@@ -60,12 +59,7 @@ export const ProductCard = ({
           <button
             onClick={(e) => {
               e.stopPropagation();
-              if (product.type === "boutique") {
-                onEdit(product);
-              } else
-                toast.error(
-                  "Vous ne pouvez pas modifier les modifier les produits de la marketplace"
-                );
+              onEdit(product);
             }}
             className="bg-black text-white px-6 py-2 rounded-lg flex items-center gap-2 hover:bg-gray-800 transition-all duration-200 shadow-md font-bold"
           >
@@ -87,10 +81,6 @@ export const ProductCard = ({
           {product.nom}
         </h2>
         <div className="mt-2 space-y-1">
-          <p className="text-sm text-gray-600">
-            <span className="font-bold">Type :</span>{" "}
-            {product.type ? product.type.toString().toUpperCase() : ""}
-          </p>
           <p className="text-sm text-gray-600">
             <span className="font-bold">Note :</span> {product.noteMoyenne} / 5
           </p>

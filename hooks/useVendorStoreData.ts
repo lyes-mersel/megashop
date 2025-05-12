@@ -15,7 +15,7 @@ import { ProductFromAPI } from "@/lib/types/product.types";
 import { DEFAULT_SHOP_PAGE_SIZE } from "@/lib/constants/settings";
 import { Pagination } from "@/lib/types/apiResponse.types";
 
-interface ShopData {
+interface StoreData {
   categories: CategoryFromAPI[];
   colors: ColorFromAPI[];
   genders: GenderFromAPI[];
@@ -26,8 +26,8 @@ interface ShopData {
   error: string | null;
 }
 
-export const useShopData = () => {
-  const [shopData, setShopData] = useState<ShopData>({
+export const useVendorStoreData = () => {
+  const [storeData, setStoreData] = useState<StoreData>({
     categories: [],
     colors: [],
     genders: [],
@@ -57,7 +57,7 @@ export const useShopData = () => {
             fetchDataFromAPI<SizeFromAPI[]>("/api/metadata/sizes"),
           ]);
 
-        setShopData((prev) => ({
+        setStoreData((prev) => ({
           ...prev,
           categories: categoriesRes.data || [],
           colors: colorsRes.data || [],
@@ -66,7 +66,7 @@ export const useShopData = () => {
           isLoading: false,
         }));
       } catch {
-        setShopData((prev) => ({
+        setStoreData((prev) => ({
           ...prev,
           error: "Failed to fetch metadata",
           isLoading: false,
@@ -79,7 +79,7 @@ export const useShopData = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      setShopData((prev) => ({ ...prev, isLoading: true }));
+      setStoreData((prev) => ({ ...prev, isLoading: true }));
       const params = new URLSearchParams({
         page: pagination.currentPage.toString(),
         pageSize: pagination.pageSize.toString(),
@@ -89,10 +89,10 @@ export const useShopData = () => {
       if (searchQuery) params.set("query", searchQuery);
 
       const result = await fetchPaginatedDataFromAPI<ProductFromAPI[]>(
-        `/api/products/search?${params.toString()}`
+        `/api/products/mine?${params.toString()}`
       );
 
-      setShopData((prev) => ({
+      setStoreData((prev) => ({
         ...prev,
         products: result.data?.data || [],
         totalProducts: result.data?.pagination.totalItems || 0,
@@ -112,7 +112,7 @@ export const useShopData = () => {
   }, [searchQuery, pagination.currentPage, pagination.pageSize, refresh]);
 
   return {
-    ...shopData,
+    ...storeData,
     searchQuery,
     setSearchQuery,
     pagination,

@@ -34,7 +34,7 @@ export default function AdminLayout({
       href: "/vendor/dashboard",
       iconName: "BarChart2",
     },
-    { name: "Boutique", href: "/vendor/shop", iconName: "ShoppingBag" },
+    { name: "Boutique", href: "/vendor/store", iconName: "ShoppingBag" },
     { name: "Ventes", href: "/vendor/sells", iconName: "DollarSign" },
     { name: "Commandes", href: "/vendor/orders", iconName: "Package" },
     { name: "Notifications", href: "/vendor/notifications", iconName: "Bell" },
