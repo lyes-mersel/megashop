@@ -13,12 +13,14 @@ export type ApiResponse<T> = {
 
 export type PaginatedApiResponse<T> = {
   message: string;
-  pagination: {
-    totalItems: number;
-    totalPages: number;
-    currentPage: number;
-    pageSize: number;
-  };
+  pagination: Pagination;
   data: T;
   error?: string;
+};
+
+export type Pagination = {
+  totalItems: number;
+  totalPages: number;
+  currentPage: number;
+  pageSize: number;
 };

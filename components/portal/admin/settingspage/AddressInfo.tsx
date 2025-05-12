@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import { fetchDataFromAPI } from "@/lib/utils/fetchData";
 import { UserFromAPI } from "@/lib/types/user.types";
 import { Home } from "lucide-react";
-import wilayas from "@/lib/data/wilayasData";
+import wilayas from "@/lib/data/wilayas";
 
 interface AddressInfoProps {
   user: UserFromAPI;

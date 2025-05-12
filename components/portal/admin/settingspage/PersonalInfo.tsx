@@ -49,6 +49,7 @@ export default function PersonalInfo({ user, onUpdate }: PersonalInfoProps) {
       if (result.error) {
         toast.error(result.error);
       } else {
+        await update({ ...session });
         const newImageUrl = getImageUrlFromPublicId(result.data!.imagePublicId);
         setProfileImage(newImageUrl);
         onUpdate({ ...user, imagePublicId: result.data!.imagePublicId });
@@ -71,6 +72,7 @@ export default function PersonalInfo({ user, onUpdate }: PersonalInfoProps) {
     if (result.error) {
       toast.error(result.error);
     } else {
+      await update({ ...session });
       onUpdate(result.data!);
       setFormData({
         email: result.data!.email,

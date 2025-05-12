@@ -1,8 +1,14 @@
+// General limits and constants for the application
+export const MAX_ID_LENGTH = 25;
+export const MAX_PRODUCT_DESCRIPTION_LENGTH = 1000;
+export const MAX_VENDOR_DESCRIPTION_LENGTH = 1000;
+
+
 // Pagination Defaults
 export const DEFAULT_PAGE = 1;
 export const DEFAULT_PAGE_SIZE = 12;
+export const DEFAULT_SHOP_PAGE_SIZE = 12;
 export const MAX_PAGE_SIZE = 100;
-export const MAX_ID_LENGTH = 25;
 
 // Cloud folder names
 export const ALLOWED_FOLDERS = ["products", "avatars"];

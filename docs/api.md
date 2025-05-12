@@ -23,6 +23,7 @@
 - `POST   /api/products` - Add a new product (admin|vendor) ✅
 - `DELETE /api/products` - Delete all products (admin|vendor) ✅
 - `GET    /api/products/search` - Search for products (public) ✅
+- `GET    /api/products/mine` - Search for my products (vendor) ✅
 
 ---
 
@@ -136,3 +137,10 @@
 
 - `GET    /api/analytics` - Get analytics (for vendor and admin)
 - `POST   /api/analytics/cron` - An endpoint that should be triggered daily to generate analytics.
+
+### Metadata
+
+- `GET    /api/metadata/categories` - Get all categories (admin|vendor) ✅
+- `GET    /api/metadata/colors` - Get all colors (admin|vendor) ✅
+- `GET    /api/metadata/genders` - Get all genders (admin|vendor) ✅
+- `GET    /api/metadata/sizes` - Get all categories (admin|vendor) ✅

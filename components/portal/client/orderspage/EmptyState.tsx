@@ -15,7 +15,7 @@ export default function EmptyState({
       <Image
         height={32}
         width={32}
-        src="/images/b.png"
+        src="/images/not-found.png"
         alt="Aucune commande"
         className="mx-auto w-24 sm:w-32 h-24 sm:h-32 mb-4"
         priority

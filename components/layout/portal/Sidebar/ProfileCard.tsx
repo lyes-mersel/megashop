@@ -83,9 +83,19 @@ export default function ProfileCard({
     // Simplified profile for collapsed desktop sidebar
     return (
       <div className="py-4 flex flex-col items-center border-b border-gray-200">
-        <div className="w-12 h-12 rounded-full overflow-hidden shadow-md p-0.5 bg-white">
-          <div className="w-full h-full bg-black flex items-center justify-center rounded-full">
-            <User className="h-6 w-6 text-white" />
+        <div className="w-13 h-13 rounded-full overflow-hidden shadow-md p-0.5 bg-white">
+          <div className="w-full h-full relative bg-black flex items-center justify-center rounded-full">
+            {photoUrl ? (
+              <Image
+                fill
+                src={photoUrl}
+                alt={name}
+                className="text-black bg-white rounded-full"
+                priority
+              />
+            ) : (
+              <User className="text-white bg-black" />
+            )}
           </div>
         </div>
       </div>

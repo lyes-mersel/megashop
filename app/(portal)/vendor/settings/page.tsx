@@ -30,10 +30,10 @@ import ContactInfo from "@/components/portal/vendor/settingspage/ContactInfo";
 import Security from "@/components/portal/vendor/settingspage/Security";
 import VendorSettings from "@/components/portal/vendor/settingspage/VendorSettings";
 import IsLoading from "@/components/portal/IsLoading";
-import UserNotFound from "@/components/portal/UserNotFound";
+import Error from "@/components/portal/Error";
 
 export default function SettingsPage() {
-  const { data: session, status } = useSession();
+  const { data: session, status, update } = useSession();
   const [user, setUser] = useState<UserFromAPI | null>(null);
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -90,6 +90,7 @@ export default function SettingsPage() {
       if (result.error) {
         toast.error(result.error);
       } else {
+        await update({ ...session });
         const newImageUrl = getImageUrlFromPublicId(result.data!.imagePublicId);
         setProfileImage(newImageUrl);
         setUser({ ...user, imagePublicId: result.data!.imagePublicId });
@@ -99,7 +100,7 @@ export default function SettingsPage() {
   };
 
   if (isLoading) return <IsLoading />;
-  if (!user) return <UserNotFound />;
+  if (!user) return <Error />;
 
   return (
     <div className="min-h-[100dvh] bg-gradient-to-br from-gray-50 to-gray-200 py-6 px-4 sm:pl-10 sm:pr-10">
