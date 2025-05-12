@@ -63,7 +63,7 @@ const ProductHero = ({ product }: { product: ProductFromAPI }) => {
           </span>
 
           <p className="text-sm sm:text-base text-black/60 mb-5">
-            {product.description}
+            {product.objet}
           </p>
 
           <div className="flex items-center justify-between mb-4">

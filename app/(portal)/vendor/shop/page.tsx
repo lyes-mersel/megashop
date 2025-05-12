@@ -533,7 +533,7 @@ export default function ShopPage() {
           <Image
             height={40}
             width={40}
-            src="/images/c.jpeg"
+            src="/images/store.png"
             alt="Vitrine Chic & Tendance"
             className="w-32 h-32 sm:w-40 sm:h-40 object-cover rounded-full border-4 border-white shadow-lg"
           />

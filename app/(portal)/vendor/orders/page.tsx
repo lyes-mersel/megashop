@@ -405,7 +405,7 @@ export default function OrdersPage() {
               <Image
                 width={32}
                 height={32}
-                src="/images/b.png"
+                src="/images/not-found.png"
                 alt="Aucune commande"
                 className="mx-auto w-24 h-24 sm:w-32 sm:h-32 mb-4"
               />
@@ -604,7 +604,7 @@ export default function OrdersPage() {
             <Image
               width={32}
               height={32}
-              src="/images/b.png"
+              src="/images/not-found.png"
               alt="Aucune commande"
               className="mx-auto w-24 h-24 sm:w-32 sm:h-32 mb-4"
             />

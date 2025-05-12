@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { fetchDataFromAPI } from "@/lib/utils/fetchData";
-import wilayas from "@/lib/data/wilayasData";
+import wilayas from "@/lib/data/wilayas";
 import { MapPin } from "lucide-react";
 import { Adresse as Address } from "@prisma/client";
 

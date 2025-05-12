@@ -69,7 +69,7 @@ export default function SalesPage() {
       clientEmail: "yanis@example.com",
       date: "2024-03-17",
       total: 22500,
-      productImage: "/images/h.jpeg",
+      productImage: "/images/store.png",
     },
   ]);
 
@@ -443,7 +443,7 @@ export default function SalesPage() {
               <Image
                 width={32}
                 height={32}
-                src="/images/b.png"
+                src="/images/not-found.png"
                 alt="Aucune vente"
                 className="mx-auto w-24 h-24 sm:w-32 sm:h-32 mb-4"
               />
@@ -658,7 +658,7 @@ export default function SalesPage() {
             <Image
               width={32}
               height={32}
-              src="/images/b.png"
+              src="/images/not-found.png"
               alt="Aucune vente"
               className="mx-auto w-24 h-24 sm:w-32 sm:h-32 mb-4"
             />

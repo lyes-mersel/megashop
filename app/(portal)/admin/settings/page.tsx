@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 
 // Components
 import IsLoading from "@/components/portal/IsLoading";
-import UserNotFound from "@/components/portal/UserNotFound";
+import Error from "@/components/portal/Error";
 import PersonalInfo from "@/components/portal/admin/settingspage/PersonalInfo";
 import AddressInfo from "@/components/portal/admin/settingspage/AddressInfo";
 import Security from "@/components/portal/admin/settingspage/Security";
@@ -58,7 +58,7 @@ export default function AdminSettings() {
   };
 
   if (isLoading) return <IsLoading />;
-  if (!user) return <UserNotFound />;
+  if (!user) return <Error />;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-200 py-6 px-4 sm:px-6 lg:px-10">

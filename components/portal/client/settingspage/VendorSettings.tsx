@@ -9,6 +9,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import MDEditor from "@uiw/react-md-editor";
 import { Vendeur } from "@prisma/client";
+import { MAX_VENDOR_DESCRIPTION_LENGTH } from "@/lib/constants/settings";
 
 interface VendorSettingsProps {
   user: UserFromAPI;
@@ -36,7 +37,9 @@ export default function VendorSettings({
   };
 
   const handleDescriptionChange = (value?: string) => {
-    setVendorInfo({ ...vendorInfo, description: value || "" });
+    if ((value || "").length <= MAX_VENDOR_DESCRIPTION_LENGTH) {
+      setVendorInfo({ ...vendorInfo, description: value || "" });
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -153,6 +156,10 @@ export default function VendorSettings({
                   onChange={handleDescriptionChange}
                   style={{ height: "200px" }}
                 />
+                <div className="text-right text-sm text-gray-500 mt-1">
+                  {vendorInfo.description.length} /{" "}
+                  {MAX_VENDOR_DESCRIPTION_LENGTH} caractères
+                </div>
               </div>
             </div>
           </div>
