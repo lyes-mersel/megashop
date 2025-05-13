@@ -113,11 +113,14 @@ export async function DELETE(
     }
 
     // Delete associated images from Cloudinary
-    await Promise.all(
-      (produit?.images || []).map((img) =>
-        deleteFromCloudinary(img.imagePublicId)
-      )
-    );
+
+    // Uncomment the following lines if you want to delete images from Cloudinary
+    // Keep it commented for now to avoid accidental deletions
+    // await Promise.all(
+    //   (produit?.images || []).map((img) =>
+    //     deleteFromCloudinary(img.imagePublicId)
+    //   )
+    // );
 
     // Delete the product from the database
     await prisma.produit.delete({

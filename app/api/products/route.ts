@@ -271,13 +271,17 @@ export async function DELETE(_req: NextRequest) {
     }
 
     // Delete all related images from Cloudinary
-    await Promise.all(
-      produitsToDelete.flatMap((produit) =>
-        (produit.images || []).map((img) =>
-          deleteFromCloudinary(img.imagePublicId)
-        )
-      )
-    );
+
+    // Uncomment the following lines if you want to delete images from Cloudinary
+    // Keep it commented for now to avoid accidental deletions
+
+    // await Promise.all(
+    //   produitsToDelete.flatMap((produit) =>
+    //     (produit.images || []).map((img) =>
+    //       deleteFromCloudinary(img.imagePublicId)
+    //     )
+    //   )
+    // );
 
     // Delete all products
     const deleted = await prisma.produit.deleteMany({

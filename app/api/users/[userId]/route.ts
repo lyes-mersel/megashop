@@ -127,22 +127,25 @@ export async function DELETE(
     }
 
     // If the user is a vendor & has products
-    const produits = user?.client?.vendeur?.produitMarketplace || [];
-    if (produits.length > 0) {
-      // Delete all his product images from Cloudinary
-      await Promise.all(
-        produits.flatMap((pm) =>
-          (pm.produit?.images || []).map((img) =>
-            deleteFromCloudinary(img.imagePublicId)
-          )
-        )
-      );
-      // Delete all his products from the database
-      const productIds = produits.map((p) => p.produitId);
-      await prisma.produit.deleteMany({
-        where: { id: { in: productIds } },
-      });
-    }
+
+    // Uncomment the following lines if you want to delete images from Cloudinary
+    // Keep it commented for now to avoid accidental deletions
+    // const produits = user?.client?.vendeur?.produitMarketplace || [];
+    // if (produits.length > 0) {
+    //   // Delete all his product images from Cloudinary
+    //   await Promise.all(
+    //     produits.flatMap((pm) =>
+    //       (pm.produit?.images || []).map((img) =>
+    //         deleteFromCloudinary(img.imagePublicId)
+    //       )
+    //     )
+    //   );
+    //   // Delete all his products from the database
+    //   const productIds = produits.map((p) => p.produitId);
+    //   await prisma.produit.deleteMany({
+    //     where: { id: { in: productIds } },
+    //   });
+    // }
 
     // Delete user
     await prisma.user.delete({

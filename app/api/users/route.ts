@@ -100,16 +100,19 @@ export async function DELETE(_req: NextRequest) {
     });
 
     // Delete Cloudinary images (profile + product images)
-    const allImagePublicIds = users.flatMap((user) => {
-      const profileImage = user.imagePublicId ? [user.imagePublicId] : [];
-      const productImages =
-        user.client?.vendeur?.produitMarketplace.flatMap(
-          (pm) => pm.produit?.images.map((img) => img.imagePublicId) || []
-        ) || [];
-      return [...profileImage, ...productImages];
-    });
 
-    await Promise.all(allImagePublicIds.map(deleteFromCloudinary));
+    // Uncomment the following lines if you want to delete images from Cloudinary
+    // Keep it commented for now to avoid accidental deletions
+    // const allImagePublicIds = users.flatMap((user) => {
+    //   const profileImage = user.imagePublicId ? [user.imagePublicId] : [];
+    //   const productImages =
+    //     user.client?.vendeur?.produitMarketplace.flatMap(
+    //       (pm) => pm.produit?.images.map((img) => img.imagePublicId) || []
+    //     ) || [];
+    //   return [...profileImage, ...productImages];
+    // });
+
+    // await Promise.all(allImagePublicIds.map(deleteFromCloudinary));
 
     // Collect all product IDs
     const allProductIds = users.flatMap(

@@ -102,8 +102,8 @@ async function insertUsers() {
   // Création d'un vendeur (qui est aussi un client)
   await prisma.user.create({
     data: {
-      nom: "firstname",
-      prenom: "lastname",
+      nom: "Krim",
+      prenom: "Belkacem",
       email: "vendeur@email.com",
       password: hashedPassword,
       role: UserRole.VENDEUR,
@@ -135,8 +135,8 @@ async function insertUsers() {
   // Création d'un admin
   await prisma.user.create({
     data: {
-      nom: "firstname",
-      prenom: "lastname",
+      nom: "Fatma",
+      prenom: "Nssoumer",
       email: "admin@email.com",
       password: hashedPassword,
       role: UserRole.ADMIN,
@@ -315,9 +315,9 @@ async function insertProducts() {
       tailles: { connect: [{ nom: "M" }, { nom: "L" }, { nom: "XL" }] },
       images: {
         create: [
-          { imagePublicId: "pic1_etcsri_o3o8ov" },
-          { imagePublicId: "pic15_wwfmqd_rpbayw" },
-          { imagePublicId: "pic4_pixlol_wef5mm" },
+          { imagePublicId: "pic1_etcsri_vmai50" },
+          { imagePublicId: "pic15_wwfmqd_umm8df" },
+          { imagePublicId: "pic4_pixlol_hiaxnj" },
         ],
       },
       produitMarketplace: {
@@ -341,9 +341,9 @@ async function insertProducts() {
       tailles: { connect: [{ nom: "S" }, { nom: "M" }, { nom: "L" }] },
       images: {
         create: [
-          { imagePublicId: "pic9_cfvvky" },
-          { imagePublicId: "pic6_ksyt5i" },
-          { imagePublicId: "pic13_spjtes" },
+          { imagePublicId: "pic9_cfvvky_qj114o" },
+          { imagePublicId: "pic6_ksyt5i_klscfb" },
+          { imagePublicId: "pic13_spjtes_n8dmbx" },
         ],
       },
       produitBoutique: {
@@ -365,8 +365,8 @@ async function insertProducts() {
       tailles: { connect: [{ nom: "M" }, { nom: "L" }, { nom: "XL" }] },
       images: {
         create: [
-          { imagePublicId: "pic12_wnptms" },
-          { imagePublicId: "pic14_zgcopv" },
+          { imagePublicId: "pic12_wnptms_sbxlyq" },
+          { imagePublicId: "pic14_zgcopv_gur7mr" },
         ],
       },
       produitBoutique: {
@@ -388,8 +388,8 @@ async function insertProducts() {
       tailles: { connect: [{ nom: "S" }, { nom: "M" }, { nom: "L" }] },
       images: {
         create: [
-          { imagePublicId: "pic2_vqzxsr_eniggt" },
-          { imagePublicId: "pic8_xy8nct_iljvqs" },
+          { imagePublicId: "pic2_vqzxsr_fwyict" },
+          { imagePublicId: "pic8_xy8nct_rabkms" },
         ],
       },
       produitMarketplace: {
@@ -412,7 +412,7 @@ async function insertProducts() {
         connect: [{ nom: "S" }, { nom: "M" }, { nom: "L" }, { nom: "XL" }],
       },
       images: {
-        create: [{ imagePublicId: "pic7_hfywjb" }],
+        create: [{ imagePublicId: "pic7_hfywjb_bd7zuk" }],
       },
       produitBoutique: {
         create: {
@@ -437,8 +437,8 @@ async function insertProducts() {
       },
       images: {
         create: [
-          { imagePublicId: "pic5_rruoqd_kc1bx0" },
-          { imagePublicId: "pic3_tgahxr_irlasx" },
+          { imagePublicId: "pic5_rruoqd_dfgeqq" },
+          { imagePublicId: "pic3_tgahxr_worghs" },
         ],
       },
       produitBoutique: {
@@ -462,7 +462,7 @@ async function insertProducts() {
         connect: [{ nom: "S" }, { nom: "6T" }, { nom: "5T" }, { nom: "4T" }],
       },
       images: {
-        create: [{ imagePublicId: "pic17_be8rmr" }],
+        create: [{ imagePublicId: "pic17_be8rmr_uhtalr" }],
       },
       produitBoutique: {
         create: {
@@ -485,7 +485,7 @@ async function insertProducts() {
         connect: [{ nom: "S" }, { nom: "6T" }, { nom: "5T" }, { nom: "4T" }],
       },
       images: {
-        create: [{ imagePublicId: "pic16_eslrop" }],
+        create: [{ imagePublicId: "pic15_eslrop_dbmnj8" }],
       },
       produitMarketplace: {
         create: {
@@ -509,8 +509,8 @@ async function insertProducts() {
       },
       images: {
         create: [
-          { imagePublicId: "pic18_o6pini" },
-          { imagePublicId: "pic19_fanfuw" },
+          { imagePublicId: "pic18_o6pini_pjmcsk" },
+          { imagePublicId: "pic19_fanfuw_sq6ybm" },
         ],
       },
       produitBoutique: {
@@ -533,8 +533,8 @@ async function insertProducts() {
       tailles: { connect: [{ nom: "S" }, { nom: "M" }] },
       images: {
         create: [
-          { imagePublicId: "pic20_a81vv9" },
-          { imagePublicId: "pic21_syyqp6" },
+          { imagePublicId: "pic20_a81vv9_etfc4n" },
+          { imagePublicId: "pic21_syyqp6_jr9mb1" },
         ],
       },
       produitMarketplace: {
@@ -557,9 +557,9 @@ async function insertProducts() {
       tailles: { connect: [{ nom: "M" }, { nom: "L" }, { nom: "XL" }] },
       images: {
         create: [
-          { imagePublicId: "pic22_flkjfejf" },
-          { imagePublicId: "pic23_evhsovnd" },
-          { imagePublicId: "pic24_nvorishogh" },
+          { imagePublicId: "pic22_flkjfejf_s3yiu9" },
+          { imagePublicId: "pic23_evhsovnd_bgf9sc" },
+          { imagePublicId: "pic24_nvorishogh_ashv5m" },
         ],
       },
       produitBoutique: {
@@ -594,9 +594,9 @@ async function insertProducts() {
       },
       images: {
         create: [
-          { imagePublicId: "pic25_jji03o" },
-          { imagePublicId: "pic26_np93m8" },
-          { imagePublicId: "pic27_amvqpz" },
+          { imagePublicId: "pic25_jji03o_dangrc" },
+          { imagePublicId: "pic26_np93m8_u5fult" },
+          { imagePublicId: "pic27_amvqpz_rvxtlt" },
         ],
       },
       produitBoutique: {
@@ -627,7 +627,7 @@ async function insertProducts() {
         ],
       },
       images: {
-        create: [{ imagePublicId: "pic28_wnnyyd" }],
+        create: [{ imagePublicId: "pic28_wnnyyd_ok1hij" }],
       },
       produitMarketplace: {
         create: {
@@ -648,8 +648,8 @@ async function insertProducts() {
       tailles: { connect: [{ nom: "S" }, { nom: "M" }, { nom: "L" }] },
       images: {
         create: [
-          { imagePublicId: "pic28_eq4xqj" },
-          { imagePublicId: "pic29_aqkijy" },
+          { imagePublicId: "pic28_eq4xqj_s4tlks" },
+          { imagePublicId: "pic29_aqkijy_eknid7" },
         ],
       },
       produitBoutique: {
@@ -669,7 +669,7 @@ async function insertProducts() {
       couleurs: { connect: [{ nom: "Marron" }, { nom: "Noir" }] },
       tailles: { connect: [{ nom: "Standart" }] },
       images: {
-        create: [{ imagePublicId: "pic30_dweino" }],
+        create: [{ imagePublicId: "pic30_dweino_nnrykg" }],
       },
       produitMarketplace: {
         create: {
@@ -689,8 +689,8 @@ async function insertProducts() {
       tailles: { connect: [{ nom: "Standart" }] },
       images: {
         create: [
-          { imagePublicId: "pic32_hjy8fx" },
-          { imagePublicId: "pic31_xdtzme" },
+          { imagePublicId: "pic32_hjy8fx_cmhgfg" },
+          { imagePublicId: "pic31_xdtzme_amfppe" },
         ],
       },
       produitBoutique: {
@@ -748,7 +748,7 @@ async function insertOrders() {
               nomProduit: "Pull simple",
               quantite: 1,
               prixUnit: 1500,
-              imagePublicId: "pic1_etcsri_o3o8ov",
+              imagePublicId: "pic1_etcsri_vmai50",
               produitId: null,
               tailleId: (
                 await prisma.taille.findUnique({ where: { nom: "L" } })
@@ -761,7 +761,7 @@ async function insertOrders() {
               nomProduit: "Jean slim",
               quantite: 2,
               prixUnit: 4500,
-              imagePublicId: "pic2_vqzxsr_eniggt",
+              imagePublicId: "pic2_vqzxsr_fwyict",
               produitId: null,
               tailleId: (
                 await prisma.taille.findUnique({ where: { nom: "L" } })
@@ -774,7 +774,7 @@ async function insertOrders() {
               nomProduit: "Baskets sport",
               quantite: 1,
               prixUnit: 4000,
-              imagePublicId: "pic25_jji03o",
+              imagePublicId: "pic25_jji03o_dangrc",
               produitId: null,
               tailleId: (
                 await prisma.taille.findUnique({ where: { nom: "42" } })
@@ -810,7 +810,7 @@ async function insertOrders() {
               nomProduit: "Pull moderne",
               quantite: 1,
               prixUnit: 2000,
-              imagePublicId: "pic9_cfvvky",
+              imagePublicId: "pic9_cfvvky_qj114o",
               produitId: null,
               tailleId: (
                 await prisma.taille.findUnique({ where: { nom: "M" } })
@@ -823,7 +823,7 @@ async function insertOrders() {
               nomProduit: "Baskets blanches sportives",
               quantite: 1,
               prixUnit: 5000,
-              imagePublicId: "pic28_wnnyyd",
+              imagePublicId: "pic28_wnnyyd_ok1hij",
               produitId: null,
               tailleId: (
                 await prisma.taille.findUnique({ where: { nom: "42" } })
@@ -859,7 +859,7 @@ async function insertOrders() {
               nomProduit: "Pull avec col",
               quantite: 1,
               prixUnit: 2500,
-              imagePublicId: "pic12_wnptms",
+              imagePublicId: "pic12_wnptms_sbxlyq",
               produitId: null,
               tailleId: (
                 await prisma.taille.findUnique({ where: { nom: "L" } })
@@ -872,7 +872,7 @@ async function insertOrders() {
               nomProduit: "Robe d'été",
               quantite: 1,
               prixUnit: 3500,
-              imagePublicId: "pic20_a81vv9",
+              imagePublicId: "pic20_a81vv9_etfc4n",
               produitId: null,
               tailleId: (
                 await prisma.taille.findUnique({ where: { nom: "M" } })

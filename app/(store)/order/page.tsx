@@ -5,6 +5,7 @@ import OrderHeader from "@/components/store/orderpage/OrderHeader";
 import DeliveryAddressForm from "@/components/store/orderpage/DeliveryAddressForm";
 import PaymentInfoForm from "@/components/store/orderpage/PaymentInfoForm";
 import OrderSummary from "@/components/store/orderpage/OrderSummary";
+import { redirect } from "next/navigation";
 
 export default function OrderPage() {
   const [deliveryAddress, setDeliveryAddress] = useState({
@@ -34,6 +35,7 @@ export default function OrderPage() {
   const handleSubmit = () => {
     // TODO: Implement order submission logic with API calls
     console.log("Order submitted:", { deliveryAddress, paymentInfo });
+    redirect("/")
   };
 
   return (
