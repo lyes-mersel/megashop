@@ -32,9 +32,9 @@ export const shopProductsData: ProductFromAPI[] = [
     ],
     fournisseur: { nom: "StyleCo" },
     images: [
-      { id: "1", imagePublicId: "/images/pic1.png" },
+      { id: "1", imagePublicId: "/images/picpub-watch.png" },
       { id: "2", imagePublicId: "/images/pic10.png" },
-      { id: "3", imagePublicId: "/images/pic11.png" },
+      { id: "3", imagePublicId: "/images/pic1pub-watch.png" },
     ],
   },
   {
@@ -86,7 +86,7 @@ export const shopProductsData: ProductFromAPI[] = [
       { id: "3", nom: "L" },
     ],
     fournisseur: { nom: "ClassicThreads" },
-    images: [{ id: "5", imagePublicId: "/images/pic3.png" }],
+    images: [{ id: "5", imagePublicId: "/images/picpub-girl.png" }],
   },
   {
     id: "4",
@@ -115,9 +115,9 @@ export const shopProductsData: ProductFromAPI[] = [
     ],
     fournisseur: { nom: "UrbanFashion" },
     images: [
-      { id: "6", imagePublicId: "/images/pic4.png" },
+      { id: "6", imagePublicId: "/images/picpub-pulls.png" },
       { id: "7", imagePublicId: "/images/pic10.png" },
-      { id: "8", imagePublicId: "/images/pic11.png" },
+      { id: "8", imagePublicId: "/images/pic1pub-watch.png" },
     ],
   },
 ];
@@ -155,9 +155,9 @@ export const marketProductsData: ProductFromAPI[] = [
       imagePublicId: null,
     },
     images: [
-      { id: "9", imagePublicId: "/images/pic5.png" },
+      { id: "9", imagePublicId: "/images/picpub-gift.png" },
       { id: "10", imagePublicId: "/images/pic10.png" },
-      { id: "11", imagePublicId: "/images/pic11.png" },
+      { id: "11", imagePublicId: "/images/pic1pub-watch.png" },
     ],
   },
   {
@@ -193,7 +193,7 @@ export const marketProductsData: ProductFromAPI[] = [
     images: [
       { id: "12", imagePublicId: "/images/pic6.png" },
       { id: "13", imagePublicId: "/images/pic10.png" },
-      { id: "14", imagePublicId: "/images/pic11.png" },
+      { id: "14", imagePublicId: "/images/pic1pub-watch.png" },
     ],
   },
   {
@@ -289,9 +289,9 @@ export const topSellingData: ProductFromAPI[] = [
     ],
     fournisseur: { nom: "PremiumClothing" },
     images: [
-      { id: "17", imagePublicId: "/images/pic5.png" },
+      { id: "17", imagePublicId: "/images/picpub-gift.png" },
       { id: "18", imagePublicId: "/images/pic10.png" },
-      { id: "19", imagePublicId: "/images/pic11.png" },
+      { id: "19", imagePublicId: "/images/pic1pub-watch.png" },
     ],
   },
   {
@@ -322,7 +322,7 @@ export const topSellingData: ProductFromAPI[] = [
     images: [
       { id: "20", imagePublicId: "/images/pic6.png" },
       { id: "21", imagePublicId: "/images/pic10.png" },
-      { id: "22", imagePublicId: "/images/pic11.png" },
+      { id: "22", imagePublicId: "/images/pic1pub-watch.png" },
     ],
   },
   {
@@ -409,7 +409,7 @@ export const relatedProductData: ProductFromAPI[] = [
     images: [
       { id: "25", imagePublicId: "/images/pic12.png" },
       { id: "26", imagePublicId: "/images/pic10.png" },
-      { id: "27", imagePublicId: "/images/pic11.png" },
+      { id: "27", imagePublicId: "/images/pic1pub-watch.png" },
     ],
   },
   {
@@ -440,9 +440,9 @@ export const relatedProductData: ProductFromAPI[] = [
       imagePublicId: null,
     },
     images: [
-      { id: "28", imagePublicId: "/images/pic13.png" },
+      { id: "28", imagePublicId: "/images/pic1pub-girl.png" },
       { id: "29", imagePublicId: "/images/pic10.png" },
-      { id: "30", imagePublicId: "/images/pic11.png" },
+      { id: "30", imagePublicId: "/images/pic1pub-watch.png" },
     ],
   },
   {
@@ -471,7 +471,7 @@ export const relatedProductData: ProductFromAPI[] = [
       { id: "4", nom: "XL" },
     ],
     fournisseur: { nom: "ClassicPolo" },
-    images: [{ id: "31", imagePublicId: "/images/pic14.png" }],
+    images: [{ id: "31", imagePublicId: "/images/pic1pub-pulls.png" }],
   },
   {
     id: "16",
@@ -504,7 +504,7 @@ export const relatedProductData: ProductFromAPI[] = [
       description: "Vêtements urbains et modernes pour les passionnés de mode.",
       imagePublicId: null,
     },
-    images: [{ id: "32", imagePublicId: "/images/pic15.png" }],
+    images: [{ id: "32", imagePublicId: "/images/pic1pub-gift.png" }],
   },
 ];
 
@@ -531,7 +531,7 @@ export const testimonialsData: ReviewFromAPI[] = [
           id: "a1",
           nom: "Martin",
           prenom: "Sophie",
-          imagePublicId: "/images/avatars/admin-1.png",
+          imagePublicId: "/images/avatars/admin-pub-watch.png",
           role: "ADMIN" as UserRole,
         },
       },
@@ -602,7 +602,7 @@ export const testimonialsData: ReviewFromAPI[] = [
           id: "a1",
           nom: "Martin",
           prenom: "Sophie",
-          imagePublicId: "/images/avatars/admin-1.png",
+          imagePublicId: "/images/avatars/admin-pub-watch.png",
           role: "ADMIN" as UserRole,
         },
       },
@@ -657,7 +657,7 @@ export const testimonialsData: ReviewFromAPI[] = [
           id: "a3",
           nom: "Garcia",
           prenom: "Miguel",
-          imagePublicId: "/images/avatars/admin-3.png",
+          imagePublicId: "/images/avatars/admin-pub-girl.png",
           role: "VENDEUR" as UserRole,
         },
       },
