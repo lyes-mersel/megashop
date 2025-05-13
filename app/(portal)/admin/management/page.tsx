@@ -104,7 +104,7 @@ export default function UsersPage() {
         province: "Sfax",
         postalCode: "3000",
       },
-      image: "/images/u2.jpg",
+      image: "/images/upub-basket.png",
       status: "active",
       reportsCount: 2,
       productsCount: 45,

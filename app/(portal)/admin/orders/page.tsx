@@ -749,7 +749,7 @@ export default function OrdersPage() {
             <Image
               width={32}
               height={32}
-              src="https://cdn-icons-png.flaticon.com/512/2748/2748551.png"
+              src="https://cdn-icons-png.flaticon.com/512/2748/274855pub-watch.png"
               alt="Aucune commande"
               className="mx-auto w-24 h-24 sm:w-32 sm:h-32 mb-4"
             />

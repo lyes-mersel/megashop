@@ -22,7 +22,7 @@ export default function OrderTable({
         <Image
           height={300}
           width={300}
-          src="/images/a.png"
+          src="/images/list-orders.png"
           alt="Historique des commandes"
           className="w-auto h-auto max-w-full max-h-64 object-contain"
           priority
