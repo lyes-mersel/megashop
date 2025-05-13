@@ -59,18 +59,19 @@ model Client {
 }
 
 model Commande {
-  id                String             @id @default(cuid()) @db.VarChar(25)
-  date              DateTime           @default(now())
-  montant           Decimal            @db.Decimal(10, 2)
-  statut            CommandeStatut     @default(EN_ATTENTE)
-  adresseId         String?            @map("adresse_id") @db.VarChar(25)
-  panierId          String?            @map("panier_id") @db.VarChar(25)
-  clientId          String?            @map("client_id") @db.VarChar(25)
-  adresse           Adresse?           @relation(fields: [adresseId], references: [id], onDelete: SetNull, onUpdate: NoAction)
-  panier            Panier?            @relation(fields: [panierId], references: [id], onDelete: SetNull, onUpdate: NoAction)
-  client            Client?            @relation(fields: [clientId], references: [id], onDelete: SetNull, onUpdate: NoAction)
-  lignesCommande    LigneCommande[]
-  paiementsCommande PaiementCommande[]
+  id             String            @id @default(cuid()) @db.VarChar(25)
+  date           DateTime          @default(now())
+  montant        Decimal           @db.Decimal(10, 2)
+  statut         CommandeStatut    @default(EN_ATTENTE)
+  adresseId      String?           @map("adresse_id") @db.VarChar(25)
+  panierId       String?           @map("panier_id") @db.VarChar(25)
+  clientId       String?           @map("client_id") @db.VarChar(25)
+  paiementId     String?           @map("paiement_id") @db.VarChar(25)
+  adresse        Adresse?          @relation(fields: [adresseId], references: [id], onDelete: SetNull, onUpdate: NoAction)
+  panier         Panier?           @relation(fields: [panierId], references: [id], onDelete: SetNull, onUpdate: NoAction)
+  client         Client?           @relation(fields: [clientId], references: [id], onDelete: SetNull, onUpdate: NoAction)
+  lignesCommande LigneCommande[]
+  paiement       PaiementCommande?
 
   @@index([clientId], map: "index_commande_client_id")
   @@index([panierId], map: "index_commande_panier_id")
@@ -157,11 +158,11 @@ model Notification {
 }
 
 model PaiementCommande {
-  id         String          @id @default(cuid()) @db.VarChar(25)
-  date       DateTime?       @default(now())
-  statut     PaiementStatut? @default(EN_ATTENTE)
-  commandeId String          @map("commande_id") @db.VarChar(25)
-  commande   Commande        @relation(fields: [commandeId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  id         String         @id @default(cuid()) @db.VarChar(25)
+  date       DateTime       @default(now())
+  statut     PaiementStatut @default(EN_ATTENTE)
+  commandeId String         @unique @map("commande_id") @db.VarChar(25)
+  commande   Commande       @relation(fields: [commandeId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@index([commandeId], map: "index_commande_id")
   @@map("paiement_commande")
