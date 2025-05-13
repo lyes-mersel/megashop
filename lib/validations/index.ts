@@ -13,6 +13,7 @@ import {
   updateVendorSchema,
 } from "./user";
 import { createOrderSchema } from "./order";
+import { paymentSchema } from "./payment";
 import formatValidationErrors from "./formatValidationErrors";
 
 export {
@@ -39,6 +40,9 @@ export {
 
   // Order
   createOrderSchema,
+
+  // Payment
+  paymentSchema,
 
   // Format validation errors
   formatValidationErrors,

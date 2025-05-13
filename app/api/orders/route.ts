@@ -6,7 +6,7 @@ import {
   getPaginationParams,
   getSortingOrdersParams,
 } from "@/lib/utils/params";
-import { PaiementStatut, Prisma, UserRole } from "@prisma/client";
+import { Prisma, UserRole } from "@prisma/client";
 import { formatOrderData, getOrderSelect } from "@/lib/helpers/orders";
 import { createOrderSchema, formatValidationErrors } from "@/lib/validations";
 import { Decimal } from "@prisma/client/runtime/library";
@@ -188,41 +188,19 @@ export async function POST(req: NextRequest) {
       })
     );
 
-    const result = await prisma.$transaction(
-      async (tx) => {
-        const commande = await tx.commande.create({
-          data: {
-            montant: total,
-            clientId: userId,
-            adresseId: address.id,
-            lignesCommande: {
-              create: ligneCommandeData,
-            },
-          },
-        });
-
-        await tx.paiementCommande.create({
-          data: {
-            commandeId: commande.id,
-            statut: PaiementStatut.EN_ATTENTE,
-          },
-        });
-
-        return commande;
+    const commande = await prisma.commande.create({
+      data: {
+        montant: total,
+        clientId: userId,
+        adresseId: address.id,
+        lignesCommande: {
+          create: ligneCommandeData,
+        },
       },
-      { timeout: 8000 }
-    );
-
-    const orderWithPayment = await prisma.commande.findUnique({
-      where: { id: result.id },
       select: getOrderSelect(),
     });
 
-    if (!orderWithPayment) {
-      throw new Error("Internal error: Could not fetch order after creation");
-    }
-
-    const formattedOrder = formatOrderData(orderWithPayment);
+    const formattedOrder = formatOrderData(commande);
 
     return NextResponse.json(
       { message: "La commande a été créé avec succès.", data: formattedOrder },
