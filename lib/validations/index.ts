@@ -12,6 +12,8 @@ import {
   becomeVendorSchema,
   updateVendorSchema,
 } from "./user";
+import { createOrderSchema } from "./order";
+import { paymentSchema } from "./payment";
 import formatValidationErrors from "./formatValidationErrors";
 
 export {
@@ -35,6 +37,12 @@ export {
   updateUserAvatarSchema,
   becomeVendorSchema,
   updateVendorSchema,
+
+  // Order
+  createOrderSchema,
+
+  // Payment
+  paymentSchema,
 
   // Format validation errors
   formatValidationErrors,

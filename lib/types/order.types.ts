@@ -28,6 +28,11 @@ export type OrderFromAPI = {
     taille?: { id: string; nom: string } | null;
     couleur?: { id: string; nom: string; code: string } | null;
   }[];
+  paiement: {
+    id: string;
+    statut: string;
+    date: Date;
+  } | null;
 };
 
 export interface SortConfig {

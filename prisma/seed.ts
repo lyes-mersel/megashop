@@ -315,9 +315,9 @@ async function insertProducts() {
       tailles: { connect: [{ nom: "M" }, { nom: "L" }, { nom: "XL" }] },
       images: {
         create: [
-          { imagePublicId: "pic1_etcsri" },
-          { imagePublicId: "pic15_wwfmqd" },
-          { imagePublicId: "pic4_pixlol" },
+          { imagePublicId: "pic1_etcsri_o3o8ov" },
+          { imagePublicId: "pic15_wwfmqd_rpbayw" },
+          { imagePublicId: "pic4_pixlol_wef5mm" },
         ],
       },
       produitMarketplace: {
@@ -388,8 +388,8 @@ async function insertProducts() {
       tailles: { connect: [{ nom: "S" }, { nom: "M" }, { nom: "L" }] },
       images: {
         create: [
-          { imagePublicId: "pic2_vqzxsr" },
-          { imagePublicId: "pic8_xy8nct" },
+          { imagePublicId: "pic2_vqzxsr_eniggt" },
+          { imagePublicId: "pic8_xy8nct_iljvqs" },
         ],
       },
       produitMarketplace: {
@@ -437,8 +437,8 @@ async function insertProducts() {
       },
       images: {
         create: [
-          { imagePublicId: "pic5_rruoqd" },
-          { imagePublicId: "pic3_tgahxr" },
+          { imagePublicId: "pic5_rruoqd_kc1bx0" },
+          { imagePublicId: "pic3_tgahxr_irlasx" },
         ],
       },
       produitBoutique: {
@@ -748,7 +748,7 @@ async function insertOrders() {
               nomProduit: "Pull simple",
               quantite: 1,
               prixUnit: 1500,
-              imagePublicId: "pic1_etcsri",
+              imagePublicId: "pic1_etcsri_o3o8ov",
               produitId: null,
               tailleId: (
                 await prisma.taille.findUnique({ where: { nom: "L" } })
@@ -761,7 +761,7 @@ async function insertOrders() {
               nomProduit: "Jean slim",
               quantite: 2,
               prixUnit: 4500,
-              imagePublicId: "pic2_vqzxsr",
+              imagePublicId: "pic2_vqzxsr_eniggt",
               produitId: null,
               tailleId: (
                 await prisma.taille.findUnique({ where: { nom: "L" } })

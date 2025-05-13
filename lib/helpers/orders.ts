@@ -39,12 +39,27 @@ export function getOrderSelect() {
         },
       },
     },
+    paiement: {
+      select: {
+        id: true,
+        statut: true,
+        date: true,
+      },
+    },
   };
 }
 
 export function formatOrderData(order: OrderFromDB): OrderFromAPI {
-  const { id, date, montant, statut, clientId, adresse, lignesCommande } =
-    order;
+  const {
+    id,
+    date,
+    montant,
+    statut,
+    clientId,
+    adresse,
+    lignesCommande,
+    paiement,
+  } = order;
 
   return {
     id,
@@ -57,5 +72,6 @@ export function formatOrderData(order: OrderFromDB): OrderFromAPI {
       ...ligne,
       prixUnit: ligne.prixUnit.toNumber(),
     })),
+    paiement,
   };
 }
