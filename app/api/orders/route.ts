@@ -6,9 +6,12 @@ import {
   getPaginationParams,
   getSortingOrdersParams,
 } from "@/lib/utils/params";
-import { Prisma, UserRole } from "@prisma/client";
+import { PaiementStatut, Prisma, UserRole } from "@prisma/client";
 import { formatOrderData, getOrderSelect } from "@/lib/helpers/orders";
-import { createOrderSchema, formatValidationErrors } from "@/lib/validations";
+import {
+  formatValidationErrors,
+  fullOrderWithPaymentSchema,
+} from "@/lib/validations";
 import { Decimal } from "@prisma/client/runtime/library";
 import { BadRequestIdError } from "@/lib/classes/BadRequestIdError";
 
@@ -99,7 +102,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST: Create a new order (authenticated users only)
+// POST: Create a new order (client only)
 export async function POST(req: NextRequest) {
   const session = await auth();
 
@@ -119,20 +122,16 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const userId = session.user.id;
-
-  // Parse and validate request body
   const body = await req.json();
-  const parsed = createOrderSchema.safeParse(body);
+  const parsed = fullOrderWithPaymentSchema.safeParse(body);
 
   if (!parsed.success) {
     return formatValidationErrors(parsed);
   }
 
-  const { userId: userIdJson, addresse, produits } = parsed.data;
+  const { userId, addresse, produits } = parsed.data;
 
-  // Check if the user ID in the request matches the authenticated user
-  if (userId !== userIdJson) {
+  if (session.user.id !== userId) {
     return NextResponse.json(
       { error: ERROR_MESSAGES.FORBIDDEN },
       { status: 403 }
@@ -140,19 +139,11 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    // Create delivery address
-    const address = await prisma.adresse.create({
-      data: {
-        rue: addresse.rue,
-        ville: addresse.ville,
-        wilaya: addresse.wilaya,
-        codePostal: addresse.codePostal,
-      },
-    });
+    // Create address
+    const address = await prisma.adresse.create({ data: addresse });
 
-    // Fetch product details and calculate total
+    // Build order lines and calculate total
     let total = new Decimal(0);
-
     const ligneCommandeData = await Promise.all(
       produits.map(async (line) => {
         const produit = await prisma.produit.findUnique({
@@ -166,19 +157,16 @@ export async function POST(req: NextRequest) {
         });
 
         if (!produit) {
-          throw new BadRequestIdError(
-            `Produit avec l'ID ${line.produitId} non trouvé dans la base de données.`
-          );
+          throw new BadRequestIdError(`Produit ${line.produitId} introuvable.`);
         }
 
         const prixUnit = produit.prix;
-        const quantite = line.quantite;
-        const sousTotal = prixUnit.mul(quantite);
+        const sousTotal = prixUnit.mul(line.quantite);
         total = total.add(sousTotal);
 
         return {
           nomProduit: produit.nom,
-          quantite,
+          quantite: line.quantite,
           prixUnit,
           imagePublicId: produit.images[0]?.imagePublicId ?? null,
           produitId: produit.id,
@@ -188,22 +176,32 @@ export async function POST(req: NextRequest) {
       })
     );
 
-    const commande = await prisma.commande.create({
+    // Create order
+    const order = await prisma.commande.create({
       data: {
         montant: total,
         clientId: userId,
         adresseId: address.id,
-        lignesCommande: {
-          create: ligneCommandeData,
-        },
+        lignesCommande: { create: ligneCommandeData },
       },
       select: getOrderSelect(),
     });
 
-    const formattedOrder = formatOrderData(commande);
+    // Create payment record
+    const paiement = await prisma.paiementCommande.create({
+      data: {
+        commandeId: order.id,
+        statut: PaiementStatut.VALIDE,
+      },
+    });
+
+    const formattedOrder = formatOrderData({ ...order, paiement });
 
     return NextResponse.json(
-      { message: "La commande a été créé avec succès.", data: formattedOrder },
+      {
+        message: "Commande et paiement réussis",
+        data: formattedOrder,
+      },
       { status: 201 }
     );
   } catch (error) {
@@ -211,7 +209,7 @@ export async function POST(req: NextRequest) {
 
     if (error instanceof BadRequestIdError) {
       return NextResponse.json(
-        { eroor: ERROR_MESSAGES.BAD_REQUEST_ID },
+        { error: ERROR_MESSAGES.BAD_REQUEST_ID },
         { status: 400 }
       );
     }

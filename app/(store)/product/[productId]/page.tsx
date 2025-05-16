@@ -62,7 +62,7 @@ export default function ProductPage({
     return (
       <div className="min-h-[calc(100dvh-125px)] flex flex-col items-center justify-center py-20 gap-4 text-gray-700">
         <div className="w-8 h-8 border-4 border-t-transparent border-blue-500 rounded-full animate-spin"></div>
-        <p className="text-lg font-medium">Chargement des produits...</p>
+        <p className="text-lg font-medium">Chargement de la page...</p>
       </div>
     );
   }

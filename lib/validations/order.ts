@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { paymentSchema } from "./payment";
 
 // Delivery address schema
 const deliveryAddressSchema = z.object({
@@ -21,4 +22,14 @@ export const createOrderSchema = z.object({
   userId: z.string().min(1, "User ID est requis"),
   addresse: deliveryAddressSchema,
   produits: z.array(orderLineSchema).min(1, "Au moins un produit est requis"),
+});
+
+// Create order schema
+export const prepareOrderSchema = z.object({
+  produits: z.array(orderLineSchema).min(1, "Au moins un produit est requis"),
+});
+
+// Combine schemas
+export const fullOrderWithPaymentSchema = createOrderSchema.extend({
+  payment: paymentSchema,
 });

@@ -12,8 +12,13 @@ import {
   becomeVendorSchema,
   updateVendorSchema,
 } from "./user";
-import { createOrderSchema } from "./order";
-import { paymentSchema } from "./payment";
+import {
+  createOrderSchema,
+  prepareOrderSchema,
+  fullOrderWithPaymentSchema,
+} from "./order";
+import { reportSchema } from "@/lib/validations/report";
+
 import formatValidationErrors from "./formatValidationErrors";
 
 export {
@@ -40,9 +45,11 @@ export {
 
   // Order
   createOrderSchema,
+  prepareOrderSchema,
+  fullOrderWithPaymentSchema,
 
-  // Payment
-  paymentSchema,
+  // Report
+  reportSchema,
 
   // Format validation errors
   formatValidationErrors,

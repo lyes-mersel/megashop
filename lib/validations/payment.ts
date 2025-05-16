@@ -10,5 +10,4 @@ export const paymentSchema = z.object({
   cvc: z.string().min(3).max(4).regex(/^\d+$/, "CVC must be digits"),
   expirationDate: z.string().regex(/^\d{2}\/\d{2}$/, "Format must be MM/YY"),
   legalName: z.string().min(1, "Legal name is required"),
-  commandeId: z.string(),
 });

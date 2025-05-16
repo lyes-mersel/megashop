@@ -39,3 +39,17 @@ export interface SortConfig {
   key: keyof OrderFromAPI;
   direction: "asc" | "desc";
 }
+
+export type PrepareOrderFromAPI = {
+  montant: number;
+  produits: {
+    id: string;
+    nomProduit: string;
+    quantite: number;
+    prixUnit: number;
+    imagePublicId: string | null;
+    produitId: string | null;
+    taille?: { id: string; nom: string } | null;
+    couleur?: { id: string; nom: string; code: string } | null;
+  }[];
+};
