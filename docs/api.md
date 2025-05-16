@@ -106,7 +106,8 @@
 
 ### Orders
 
-- `GET    /api/orders` - Get all orders (admin)
+- `GET    /api/orders` - Get all orders (admin) ✅
+- `POST   /api/orders` - Make a new order (client) ✅
 - `GET    /api/orders/{orderId}` - Get a specific order (admin)
 - `PATCH  /api/orders/{orderId}` - Update an order (admin)
 - `DELETE /api/orders/{orderId}` - Delete an order (admin)
@@ -144,3 +145,7 @@
 - `GET    /api/metadata/colors` - Get all colors (admin|vendor) ✅
 - `GET    /api/metadata/genders` - Get all genders (admin|vendor) ✅
 - `GET    /api/metadata/sizes` - Get all categories (admin|vendor) ✅
+
+### ChatBot
+
+- `POST    /api/chat` - Send a prompt to the AI agent and receive a response (public) ✅

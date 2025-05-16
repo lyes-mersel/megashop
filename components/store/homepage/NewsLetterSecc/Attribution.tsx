@@ -12,7 +12,7 @@ const githubLinks: SocialNetworks[] = [
   },
   {
     id: 2,
-    name: "BRAHAMI Rayan",
+    name: "BRAHIMI Rayan",
     url: "https://github.com/BrahimiRayan",
   },
   {

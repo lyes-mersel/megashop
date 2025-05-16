@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
 
             👨‍💻 Development Team:
             - [MERSEL Lyes](https://github.com/lyes-mersel)  
-            - [BRAHAMI Rayan](https://github.com/BrahimiRayan)  
+            - [BRAHIMI Rayan](https://github.com/BrahimiRayan)  
             - [MECHKOUR Billal](https://github.com/Billalmechekour)  
             - [MESSAOUDENE Saïd](https://github.com/Messaoudene-Said)
 
