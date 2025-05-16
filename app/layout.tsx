@@ -8,6 +8,7 @@ import { satoshi } from "@/styles/fonts";
 // components
 import { Toaster } from "@/components/ui/sonner";
 import Providers from "@/app/providers";
+import ChatComponent from "@/components/common/ChatComponent";
 
 export const viewport: Viewport = {
   themeColor: "#000000",
@@ -30,6 +31,7 @@ export default function GlobalLayout({
         <Providers>
           {children}
           <Toaster />
+          <ChatComponent />
         </Providers>
       </body>
     </html>

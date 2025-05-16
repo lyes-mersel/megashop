@@ -1,9 +1,9 @@
-export const dynamic = "force-dynamic";
+"use client";
 
-import { notFound, redirect } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import { notFound, useRouter } from "next/navigation";
 
 // Components
-import ProductListSec from "@/components/common/ProductListSec";
 import BreadcrumbProduct from "@/components/store/productpage/BreadcrumbProduct";
 import ProductHero from "@/components/store/productpage/ProductHero";
 import Tabs from "@/components/store/productpage/Tabs";
@@ -11,53 +11,63 @@ import Tabs from "@/components/store/productpage/Tabs";
 // Types
 import { ProductFromAPI } from "@/lib/types/product.types";
 
-// Data
-import {
-  fetchDataFromAPI,
-  fetchPaginatedDataFromAPI,
-} from "@/lib/utils/fetchData";
+// Data utils
+import { fetchDataFromAPI } from "@/lib/utils/fetchData";
+import LastArrivals from "@/components/store/productpage/LastArrivals";
 
-export default async function ProductPage({
+export default function ProductPage({
   params,
 }: {
   params: Promise<{ productId: string }>;
 }) {
-  const { productId } = await params;
+  const router = useRouter();
 
-  const [productResult, newProductsResult] = await Promise.all([
-    fetchDataFromAPI<ProductFromAPI>(
-      `${process.env.NEXT_PUBLIC_API_URL}/products/${productId}`
-    ),
-    fetchPaginatedDataFromAPI<ProductFromAPI[]>(
-      `${process.env.NEXT_PUBLIC_API_URL}/products?sortBy=dateCreation&sortOrder=desc&page=1&pageSize=4`
-    ),
-  ]);
+  const hasFetchedRef = useRef(false);
+  const [product, setProduct] = useState<ProductFromAPI | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  // Handle errors and status codes
-  if (productResult.error) {
-    if (productResult.status === 404) {
-      return notFound();
-    }
-    console.error(productResult.error);
-    return redirect("/internal-error");
-  }
-  if (newProductsResult.error) {
-    if (newProductsResult.status === 404) {
-      return notFound();
-    }
-    console.error(newProductsResult.error);
-    redirect("/internal-error");
+  useEffect(() => {
+    if (hasFetchedRef.current) return;
+    hasFetchedRef.current = true;
+
+    const fetchData = async () => {
+      try {
+        const { productId } = await params;
+        const productResult = await fetchDataFromAPI<ProductFromAPI>(
+          `/api/products/${productId}`
+        );
+
+        if (productResult.error) {
+          if (productResult.status === 404) return notFound();
+          console.error(productResult.error);
+          return router.push("/internal-error");
+        }
+
+        if (!productResult.data) return router.push("/not-found");
+
+        setProduct(productResult.data);
+      } catch (error) {
+        console.error("Unexpected error:", error);
+        router.push("/internal-error");
+      } finally {
+        setLoading(false);
+        hasFetchedRef.current = true;
+      }
+    };
+
+    fetchData();
+  }, [params, router]);
+
+  if (loading) {
+    return (
+      <div className="min-h-[calc(100dvh-125px)] flex flex-col items-center justify-center py-20 gap-4 text-gray-700">
+        <div className="w-8 h-8 border-4 border-t-transparent border-blue-500 rounded-full animate-spin"></div>
+        <p className="text-lg font-medium">Chargement des produits...</p>
+      </div>
+    );
   }
 
-  // Handle null data
-  const product = productResult.data;
-  const newProducts = newProductsResult.data;
-  if (!product) {
-    return notFound();
-  }
-  if (!newProducts) {
-    redirect("/internal-error");
-  }
+  if (!product) return notFound();
 
   return (
     <main>
@@ -70,12 +80,7 @@ export default async function ProductPage({
       <div className="max-w-frame mx-auto px-4 xl:px-0">
         <hr className="h-[1px] border-t-black/10 my-10 sm:my-16" />
       </div>
-      <div className="mb-[50px] sm:mb-20">
-        <ProductListSec
-          title="Nos derniers arrivages"
-          data={newProducts.data}
-        />
-      </div>
+      <LastArrivals />
     </main>
   );
 }

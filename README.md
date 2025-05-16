@@ -44,6 +44,9 @@
     # Authentication
     AUTH_SECRET="****"
 
+    # Chatbot OpenRouter API Key
+   OPENROUTER_API_KEY="****"
+
     # Email Configuration
     EMAIL_USER="noreply.megashop@gmail.com"
     EMAIL_APP_PASSWORD="****"
