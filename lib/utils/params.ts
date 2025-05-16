@@ -70,6 +70,18 @@ export function getSortingOrdersParams(req: NextRequest) {
   let sortOrder = searchParams.get("sortOrder") || "asc";
 
   sortBy = ORDER_SORT_FIELDS.includes(sortBy) ? sortBy : "date";
+  sortOrder = VALID_SORT_ORDERS.includes(sortOrder) ? sortOrder : "asc";
+
+  return { sortBy, sortOrder };
+}
+
+export function getSortingReportsParams(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+
+  let sortBy = searchParams.get("sortBy") || "date";
+  let sortOrder = searchParams.get("sortOrder") || "desc";
+
+  sortBy = ORDER_SORT_FIELDS.includes(sortBy) ? sortBy : "date";
   sortOrder = VALID_SORT_ORDERS.includes(sortOrder) ? sortOrder : "desc";
 
   return { sortBy, sortOrder };

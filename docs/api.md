@@ -114,7 +114,8 @@
 
 ### Reports
 
-- `GET    /api/reports` - Get all user reports (admin)
+- `GET    /api/reports` - Get all user reports (admin) ✅
+- `POST   /api/reports` - Post a new report (client only) ✅
 - `GET    /api/reports/{reportId}` - Get a specific report (admin)
 - `PATCH  /api/reports/{reportId}` - Modify the status of a report (admin)
 - `DELETE /api/reports/{reportId}` - Delete a report (admin)

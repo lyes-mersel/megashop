@@ -17,7 +17,8 @@ import {
   prepareOrderSchema,
   fullOrderWithPaymentSchema,
 } from "./order";
-import { paymentSchema } from "./payment";
+import { reportSchema } from "@/lib/validations/report";
+
 import formatValidationErrors from "./formatValidationErrors";
 
 export {
@@ -47,8 +48,8 @@ export {
   prepareOrderSchema,
   fullOrderWithPaymentSchema,
 
-  // Payment
-  paymentSchema,
+  // Report
+  reportSchema,
 
   // Format validation errors
   formatValidationErrors,
