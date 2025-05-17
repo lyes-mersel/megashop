@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import {
   Accordion,
   AccordionContent,
@@ -10,59 +9,54 @@ import {
 import { MdKeyboardArrowRight } from "react-icons/md";
 
 type Category = {
-  id: string;
-  title: string;
+  nom: string;
   description: string;
 };
 
 const categoriesData: Category[] = [
   {
-    id: "cm9smmidy00033ok17udh743s",
-    title: "Hauts",
+    nom: "Hauts",
     description:
       "T-shirts, chemises, pulls et autres vêtements pour le haut du corps.",
   },
   {
-    id: "cm9smmidy00043ok1uevrt2rz",
-    title: "Bas",
+    nom: "Bas",
     description:
       "Pantalons, jeans, shorts et autres vêtements pour le bas du corps.",
   },
   {
-    id: "cm9smmidy00053ok1hxi2g3pp",
-    title: "Robes & Ensembles",
+    nom: "Robes & Ensembles",
     description: "Robes et ensembles assortis pour toutes occasions.",
   },
   {
-    id: "cm9smmidy00063ok1xrgatqot",
-    title: "Vestes & Manteaux",
+    nom: "Vestes & Manteaux",
     description: "Vestes légères, manteaux d'hiver et blousons.",
   },
   {
-    id: "cm9smmidy00073ok176su4rpn",
-    title: "Chaussures",
+    nom: "Chaussures",
     description: "Baskets, bottes, sandales et autres types de chaussures.",
   },
   {
-    id: "cm9smmidy00083ok1ferps6xm",
-    title: "Accessoires",
+    nom: "Accessoires",
     description: "Sacs, écharpes, ceintures et autres compléments de tenue.",
   },
   {
-    id: "cm9smmidy00093ok1i5wz60uh",
-    title: "Autres",
+    nom: "Autres",
     description: "Articles divers ne rentrant pas dans les autres catégories.",
   },
 ];
 
-type Props = {
-  selectedId: string | null;
-  onSelect: (id: string | null) => void;
-};
+interface CategoriesSectionProps {
+  selectedNom: string | null;
+  onSelect: (nom: string | null) => void;
+}
 
-const CategoriesSection = ({ selectedId, onSelect }: Props) => {
-  const handleSelect = (id: string) => {
-    onSelect(selectedId === id ? null : id); // toggle
+export default function CategoriesSection({
+  selectedNom,
+  onSelect,
+}: CategoriesSectionProps) {
+  const handleSelect = (nom: string) => {
+    onSelect(selectedNom === nom ? null : nom); // Toggle selection
   };
 
   return (
@@ -74,16 +68,16 @@ const CategoriesSection = ({ selectedId, onSelect }: Props) => {
         <AccordionContent className="pt-4 pb-0">
           <div className="flex flex-col space-y-1 text-black/80">
             {categoriesData.map((category) => (
-              <div className="relative group" key={category.id}>
+              <div className="relative group" key={category.nom}>
                 <button
-                  onClick={() => handleSelect(category.id)}
+                  onClick={() => handleSelect(category.nom)}
                   className={`flex items-center justify-between w-full py-2 px-3 rounded-lg transition ${
-                    selectedId === category.id
+                    selectedNom === category.nom
                       ? "bg-black text-white"
                       : "hover:bg-black/10"
                   }`}
                 >
-                  {category.title} <MdKeyboardArrowRight />
+                  {category.nom} <MdKeyboardArrowRight />
                 </button>
                 <div className="absolute z-10 hidden group-hover:block w-64 bg-white border border-gray-200 shadow-md text-sm text-gray-700 p-2 rounded-md top-full mt-1 left-0">
                   {category.description}
@@ -95,6 +89,4 @@ const CategoriesSection = ({ selectedId, onSelect }: Props) => {
       </AccordionItem>
     </Accordion>
   );
-};
-
-export default CategoriesSection;
+}

@@ -38,24 +38,30 @@ const NavBar = async () => {
       </div>
 
       {/* Search Bar */}
-      <InputGroup className="hidden md:flex max-w-[300px] lg:max-w-[500px] flex-1 mr-3 lg:mr-10 h-10 bg-[#F0F0F0]">
-        <InputGroup.Text>
-          <Image
-            priority
-            src="/icons/search.svg"
-            height={20}
-            width={20}
-            alt="search"
-            className="min-w-5 min-h-5"
+      <form
+        action="/catalog"
+        method="GET"
+        className="hidden md:flex max-w-[300px] lg:max-w-[500px] flex-1 mr-3 lg:mr-10 h-10 bg-[#F0F0F0] rounded-2xl shadow-sm focus:outline-none focus-within:shadow-md transition-all duration-300"
+      >
+        <InputGroup className="bg-[#F0F0F0] shadow-none focus:shadow-none focus-within:shadow-none">
+          <InputGroup.Text>
+            <Image
+              priority
+              src="/icons/search.svg"
+              height={20}
+              width={20}
+              alt="rechercher"
+              className="min-w-5 min-h-5"
+            />
+          </InputGroup.Text>
+          <InputGroup.Input
+            type="search"
+            name="query"
+            placeholder="Rechercher des produits..."
+            className="bg-transparent placeholder:text-black/40"
           />
-        </InputGroup.Text>
-        <InputGroup.Input
-          type="search"
-          name="search"
-          placeholder="Search for products..."
-          className="bg-transparent placeholder:text-black/40"
-        />
-      </InputGroup>
+        </InputGroup>
+      </form>
 
       {/* User Actions */}
       <div className="flex items-center gap-1 md:gap-2">
