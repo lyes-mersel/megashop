@@ -20,6 +20,7 @@ import { Flag, X, Store } from "lucide-react";
 import Link from "next/link";
 import { getImageUrlFromPublicId } from "@/lib/utils";
 import Image from "next/image";
+import MDEditor from "@uiw/react-md-editor";
 
 const ProductHero = ({ product }: { product: ProductFromAPI }) => {
   const [showVendorInfo, setShowVendorInfo] = useState(false);
@@ -110,18 +111,18 @@ const ProductHero = ({ product }: { product: ProductFromAPI }) => {
 
           {/* Carte d'information du vendeur */}
           {showVendorInfo && product.vendeur && (
-            <div className="absolute top-0 right-0 bg-white p-5 shadow-lg rounded-md border border-gray-200 w-72 z-10">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="font-bold text-lg">Profile du vendeur</h3>
-                <button onClick={() => setShowVendorInfo(false)}>
-                  <X className="w-5 h-5 text-gray-500" />
-                </button>
-              </div>
+            <div className="absolute top-0 right-0 bg-white p-5 shadow-lg rounded-md border border-gray-200 w-72 xs:w-[350px] sm:w-[500px] md:w-[550px] lg:w-[600px] z-10">
+              <button
+                className="float-right"
+                onClick={() => setShowVendorInfo(false)}
+              >
+                <X className="w-5 h-5 text-gray-500" />
+              </button>
 
               <div className="flex items-center mb-4">
                 <Image
-                  width={16}
-                  height={16}
+                  width={100}
+                  height={100}
                   src={
                     product.vendeur.imagePublicId
                       ? getImageUrlFromPublicId(product.vendeur.imagePublicId)
@@ -131,17 +132,15 @@ const ProductHero = ({ product }: { product: ProductFromAPI }) => {
                   className="w-16 h-16 rounded-full object-cover mr-3"
                 />
                 <div>
-                  <h4 className="font-semibold text-base">
+                  <h3 className="font-semibold text-2xl">
                     {product.vendeur.nomBoutique}
-                  </h4>
+                  </h3>
                 </div>
               </div>
 
               {product.vendeur.description && (
-                <div className="mb-3">
-                  <p className="text-sm text-gray-700">
-                    {product.vendeur.description}
-                  </p>
+                <div className="prose-lg" data-color-mode="light">
+                  <MDEditor.Markdown source={product.vendeur.description} />
                 </div>
               )}
             </div>

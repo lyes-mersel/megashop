@@ -10,29 +10,35 @@ import { cn } from "@/lib/utils";
 import { SizeFromAPI } from "@/lib/types/size.types";
 
 const sizes: SizeFromAPI[] = [
-  { id: "1", nom: "Standart" },
-  { id: "2", nom: "S" },
-  { id: "3", nom: "M" },
-  { id: "4", nom: "L" },
-  { id: "5", nom: "XL" },
-  { id: "6", nom: "XXL" },
-  { id: "7", nom: "3XL" },
-  { id: "8", nom: "2Y" },
-  { id: "9", nom: "3Y" },
-  { id: "10", nom: "4Y" },
-  { id: "11", nom: "5Y" },
-  { id: "12", nom: "6Y" },
+  { id: "13", nom: "27" },
+  { id: "14", nom: "28" },
+  { id: "15", nom: "29" },
+  { id: "16", nom: "30" },
+  { id: "17", nom: "31" },
+  { id: "18", nom: "32" },
+  { id: "19", nom: "33" },
+  { id: "20", nom: "34" },
+  { id: "21", nom: "35" },
+  { id: "22", nom: "36" },
+  { id: "23", nom: "37" },
+  { id: "24", nom: "38" },
+  { id: "25", nom: "39" },
+  { id: "26", nom: "40" },
+  { id: "27", nom: "41" },
+  { id: "28", nom: "42" },
+  { id: "29", nom: "43" },
+  { id: "30", nom: "44" },
 ];
 
-interface SizeSectionProps {
+interface ShoesSizeSectionProps {
   selectedNom: string | null;
   onSelect: (nom: string | null) => void;
 }
 
-export default function SizeSection({
+export default function ShoesSizeSection({
   selectedNom,
   onSelect,
-}: SizeSectionProps) {
+}: ShoesSizeSectionProps) {
   const handleSelect = (nom: string) => {
     onSelect(selectedNom === nom ? null : nom); // Toggle selection
   };
@@ -41,7 +47,7 @@ export default function SizeSection({
     <Accordion type="single" collapsible defaultValue="filter-size">
       <AccordionItem value="filter-size" className="border-none">
         <AccordionTrigger className="text-black font-bold text-xl hover:no-underline p-0 py-0.5">
-          Tailles
+          Tailles chaussures
         </AccordionTrigger>
         <AccordionContent className="pt-4 pb-0">
           <div className="flex items-center flex-wrap">

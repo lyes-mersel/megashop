@@ -33,6 +33,9 @@ const Slider = React.forwardRef<
 
     const handleValueChange = (newValues: number[]) => {
       setValues([newValues[0], newValues[1]]);
+      if (props.onValueChange) {
+        props.onValueChange(newValues);
+      }
     };
 
     return (
@@ -46,7 +49,7 @@ const Slider = React.forwardRef<
           min={min}
           max={max}
           step={step}
-          value={values}
+          value={props.value || values}
           onValueChange={handleValueChange}
           {...props}
         >
@@ -58,11 +61,12 @@ const Slider = React.forwardRef<
           <div
             className="absolute -translate-x-1/2 -bottom-8 text-xs font-medium px-2 py-1 rounded z-10"
             style={{
-              left: `${((values[0] - min) / (max - min)) * 100}%`,
+              left: `${
+                (((props.value?.[0] || values[0]) - min) / (max - min)) * 100
+              }%`,
             }}
           >
-            {label}
-            {values[0]}
+            {props.value?.[0] || values[0]} {label}
           </div>
           <SliderPrimitive.Thumb className="relative block h-4 w-4 rounded-full border border-primary/50 bg-black shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50" />
 
@@ -70,11 +74,12 @@ const Slider = React.forwardRef<
           <div
             className="absolute -translate-x-1/2 -bottom-8 text-xs font-medium px-2 py-1 rounded z-10"
             style={{
-              left: `${((values[1] - min) / (max - min)) * 100}%`,
+              left: `${
+                (((props.value?.[1] || values[1]) - min) / (max - min)) * 100
+              }%`,
             }}
           >
-            {label}
-            {values[1]}
+            {props.value?.[1] || values[1]} {label}
           </div>
           <SliderPrimitive.Thumb className="relative block h-4 w-4 rounded-full border border-primary/50 bg-black shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50" />
         </SliderPrimitive.Root>

@@ -12,7 +12,7 @@ import {
 
 const BreadcrumbShop = () => {
   return (
-    <Breadcrumb className="mb-5 sm:mb-9">
+    <Breadcrumb className="mb-5">
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink asChild>

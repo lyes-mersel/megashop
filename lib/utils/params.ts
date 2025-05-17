@@ -30,11 +30,11 @@ export function getPaginationParams(req: NextRequest) {
 export function getSortingProductsParams(req: NextRequest) {
   const { searchParams } = new URL(req.url);
 
-  let sortBy = searchParams.get("sortBy") || "nom";
-  let sortOrder = searchParams.get("sortOrder") || "asc";
+  let sortBy = searchParams.get("sortBy") || "noteMoyenne";
+  let sortOrder = searchParams.get("sortOrder") || "desc";
 
-  sortBy = PRODUCT_SORT_FIELDS.includes(sortBy) ? sortBy : "nom";
-  sortOrder = VALID_SORT_ORDERS.includes(sortOrder) ? sortOrder : "asc";
+  sortBy = PRODUCT_SORT_FIELDS.includes(sortBy) ? sortBy : "noteMoyenne";
+  sortOrder = VALID_SORT_ORDERS.includes(sortOrder) ? sortOrder : "desc";
 
   return { sortBy, sortOrder };
 }

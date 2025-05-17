@@ -23,42 +23,40 @@ export default function ReportCard({ productId }: { productId: string }) {
     e.preventDefault();
     setError(null);
 
-    if (reportType === "") {
+    if (!reportType) {
       setError("Veuillez sélectionner un type de signalement");
+      return;
+    }
+
+    if (!productId) {
+      setError("Identifiant du produit manquant");
       return;
     }
 
     setIsSubmitting(true);
 
+    const selectedReport = reportTypes.find((type) => type.id === reportType);
+    const payload = {
+      objet: selectedReport?.label || "",
+      produitId: productId,
+      ...(reportDetails && { text: reportDetails }),
+    };
+
     try {
-      console.log("Submitting report:", {
-        productId: productId,
-        reportType,
-        reportDetails,
+      const response = await fetch("/api/reports", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
       });
 
-      const bodyData: Record<string, unknown> = {
-        productId,
-        reportType,
-      };
-
-      if (reportDetails !== "") {
-        bodyData.details = reportDetails;
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          errorData.error || "Erreur lors de l'envoi du signalement"
+        );
       }
-
-      // const response = await fetch(`/api/reports`, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify(bodyData),
-      // });
-
-      // if (!response.ok) {
-      //   const json = await response.json();
-      //   console.log("error", json);
-      //   throw new Error("Erreur lors de l'envoi");
-      // }
 
       setSuccess(true);
       setTimeout(() => {
@@ -66,7 +64,9 @@ export default function ReportCard({ productId }: { productId: string }) {
       }, 2000);
     } catch (error) {
       console.error("Report submission error:", error);
-      setError("Échec de l'envoi du signalement. Veuillez réessayer.");
+      setError(
+        `${error || "Échec de l'envoi du signalement. Veuillez réessayer."}`
+      );
     } finally {
       setIsSubmitting(false);
     }

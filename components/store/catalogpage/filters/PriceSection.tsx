@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+
 import {
   Accordion,
   AccordionContent,
@@ -7,26 +8,28 @@ import {
 } from "@/components/ui/accordion";
 import { Slider } from "@/components/ui/slider";
 
-const PriceSection = () => {
+interface PriceSectionProps {
+  value: [number, number];
+  onChange: (range: [number, number]) => void;
+}
+
+export default function PriceSection({ value, onChange }: PriceSectionProps) {
   return (
     <Accordion type="single" collapsible defaultValue="filter-price">
       <AccordionItem value="filter-price" className="border-none">
         <AccordionTrigger className="text-black font-bold text-xl hover:no-underline p-0 py-0.5">
-          Price
+          Prix (DA)
         </AccordionTrigger>
-        <AccordionContent className="pt-4 overflow-visible">
+        <AccordionContent className="pt-4 px-2 overflow-visible">
           <Slider
-            defaultValue={[50, 200]}
+            value={value}
+            onValueChange={onChange}
             min={0}
-            max={250}
-            step={1}
-            label="$"
+            max={20000}
+            step={100}
           />
-          <div className="mb-3" />
         </AccordionContent>
       </AccordionItem>
     </Accordion>
   );
-};
-
-export default PriceSection;
+}
