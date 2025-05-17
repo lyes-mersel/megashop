@@ -2,34 +2,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-// Utils & Types
-import { compareArrays } from "@/lib/utils";
-
-// const calcAdjustedTotalPrice = (
-//   totalPrice: number,
-//   data: CartItem,
-//   quantity?: number
-// ): number => {
-//   return (
-//     (totalPrice + data.discount.percentage > 0
-//       ? Math.round(data.price - (data.price * data.discount.percentage) / 100)
-//       : data.discount.amount > 0
-//       ? Math.round(data.price - data.discount.amount)
-//       : data.price) * (quantity ? quantity : data.quantity)
-//   );
-// };
-
 export type RemoveCartItem = {
-  id: number;
-  attributes: string[];
+  id: string;
+  color: { id: string; name: string };
+  size: { id: string; name: string };
 };
 
 export type CartItem = {
-  id: number;
+  id: string;
   name: string;
   imagePublicId: string;
   price: number;
-  attributes: string[];
+  color: { id: string; name: string };
+  size: { id: string; name: string };
   quantity: number;
 };
 
@@ -42,7 +27,6 @@ export type Cart = {
 interface CartsState {
   cart: Cart | null;
   totalPrice: number;
-  adjustedTotalPrice: number;
   action: "update" | "add" | "delete" | null;
 }
 
@@ -50,131 +34,109 @@ interface CartsState {
 const initialState: CartsState = {
   cart: null,
   totalPrice: 0,
-  adjustedTotalPrice: 0,
   action: null,
 };
 
 export const cartsSlice = createSlice({
   name: "carts",
-  // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
     addToCart: (state, action: PayloadAction<CartItem>) => {
-      // if cart is empty then add
-      if (state.cart === null) {
+      // initialize cart if empty
+      if (!state.cart) {
         state.cart = {
           items: [action.payload],
           totalQuantities: action.payload.quantity,
         };
-        state.totalPrice =
-          state.totalPrice + action.payload.price * action.payload.quantity;
+        state.totalPrice += action.payload.price * action.payload.quantity;
         return;
       }
 
-      // check item in cart
-      const isItemInCart = state.cart.items.find(
+      // find matching item by id, color and size
+      const existing = state.cart.items.find(
         (item) =>
-          action.payload.id === item.id &&
-          compareArrays(action.payload.attributes, item.attributes)
+          item.id === action.payload.id &&
+          item.color.id === action.payload.color.id &&
+          item.size.id === action.payload.size.id
       );
 
-      if (isItemInCart) {
-        state.cart = {
-          ...state.cart,
-          items: state.cart.items.map((eachCartItem) => {
-            if (
-              eachCartItem.id === action.payload.id
-                ? !compareArrays(
-                    eachCartItem.attributes,
-                    isItemInCart.attributes
-                  )
-                : eachCartItem.id !== action.payload.id
-            )
-              return eachCartItem;
-
+      if (existing) {
+        state.cart.items = state.cart.items.map((item) => {
+          if (
+            item.id === action.payload.id &&
+            item.color.id === action.payload.color.id &&
+            item.size.id === action.payload.size.id
+          ) {
             return {
-              ...isItemInCart,
-              quantity: action.payload.quantity + isItemInCart.quantity,
+              ...item,
+              quantity: item.quantity + action.payload.quantity,
             };
-          }),
-          totalQuantities: state.cart.totalQuantities + action.payload.quantity,
-        };
-        state.totalPrice =
-          state.totalPrice + action.payload.price * action.payload.quantity;
+          }
+          return item;
+        });
+        state.cart.totalQuantities += action.payload.quantity;
+        state.totalPrice += action.payload.price * action.payload.quantity;
         return;
       }
 
-      state.cart = {
-        ...state.cart,
-        items: [...state.cart.items, action.payload],
-        totalQuantities: state.cart.totalQuantities + action.payload.quantity,
-      };
-      state.totalPrice =
-        state.totalPrice + action.payload.price * action.payload.quantity;
+      // add new item
+      state.cart.items.push(action.payload);
+      state.cart.totalQuantities += action.payload.quantity;
+      state.totalPrice += action.payload.price * action.payload.quantity;
     },
+
     removeCartItem: (state, action: PayloadAction<RemoveCartItem>) => {
-      if (state.cart === null) return;
+      if (!state.cart) return;
 
-      // check item in cart
-      const isItemInCart = state.cart.items.find(
+      const existing = state.cart.items.find(
         (item) =>
-          action.payload.id === item.id &&
-          compareArrays(action.payload.attributes, item.attributes)
+          item.id === action.payload.id &&
+          item.color.id === action.payload.color.id &&
+          item.size.id === action.payload.size.id
       );
+      if (!existing) return;
 
-      if (isItemInCart) {
-        state.cart = {
-          ...state.cart,
-          items: state.cart.items
-            .map((eachCartItem) => {
-              if (
-                eachCartItem.id === action.payload.id
-                  ? !compareArrays(
-                      eachCartItem.attributes,
-                      isItemInCart.attributes
-                    )
-                  : eachCartItem.id !== action.payload.id
-              )
-                return eachCartItem;
+      state.cart.items = state.cart.items
+        .map((item) => {
+          if (
+            item.id === action.payload.id &&
+            item.color.id === action.payload.color.id &&
+            item.size.id === action.payload.size.id
+          ) {
+            return { ...item, quantity: item.quantity - 1 };
+          }
+          return item;
+        })
+        .filter((item) => item.quantity > 0);
 
-              return {
-                ...isItemInCart,
-                quantity: eachCartItem.quantity - 1,
-              };
-            })
-            .filter((item) => item.quantity > 0),
-          totalQuantities: state.cart.totalQuantities - 1,
-        };
-
-        state.totalPrice = state.totalPrice - isItemInCart.price * 1;
-      }
+      state.cart.totalQuantities -= 1;
+      state.totalPrice -= existing.price;
     },
+
     remove: (
       state,
       action: PayloadAction<RemoveCartItem & { quantity: number }>
     ) => {
       if (!state.cart) return;
 
-      // check item in cart
-      const isItemInCart = state.cart.items.find(
+      const existing = state.cart.items.find(
         (item) =>
-          action.payload.id === item.id &&
-          compareArrays(action.payload.attributes, item.attributes)
+          item.id === action.payload.id &&
+          item.color.id === action.payload.color.id &&
+          item.size.id === action.payload.size.id
       );
+      if (!existing) return;
 
-      if (!isItemInCart) return;
-
-      state.cart = {
-        ...state.cart,
-        items: state.cart.items.filter((pItem) => {
-          return pItem.id === action.payload.id
-            ? !compareArrays(pItem.attributes, isItemInCart.attributes)
-            : pItem.id !== action.payload.id;
-        }),
-        totalQuantities: state.cart.totalQuantities - isItemInCart.quantity,
-      };
-      state.totalPrice =
-        state.totalPrice - isItemInCart.price * isItemInCart.quantity;
+      state.cart.items = state.cart.items.filter(
+        (item) =>
+          !(
+            item.id === action.payload.id &&
+            item.color.id === action.payload.color.id &&
+            item.size.id === action.payload.size.id
+          )
+      );
+      state.cart.totalQuantities -= existing.quantity;
+      state.totalPrice -= existing.price * existing.quantity;
     },
   },
 });

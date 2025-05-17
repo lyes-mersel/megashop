@@ -7,10 +7,15 @@ export type Color = {
   code: string;
 };
 
+export type Size = {
+  id: string;
+  nom: string;
+};
+
 // Define a type for the slice state
 interface ProductsState {
   colorSelection: Color;
-  sizeSelection: string;
+  sizeSelection: Size;
 }
 
 // Define the initial state using that type
@@ -18,9 +23,12 @@ const initialState: ProductsState = {
   colorSelection: {
     id: "",
     nom: "",
-    code: "#4F4631",
+    code: "",
   },
-  sizeSelection: "L",
+  sizeSelection: {
+    id: "",
+    nom: "",
+  },
 };
 
 export const productsSlice = createSlice({
@@ -28,15 +36,20 @@ export const productsSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
+    resetSelections: (state) => {
+      state.sizeSelection = { id: "", nom: "" };
+      state.colorSelection = { id: "", nom: "", code: "" };
+    },
     setColorSelection: (state, action: PayloadAction<Color>) => {
       state.colorSelection = action.payload;
     },
-    setSizeSelection: (state, action: PayloadAction<string>) => {
+    setSizeSelection: (state, action: PayloadAction<Size>) => {
       state.sizeSelection = action.payload;
     },
   },
 });
 
-export const { setColorSelection, setSizeSelection } = productsSlice.actions;
+export const { setColorSelection, setSizeSelection, resetSelections } =
+  productsSlice.actions;
 
 export default productsSlice.reducer;

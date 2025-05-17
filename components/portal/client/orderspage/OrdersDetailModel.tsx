@@ -20,7 +20,7 @@ export default function OrderDetailModal({
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50">
       <motion.div
-        className="bg-white rounded-3xl shadow-2xl max-w-[90%] sm:max-w-3xl w-full p-4 sm:p-8 border border-gray-200 overflow-hidden"
+        className="bg-white rounded-3xl shadow-2xl max-w-[90%] sm:max-w-3xl w-full p-4 sm:p-8 border border-gray-200 overflow-y-auto max-h-[calc(100dvh-100px)] relative"
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 20 }}

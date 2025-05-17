@@ -45,11 +45,23 @@ export async function POST(req: NextRequest) {
     const ligneCommandeData = await Promise.all(
       produits.map(async (line) => {
         const produit = await prisma.produit.findUnique({
-          where: { id: line.produitId },
+          where: {
+            id: line.produitId,
+            couleurs: { some: { id: line.couleurId } },
+            tailles: { some: { id: line.tailleId } },
+          },
           select: {
             id: true,
             nom: true,
             prix: true,
+            couleurs: {
+              select: { id: true, nom: true, code: true },
+              where: { id: line.couleurId },
+            },
+            tailles: {
+              select: { id: true, nom: true },
+              where: { id: line.tailleId },
+            },
             images: { select: { imagePublicId: true }, take: 1 },
           },
         });
@@ -72,7 +84,15 @@ export async function POST(req: NextRequest) {
           prixUnit,
           imagePublicId: produit.images[0]?.imagePublicId ?? null,
           produitId: produit.id,
-          couleurId: line.couleurId ?? null,
+          couleur: {
+            id: produit.couleurs[0].id,
+            nom: produit.couleurs[0].nom,
+            code: produit.couleurs[0].code,
+          },
+          taille: {
+            id: produit.tailles[0].id,
+            nom: produit.tailles[0].nom,
+          },
           tailleId: line.tailleId ?? null,
         };
       })
@@ -95,7 +115,7 @@ export async function POST(req: NextRequest) {
 
     if (error instanceof BadRequestIdError) {
       return NextResponse.json(
-        { eroor: ERROR_MESSAGES.BAD_REQUEST_ID },
+        { error: ERROR_MESSAGES.BAD_REQUEST_ID },
         { status: 400 }
       );
     }

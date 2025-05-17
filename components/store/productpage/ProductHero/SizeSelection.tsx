@@ -32,9 +32,10 @@ const SizeSelection = ({ sizes }: { sizes: Size[] }) => {
             type="button"
             className={cn([
               "bg-[#F0F0F0] flex items-center justify-center px-5 lg:px-6 py-2.5 lg:py-3 text-sm lg:text-base rounded-full m-1 lg:m-0 max-h-[46px]",
-              sizeSelection === size.nom && "bg-black font-medium text-white",
+              sizeSelection.nom === size.nom &&
+                "bg-black font-medium text-white",
             ])}
-            onClick={() => dispatch(setSizeSelection(size.nom))}
+            onClick={() => dispatch(setSizeSelection(size))}
           >
             {size.nom}
           </button>
