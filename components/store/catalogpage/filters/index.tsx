@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import CategoriesSection from "@/components/store/catalogpage/filters/CategoriesSection";
 import ColorsSection from "@/components/store/catalogpage/filters/ColorsSection";
@@ -10,11 +9,16 @@ import GendersSection from "@/components/store/catalogpage/filters/GendersSectio
 import ShoesSizeSection from "@/components/store/catalogpage/filters/ShoesSizeSection";
 
 interface FiltersProps {
-  selectedGender: string | null;
-  selectedCategory: string | null;
-  priceRange: [number, number];
-  selectedColor: string | null;
-  selectedSize: string | null;
+  localGender: string | null;
+  setLocalGender: (value: string | null) => void;
+  localCategory: string | null;
+  setLocalCategory: (value: string | null) => void;
+  localPriceRange: [number, number];
+  setLocalPriceRange: (value: [number, number]) => void;
+  localColor: string | null;
+  setLocalColor: (value: string | null) => void;
+  localSize: string | null;
+  setLocalSize: (value: string | null) => void;
   onApplyFilters: (filters: {
     gender: string | null;
     category: string | null;
@@ -22,40 +26,23 @@ interface FiltersProps {
     color: string | null;
     size: string | null;
   }) => void;
+  onResetFilters: () => void;
 }
 
 export default function Filters({
-  selectedGender,
-  selectedCategory,
-  priceRange,
-  selectedColor,
-  selectedSize,
+  localGender,
+  setLocalGender,
+  localCategory,
+  setLocalCategory,
+  localPriceRange,
+  setLocalPriceRange,
+  localColor,
+  setLocalColor,
+  localSize,
+  setLocalSize,
   onApplyFilters,
+  onResetFilters,
 }: FiltersProps) {
-  const [localGender, setLocalGender] = useState<string | null>(selectedGender);
-  const [localCategory, setLocalCategory] = useState<string | null>(
-    selectedCategory
-  );
-  const [localPriceRange, setLocalPriceRange] =
-    useState<[number, number]>(priceRange);
-  const [localColor, setLocalColor] = useState<string | null>(selectedColor);
-  const [localSize, setLocalSize] = useState<string | null>(selectedSize);
-
-  // Sync local state with searchParams props when they change
-  useEffect(() => {
-    setLocalGender(selectedGender);
-    setLocalCategory(selectedCategory);
-    setLocalPriceRange(priceRange);
-    setLocalColor(selectedColor);
-    setLocalSize(selectedSize);
-  }, [
-    selectedGender,
-    selectedCategory,
-    priceRange,
-    selectedColor,
-    selectedSize,
-  ]);
-
   const handleApplyFilters = () => {
     onApplyFilters({
       gender: localGender,
@@ -64,6 +51,15 @@ export default function Filters({
       color: localColor,
       size: localSize,
     });
+  };
+
+  const handleResetFilters = () => {
+    setLocalGender(null);
+    setLocalCategory(null);
+    setLocalPriceRange([0, 20000]);
+    setLocalColor(null);
+    setLocalSize(null);
+    onResetFilters();
   };
 
   return (
@@ -88,7 +84,7 @@ export default function Filters({
 
       <hr className="border-t-black/10" />
       <ShoesSizeSection selectedNom={localSize} onSelect={setLocalSize} />
-      
+
       <hr className="border-t-black/10" />
       <Button
         type="button"
@@ -96,6 +92,14 @@ export default function Filters({
         onClick={handleApplyFilters}
       >
         Appliquer les filtres
+      </Button>
+
+      <Button
+        type="button"
+        className="bg-gray-200 text-black w-full rounded-full text-sm font-medium py-4 h-12"
+        onClick={handleResetFilters}
+      >
+        Réinitialiser les filtres
       </Button>
     </>
   );

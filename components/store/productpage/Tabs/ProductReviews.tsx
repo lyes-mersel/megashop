@@ -20,13 +20,15 @@ const ProductReviews = ({ productId }: { productId: string }) => {
   const [reviewsCount, setReviewsCount] = useState<number>(0);
   const [reviewsData, setReviewsData] = useState<ReviewFromAPI[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [sortBy, setSortBy] = useState<"note" | "date">("note");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
 
   useEffect(() => {
     const fetchReviews = async () => {
       setIsLoading(true);
       try {
         const reviewsResult = await fetchPaginatedDataFromAPI<ReviewFromAPI[]>(
-          `/api/reviews?productId=${productId}&sortBy=note&sortOrder=desc&page=1&pageSize=6`
+          `/api/reviews?productId=${productId}&sortBy=${sortBy}&sortOrder=${sortOrder}&page=1&pageSize=6`
         );
         // handle errors
         if (reviewsResult.error) {
@@ -47,7 +49,20 @@ const ProductReviews = ({ productId }: { productId: string }) => {
     };
 
     fetchReviews();
-  }, [productId, router]);
+  }, [productId, sortBy, sortOrder, router]);
+
+  const handleSortChange = (value: string) => {
+    if (value === "best") {
+      setSortBy("note");
+      setSortOrder("desc");
+    } else if (value === "latest") {
+      setSortBy("date");
+      setSortOrder("desc");
+    } else if (value === "oldest") {
+      setSortBy("date");
+      setSortOrder("asc");
+    }
+  };
 
   return (
     <section>
@@ -61,7 +76,7 @@ const ProductReviews = ({ productId }: { productId: string }) => {
           </span>
         </div>
         <div className="flex items-center space-x-2.5">
-          <Select defaultValue="best">
+          <Select defaultValue="best" onValueChange={handleSortChange}>
             <SelectTrigger className="min-w-[120px] font-medium text-xs sm:text-base px-4 py-3 sm:px-5 sm:py-4 text-black bg-[#F0F0F0] border-none rounded-full h-12">
               <SelectValue />
             </SelectTrigger>

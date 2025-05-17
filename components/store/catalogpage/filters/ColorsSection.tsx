@@ -44,7 +44,7 @@ export default function ColorsSection({
           Couleurs
         </AccordionTrigger>
         <AccordionContent className="pt-4 pb-0">
-          <div className="flex space-2.5 flex-wrap md:grid grid-cols-5 gap-2.5">
+          <div className="flex space-2.5 flex-wrap md:grid grid-cols-4 gap-2.5">
             {colors.map((color) => (
               <button
                 key={color.nom}

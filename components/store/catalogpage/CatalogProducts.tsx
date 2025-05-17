@@ -16,7 +16,6 @@ import IsLoading from "@/components/store/cartpage/IsLoading";
 import { FiSearch } from "react-icons/fi";
 import { montserrat } from "@/styles/fonts";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 
 interface CatalogProductsProps {
   products: ProductFromAPI[];
@@ -29,6 +28,19 @@ interface CatalogProductsProps {
   isLoading: boolean;
   onSortChange: (value: string) => void;
   onPageChange: (page: number) => void;
+  selectedGender: string | null;
+  selectedCategory: string | null;
+  priceRange: [number, number];
+  selectedColor: string | null;
+  selectedSize: string | null;
+  onApplyFilters: (filters: {
+    gender: string | null;
+    category: string | null;
+    priceRange: [number, number];
+    color: string | null;
+    size: string | null;
+  }) => void;
+  onResetFilters: () => void;
 }
 
 const CatalogProducts = ({
@@ -37,13 +49,14 @@ const CatalogProducts = ({
   onPageChange,
   onSortChange,
   isLoading,
+  selectedGender,
+  selectedCategory,
+  priceRange,
+  selectedColor,
+  selectedSize,
+  onApplyFilters,
+  onResetFilters,
 }: CatalogProductsProps) => {
-  const router = useRouter();
-
-  const handleResetFilters = () => {
-    router.push("/catalog?page=1");
-  };
-
   return (
     <div className="flex flex-col w-full pl-0 lg:pl-5">
       <CatalogHead
@@ -51,6 +64,13 @@ const CatalogProducts = ({
         currentPage={pagination.currentPage}
         pageSize={pagination.pageSize}
         onSortChange={onSortChange}
+        selectedGender={selectedGender}
+        selectedCategory={selectedCategory}
+        priceRange={priceRange}
+        selectedColor={selectedColor}
+        selectedSize={selectedSize}
+        onApplyFilters={onApplyFilters}
+        onResetFilters={onResetFilters}
       />
       <div className="flex flex-col w-full md:min-h-[1700px] space-y-5">
         {isLoading ? (
@@ -59,7 +79,7 @@ const CatalogProducts = ({
           </div>
         ) : (
           <>
-            <div className="w-full grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
+            <div className="w-full grid grid-cols-1 xs:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
               {products.length > 0 ? (
                 products.map((product) => (
                   <ProductCard key={product.id} data={product} />
@@ -78,7 +98,7 @@ const CatalogProducts = ({
                     nos produits.
                   </p>
                   <Button
-                    onClick={handleResetFilters}
+                    onClick={onResetFilters}
                     className="mt-6 bg-black text-white rounded-full px-6 py-2 text-sm font-medium hover:bg-gray-800"
                   >
                     Réinitialiser les filtres

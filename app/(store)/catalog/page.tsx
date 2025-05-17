@@ -22,6 +22,36 @@ export default function CatalogPage() {
     pageSize: 9,
   });
 
+  // Local filter states for desktop
+  const [localGender, setLocalGender] = useState<string | null>(
+    searchParams.get("gender")
+  );
+  const [localCategory, setLocalCategory] = useState<string | null>(
+    searchParams.get("category")
+  );
+  const [localPriceRange, setLocalPriceRange] = useState<[number, number]>([
+    parseInt(searchParams.get("minPrice") || "0"),
+    parseInt(searchParams.get("maxPrice") || "20000"),
+  ]);
+  const [localColor, setLocalColor] = useState<string | null>(
+    searchParams.get("color")
+  );
+  const [localSize, setLocalSize] = useState<string | null>(
+    searchParams.get("size")
+  );
+
+  // Sync local state with searchParams when they change
+  useEffect(() => {
+    setLocalGender(searchParams.get("gender"));
+    setLocalCategory(searchParams.get("category"));
+    setLocalPriceRange([
+      parseInt(searchParams.get("minPrice") || "0"),
+      parseInt(searchParams.get("maxPrice") || "20000"),
+    ]);
+    setLocalColor(searchParams.get("color"));
+    setLocalSize(searchParams.get("size"));
+  }, [searchParams]);
+
   // Fetch products based on URL search parameters
   useEffect(() => {
     const fetchProducts = async () => {
@@ -103,6 +133,12 @@ export default function CatalogPage() {
     router.push(`?${newSearchParams.toString()}`);
   };
 
+  const handleResetFilters = () => {
+    const newSearchParams = new URLSearchParams();
+    router.push(`?${newSearchParams.toString()}`);
+    console.log("newSearchParams", newSearchParams.toString());
+  };
+
   return (
     <main className="py-5">
       <div className="max-w-frame mx-auto px-4 xl:px-0">
@@ -114,23 +150,37 @@ export default function CatalogPage() {
               <FiSliders className="text-2xl text-black/40" />
             </div>
             <Filters
-              selectedGender={searchParams.get("gender")}
-              selectedCategory={searchParams.get("category")}
-              priceRange={[
-                parseInt(searchParams.get("minPrice") || "0"),
-                parseInt(searchParams.get("maxPrice") || "20000"),
-              ]}
-              selectedColor={searchParams.get("color")}
-              selectedSize={searchParams.get("size")}
+              localGender={localGender}
+              setLocalGender={setLocalGender}
+              localCategory={localCategory}
+              setLocalCategory={setLocalCategory}
+              localPriceRange={localPriceRange}
+              setLocalPriceRange={setLocalPriceRange}
+              localColor={localColor}
+              setLocalColor={setLocalColor}
+              localSize={localSize}
+              setLocalSize={setLocalSize}
               onApplyFilters={handleApplyFilters}
+              onResetFilters={handleResetFilters}
             />
           </div>
+
           <CatalogProducts
-            onSortChange={handleSortChange}
             products={allProducts}
             pagination={pagination}
             onPageChange={handlePageChange}
+            onSortChange={handleSortChange}
             isLoading={isLoading}
+            selectedGender={searchParams.get("gender")}
+            selectedCategory={searchParams.get("category")}
+            priceRange={[
+              parseInt(searchParams.get("minPrice") || "0"),
+              parseInt(searchParams.get("maxPrice") || "20000"),
+            ]}
+            selectedColor={searchParams.get("color")}
+            selectedSize={searchParams.get("size")}
+            onApplyFilters={handleApplyFilters}
+            onResetFilters={handleResetFilters}
           />
         </div>
       </div>

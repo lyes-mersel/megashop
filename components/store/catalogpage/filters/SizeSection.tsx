@@ -17,11 +17,11 @@ const sizes: SizeFromAPI[] = [
   { id: "5", nom: "XL" },
   { id: "6", nom: "XXL" },
   { id: "7", nom: "3XL" },
-  { id: "8", nom: "2T" },
-  { id: "9", nom: "3T" },
-  { id: "10", nom: "4T" },
-  { id: "11", nom: "5T" },
-  { id: "12", nom: "6T" },
+  { id: "8", nom: "2Y" },
+  { id: "9", nom: "3Y" },
+  { id: "10", nom: "4Y" },
+  { id: "11", nom: "5Y" },
+  { id: "12", nom: "6Y" },
 ];
 
 interface SizeSectionProps {
