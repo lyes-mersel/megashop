@@ -1,8 +1,13 @@
 "use client";
 
+import { signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 
-const RestrictedAccess = () => {
+interface RestrictedAccessProps {
+  message?: string;
+}
+
+const RestrictedAccess = ({ message }: RestrictedAccessProps) => {
   const pathname = usePathname();
   const callbackUrl = encodeURIComponent(pathname || "/");
 
@@ -13,23 +18,40 @@ const RestrictedAccess = () => {
           🔒 Accès restreint
         </h1>
         <p className="text-gray-700 mt-4">
-          Vous devez être connecté pour accéder à cette ressource. Veuillez vous
-          connecter pour continuer.
+          {message ||
+            "Vous devez être connecté pour accéder à cette ressource. Veuillez vous connecter pour continuer."}
         </p>
         <div className="mt-6 space-y-3">
-          <a
-            href={`/auth/login?callbackUrl=${callbackUrl}`}
-            className="block w-full bg-gray-900 text-white font-medium py-2 px-4 rounded-lg hover:bg-gray-800 transition"
-          >
-            Se connecter
-          </a>
+          {message ? (
+            <>
+              <button
+                className="block w-full bg-gray-900 text-white font-medium py-2 px-4 rounded-lg hover:bg-gray-800 transition"
+                onClick={() => {
+                  signOut({
+                    callbackUrl: `/auth/login?callbackUrl=${callbackUrl}`,
+                  });
+                }}
+              >
+                Se connecter en tant que client
+              </button>
+            </>
+          ) : (
+            <>
+              <a
+                href={`/auth/login?callbackUrl=${callbackUrl}`}
+                className="block w-full bg-gray-900 text-white font-medium py-2 px-4 rounded-lg hover:bg-gray-800 transition"
+              >
+                Se connecter
+              </a>
 
-          <a
-            href={`/auth/register?callbackUrl=${callbackUrl}`}
-            className="block w-full text-gray-900 font-medium py-2 px-4 border border-gray-900 rounded-lg hover:bg-gray-100 transition"
-          >
-            Créer un compte
-          </a>
+              <a
+                href={`/auth/register?callbackUrl=${callbackUrl}`}
+                className="block w-full text-gray-900 font-medium py-2 px-4 border border-gray-900 rounded-lg hover:bg-gray-100 transition"
+              >
+                Créer un compte
+              </a>
+            </>
+          )}
         </div>
       </div>
     </div>

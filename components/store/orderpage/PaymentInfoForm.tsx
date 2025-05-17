@@ -1,4 +1,3 @@
-// PaymentInfoForm.tsx
 import InputGroup from "@/components/ui/input-group";
 import { satoshi } from "@/styles/fonts";
 import { cn } from "@/lib/utils";
@@ -12,11 +11,13 @@ interface PaymentInfoFormProps {
     expirationDate: string;
   };
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  errors: { [key: string]: string };
 }
 
 export default function PaymentInfoForm({
   paymentInfo,
   onChange,
+  errors,
 }: PaymentInfoFormProps) {
   return (
     <div className="p-6 sm:p-8 rounded-2xl border border-black/10 shadow-md bg-white">
@@ -31,9 +32,10 @@ export default function PaymentInfoForm({
         </div>
         Informations de paiement
       </h3>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div className="sm:col-span-2 space-y-2">
-        <InputGroup className="focus-within:shadow-none">
+          <InputGroup className="focus-within:shadow-none">
             <InputGroup.Text
               className={cn(satoshi.className, "text-gray-700 font-medium")}
             >
@@ -47,14 +49,21 @@ export default function PaymentInfoForm({
               placeholder="Entrez votre numéro de carte"
               className={cn(
                 satoshi.className,
-                "text-black placeholder:text-gray-400 px-4 py-3 border border-gray-200 rounded-lg transition-all duration-200"
+                "text-black placeholder:text-gray-400 px-4 py-3 border border-gray-200 rounded-lg transition-all duration-200",
+                errors["payment.cardNumber"] && "border-red-500"
               )}
               required
             />
           </InputGroup>
+          {errors["payment.cardNumber"] && (
+            <p className="text-red-500 text-sm float-right">
+              {errors["payment.cardNumber"]}
+            </p>
+          )}
         </div>
+
         <div className="space-y-2">
-        <InputGroup className="focus-within:shadow-none">
+          <InputGroup className="focus-within:shadow-none">
             <InputGroup.Text
               className={cn(satoshi.className, "text-gray-700 font-medium")}
             >
@@ -68,14 +77,21 @@ export default function PaymentInfoForm({
               placeholder="Entrez votre CVC"
               className={cn(
                 satoshi.className,
-                "text-black placeholder:text-gray-400 px-4 py-3 border border-gray-200 rounded-lg transition-all duration-200"
+                "text-black placeholder:text-gray-400 px-4 py-3 border border-gray-200 rounded-lg transition-all duration-200",
+                errors["payment.cvc"] && "border-red-500"
               )}
               required
             />
           </InputGroup>
+          {errors["payment.cvc"] && (
+            <p className="text-red-500 text-sm float-right">
+              {errors["payment.cvc"]}
+            </p>
+          )}
         </div>
+
         <div className="space-y-2">
-        <InputGroup className="focus-within:shadow-none">
+          <InputGroup className="focus-within:shadow-none">
             <InputGroup.Text
               className={cn(satoshi.className, "text-gray-700 font-medium")}
             >
@@ -89,14 +105,21 @@ export default function PaymentInfoForm({
               placeholder="MM/AA"
               className={cn(
                 satoshi.className,
-                "text-black placeholder:text-gray-400 px-4 py-3 border border-gray-200 rounded-lg transition-all duration-200"
+                "text-black placeholder:text-gray-400 px-4 py-3 border border-gray-200 rounded-lg transition-all duration-200",
+                errors["payment.expirationDate"] && "border-red-500"
               )}
               required
             />
           </InputGroup>
+          {errors["payment.expirationDate"] && (
+            <p className="text-red-500 text-sm float-right">
+              {errors["payment.expirationDate"]}
+            </p>
+          )}
         </div>
+        
         <div className="sm:col-span-2 space-y-2">
-        <InputGroup className="focus-within:shadow-none">
+          <InputGroup className="focus-within:shadow-none">
             <InputGroup.Text
               className={cn(satoshi.className, "text-gray-700 font-medium")}
             >
@@ -110,11 +133,17 @@ export default function PaymentInfoForm({
               placeholder="Entrez le nom du titulaire"
               className={cn(
                 satoshi.className,
-                "text-black placeholder:text-gray-400 px-4 py-3 border border-gray-200 rounded-lg transition-all duration-200"
+                "text-black placeholder:text-gray-400 px-4 py-3 border border-gray-200 rounded-lg transition-all duration-200",
+                errors["payment.legalName"] && "border-red-500"
               )}
               required
             />
           </InputGroup>
+          {errors["payment.legalName"] && (
+            <p className="text-red-500 text-sm float-right">
+              {errors["payment.legalName"]}
+            </p>
+          )}
         </div>
       </div>
     </div>

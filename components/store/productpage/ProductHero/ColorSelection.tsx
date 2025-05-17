@@ -26,12 +26,16 @@ const ColorSelection = ({ colors }: { colors: Color[] }) => {
           <div key={index} className="relative group">
             <button
               type="button"
-              className="rounded-full w-9 sm:w-10 h-9 sm:h-10 flex items-center justify-center border border-gray-300"
+              className="rounded-full w-9 sm:w-10 h-9 sm:h-10 flex items-center justify-center border border-gray-500"
               style={{ backgroundColor: color.code }}
               onClick={() => dispatch(setColorSelection(color))}
             >
               {colorSelection.nom === color.nom && (
-                <IoMdCheckmark className="text-base text-white" />
+                <IoMdCheckmark
+                  className={`text-base ${
+                    color.nom === "Blanc" ? "text-black" : "text-white"
+                  }`}
+                />
               )}
             </button>
             <div className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">

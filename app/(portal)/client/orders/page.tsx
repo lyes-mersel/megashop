@@ -4,7 +4,7 @@ import * as XLSX from "xlsx";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { JSX, useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 // Components
 import PageHeader from "@/components/portal/client/orderspage/PageHeader";
@@ -37,32 +37,10 @@ export default function OrderHistoryPage(): JSX.Element {
 
   const { data: session, status } = useSession();
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   // Derived state
   const userId = session?.user?.id;
   const sessionReady = status === "authenticated" && !!userId;
-
-  /**
-   * On first load, parse initial values from URL
-   */
-  useEffect(() => {
-    const page = parseInt(searchParams.get("page") || "1", 10);
-    const search = searchParams.get("search") || "";
-    const sortBy = searchParams.get("sortBy") || "date";
-    const sortOrder = searchParams.get("sortOrder") || "desc";
-
-    setCurrentPage(page);
-    setSearchQuery(search);
-    setSearchDebounced(search);
-
-    if (sortBy === "date" || sortBy === "montant") {
-      setSortConfig({
-        key: sortBy as keyof OrderFromAPI,
-        direction: sortOrder as "asc" | "desc",
-      });
-    }
-  }, [searchParams]);
 
   /**
    * Debounce search input before triggering filtering

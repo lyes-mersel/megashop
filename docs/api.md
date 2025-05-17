@@ -108,9 +108,10 @@
 
 - `GET    /api/orders` - Get all orders (admin) ✅
 - `POST   /api/orders` - Make a new order (client) ✅
-- `GET    /api/orders/{orderId}` - Get a specific order (admin)
-- `PATCH  /api/orders/{orderId}` - Update an order (admin)
-- `DELETE /api/orders/{orderId}` - Delete an order (admin)
+- `POST   /api/orders/prepare` - Prepare an order (client) ✅
+- `GET    /api/orders/{orderId}` - Get a specific order (admin) ✅
+- `PATCH  /api/orders/{orderId}` - Update an order (admin) ✅
+- `DELETE /api/orders/{orderId}` - Delete an order (admin) ✅
 
 ### Reports
 

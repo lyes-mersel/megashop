@@ -34,14 +34,15 @@ export default function CartOrderSummary() {
             key={idx}
             className="flex items-center justify-between text-black py-2"
           >
-            <span
-              className={cn(
-                satoshi.className,
-                "text-sm md:text-base text-gray-700 truncate max-w-[60%]"
-              )}
-            >
-              {item.quantity} × {item.name}
+            <span className="text-sm md:text-base text-gray-700 truncate max-w-[60%] flex flex-col">
+              <span className={cn(satoshi.className, "")}>
+                {item.quantity} × {item.name}
+              </span>
+              <span className={cn(satoshi.className, "ml-[25px]")}>
+                Couleur: {item.color.name}, Taille: {item.size.name}
+              </span>
             </span>
+
             <span
               className={cn(
                 satoshi.className,
@@ -84,22 +85,10 @@ export default function CartOrderSummary() {
         asChild
       >
         <Link href="/order">
-          Passer à la caisse
+          Passer la commande
           <FaArrowRight className="text-xl ml-2 group-hover:translate-x-1 transition-all duration-200" />
         </Link>
       </Button>
-
-      {/* <Button
-        type="button"
-        className={cn(
-          satoshi.className,
-          "mt-6 text-sm md:text-base font-medium bg-gradient-to-r from-gray-800 to-black rounded-full w-full py-4 h-[54px] md:h-[60px] text-white group hover:from-gray-900 hover:to-black transition-all shadow-lg hover:shadow-xl"
-        )}
-        onClick={onSubmit}
-      >
-        Passer la commande
-        <FaArrowRight className="text-xl ml-2 group-hover:translate-x-1 transition-all" />
-      </Button> */}
     </div>
   );
 }

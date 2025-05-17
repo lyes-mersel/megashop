@@ -28,7 +28,7 @@ const ProductCard = ({ data }: ProductCardProps) => {
   return (
     <div className="flex items-start space-x-4">
       <Link
-        href={`/shop/product/${data.id}/${data.name.split(" ").join("-")}`}
+        href={`/product/${data.id}`}
         className="bg-[#F0EEED] rounded-lg w-full min-w-[100px] max-w-[100px] sm:max-w-[124px] aspect-square overflow-hidden"
       >
         <Image
@@ -43,7 +43,7 @@ const ProductCard = ({ data }: ProductCardProps) => {
       <div className="flex w-full self-stretch flex-col">
         <div className="flex items-center justify-between">
           <Link
-            href={`/shop/product/${data.id}/${data.name.split(" ").join("-")}`}
+            href={`/product/${data.id}`}
             className="text-black font-bold text-base xl:text-xl"
           >
             {data.name}
@@ -56,7 +56,8 @@ const ProductCard = ({ data }: ProductCardProps) => {
               dispatch(
                 remove({
                   id: data.id,
-                  attributes: data.attributes,
+                  color: data.color,
+                  size: data.size,
                   quantity: data.quantity,
                 })
               )
@@ -68,13 +69,13 @@ const ProductCard = ({ data }: ProductCardProps) => {
         <div className="-mt-1">
           <span className="text-black text-xs md:text-sm mr-1">Taille:</span>
           <span className="text-black/60 text-xs md:text-sm">
-            {data.attributes[0]}
+            {data.color.name}
           </span>
         </div>
         <div className="mb-auto -mt-1.5">
           <span className="text-black text-xs md:text-sm mr-1">Couleur:</span>
           <span className="text-black/60 boder-1 border-gray-300 text-xs md:text-sm">
-            {data.attributes[1]}
+            {data.size.name}
           </span>
         </div>
         <div className="flex items-center flex-wrap justify-between">
@@ -90,12 +91,17 @@ const ProductCard = ({ data }: ProductCardProps) => {
                 ? dispatch(
                     remove({
                       id: data.id,
-                      attributes: data.attributes,
+                      color: data.color,
+                      size: data.size,
                       quantity: data.quantity,
                     })
                   )
                 : dispatch(
-                    removeCartItem({ id: data.id, attributes: data.attributes })
+                    removeCartItem({
+                      id: data.id,
+                      color: data.color,
+                      size: data.size,
+                    })
                   )
             }
             isZeroDelete

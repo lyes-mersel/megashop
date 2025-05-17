@@ -82,7 +82,7 @@ const ChatComponent: React.FC = () => {
           if (line.startsWith("0:")) {
             try {
               const content = JSON.parse(line.slice(2));
-              if (typeof content === "string") {
+              if (typeof content === "string" && content.length > 0) {
                 accumulatedText += content;
                 setMessages((prev) =>
                   prev.map((msg) =>
@@ -102,11 +102,11 @@ const ChatComponent: React.FC = () => {
       if (!accumulatedText) {
         throw new Error("No valid message content received");
       }
-    } catch (error) {
-      console.error("Error:", error);
+    } catch {
+      // console.error("Error:", error);
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: "Oops, something went wrong. Please try again.",
+        text: "Oups, une erreur s’est produite. Veuillez réessayer.",
         sender: "bot",
         timestamp: new Date().toLocaleTimeString([], {
           hour: "2-digit",
@@ -139,7 +139,7 @@ const ChatComponent: React.FC = () => {
             data-color-mode="light"
           >
             <div className="bg-black text-white p-5 flex justify-between items-center">
-              <h3 className="text-2xl font-medium">Chat with Nova</h3>
+              <h3 className="text-2xl font-medium">Discutez avec Nova</h3>
               <button
                 onClick={() => setIsOpen(false)}
                 className="text-gray-300 hover:text-white"
@@ -150,7 +150,7 @@ const ChatComponent: React.FC = () => {
             <div className="flex-1 p-5 overflow-y-auto bg-gray-50">
               {messages.length === 0 ? (
                 <div className="text-gray-500 text-center">
-                  Start a conversation!
+                  Commencez une conversation !
                 </div>
               ) : (
                 messages.map((msg) => (

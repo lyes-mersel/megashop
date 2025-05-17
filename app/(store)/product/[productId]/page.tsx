@@ -14,14 +14,16 @@ import { ProductFromAPI } from "@/lib/types/product.types";
 // Data utils
 import { fetchDataFromAPI } from "@/lib/utils/fetchData";
 import LastArrivals from "@/components/store/productpage/LastArrivals";
+import { useAppDispatch } from "@/redux/hooks";
+import { resetSelections } from "@/redux/features/products/productsSlice";
 
 export default function ProductPage({
   params,
 }: {
   params: Promise<{ productId: string }>;
 }) {
+  const dispatch = useAppDispatch();
   const router = useRouter();
-
   const hasFetchedRef = useRef(false);
   const [product, setProduct] = useState<ProductFromAPI | null>(null);
   const [loading, setLoading] = useState(true);
@@ -29,6 +31,7 @@ export default function ProductPage({
   useEffect(() => {
     if (hasFetchedRef.current) return;
     hasFetchedRef.current = true;
+    dispatch(resetSelections());
 
     const fetchData = async () => {
       try {
@@ -56,13 +59,13 @@ export default function ProductPage({
     };
 
     fetchData();
-  }, [params, router]);
+  }, [params, router, dispatch]);
 
   if (loading) {
     return (
-      <div className="min-h-[calc(100dvh-125px)] flex flex-col items-center justify-center py-20 gap-4 text-gray-700">
-        <div className="w-8 h-8 border-4 border-t-transparent border-blue-500 rounded-full animate-spin"></div>
-        <p className="text-lg font-medium">Chargement de la page...</p>
+      <div className="min-h-[calc(100dvh-125px)] flex flex-col items-center justify-center text-center py-12">
+        <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-gray-800 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
+        <span className="mt-5 text-lg font-medium">Chargement de la page...</span>
       </div>
     );
   }

@@ -13,7 +13,8 @@ export async function POST(req: NextRequest) {
     const { prompt } = await req.json();
 
     const result = streamText({
-      model: openrouter.chat("mistralai/mistral-small-3.1-24b-instruct:free"),
+      // model: openrouter.chat("mistralai/mistral-small-3.1-24b-instruct:free"),
+      model: openrouter.chat("meta-llama/llama-3.3-8b-instruct:free"),
       messages: [
         {
           role: "system",

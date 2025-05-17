@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
 // Types
 import { ProductFromAPI } from "@/lib/types/product.types";
+import { cn } from "@/lib/utils";
 
 const AddToCartBtn = ({
   data,
@@ -21,15 +22,31 @@ const AddToCartBtn = ({
   return (
     <button
       type="button"
-      className="bg-black w-full ml-3 sm:ml-5 rounded-full h-11 md:h-[52px] text-sm sm:text-base text-white hover:bg-black/80 transition-all"
+      className={cn(
+        "bg-black w-full ml-3 sm:ml-5 rounded-full h-11 md:h-[52px] text-sm sm:text-base text-white transition-all",
+        {
+          "hover:bg-black/80 cursor-pointer":
+            sizeSelection.id && colorSelection.id && data.quantity > 0,
+          "bg-gray-400 cursor-not-allowed opacity-60":
+            !sizeSelection.id || !colorSelection.id || data.quantity === 0,
+        }
+      )}
+      disabled={!sizeSelection.id || !colorSelection.id || data.quantity === 0}
       onClick={() =>
         dispatch(
           addToCart({
-            id: Number(data.id),
+            id: data.id,
             name: data.nom,
             imagePublicId: data.images[0].imagePublicId,
             price: data.prix,
-            attributes: [sizeSelection, colorSelection.nom],
+            color: {
+              id: colorSelection.id,
+              name: colorSelection.nom,
+            },
+            size: {
+              id: sizeSelection.id,
+              name: sizeSelection.nom,
+            },
             quantity: data.quantity,
           })
         )
