@@ -178,8 +178,8 @@ export default function DashboardPage() {
   });
 
   const [vendor] = useState<Vendor>({
-    firstName: "Billal",
-    lastName: "Mechekour",
+    firstName: "Prenom",
+    lastName: "Nom",
   });
 
   const weekData = [
