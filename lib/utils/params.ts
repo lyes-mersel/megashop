@@ -5,6 +5,7 @@ import {
   NOTIFICATION_SORT_FIELDS,
   REVIEW_SORT_FIELDS,
   ORDER_SORT_FIELDS,
+  REPORT_SORT_FIELDS,
 } from "@/lib/constants/sorting";
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "@/lib/constants/settings";
 
@@ -81,7 +82,7 @@ export function getSortingReportsParams(req: NextRequest) {
   let sortBy = searchParams.get("sortBy") || "date";
   let sortOrder = searchParams.get("sortOrder") || "desc";
 
-  sortBy = ORDER_SORT_FIELDS.includes(sortBy) ? sortBy : "date";
+  sortBy = REPORT_SORT_FIELDS.includes(sortBy) ? sortBy : "date";
   sortOrder = VALID_SORT_ORDERS.includes(sortOrder) ? sortOrder : "desc";
 
   return { sortBy, sortOrder };

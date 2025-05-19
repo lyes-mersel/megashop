@@ -27,7 +27,7 @@ export default function NotificationsPage() {
   const [notifications, setNotifications] = useState<NotificationFromAPI[]>([]);
   const [filters, setFilters] = useState<Filters>({
     type: "",
-    status: "nonlu",
+    status: "",
     sortBy: "desc",
     page: 1,
     pageSize: 5,

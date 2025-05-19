@@ -1,7 +1,4 @@
-// CartPage.tsx
 "use client";
-
-import React from "react";
 
 // Components
 import BreadcrumbCart from "@/components/store/cartpage/BreadcrumbCart";

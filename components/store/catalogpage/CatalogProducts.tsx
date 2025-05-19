@@ -72,20 +72,20 @@ const CatalogProducts = ({
         onApplyFilters={onApplyFilters}
         onResetFilters={onResetFilters}
       />
-      <div className="flex flex-col w-full md:min-h-[1700px] space-y-5">
+      <div className="flex flex-1 flex-col w-full space-y-5">
         {isLoading ? (
           <div className="col-span-full text-center py-12">
             <IsLoading />
           </div>
         ) : (
           <>
-            <div className="w-full grid grid-cols-1 xs:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
+            <div className="flex-1 w-full grid grid-cols-1 xs:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
               {products.length > 0 ? (
                 products.map((product) => (
                   <ProductCard key={product.id} data={product} />
                 ))
               ) : (
-                <div className="min-h-[calc(100dvh-250px)] col-span-full text-center py-16 flex flex-col items-center justify-center gap-2">
+                <div className="max-h-[600px] col-span-full text-center py-16 flex flex-col items-center justify-center gap-2">
                   <FiSearch className="text-5xl text-gray-400 mb-4" />
                   <h2
                     className={`text-2xl font-bold text-gray-800 ${montserrat.className}`}

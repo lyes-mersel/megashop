@@ -33,7 +33,8 @@ export default function ProfileCard({
               <div className="w-full h-full rounded-full overflow-hidden">
                 {photoUrl ? (
                   <Image
-                    fill
+                    width={50}
+                    height={50}
                     src={photoUrl}
                     alt={name}
                     className="w-full h-full object-cover rounded-full"
@@ -87,7 +88,8 @@ export default function ProfileCard({
           <div className="w-full h-full relative bg-black flex items-center justify-center rounded-full">
             {photoUrl ? (
               <Image
-                fill
+                width={50}
+                height={50}
                 src={photoUrl}
                 alt={name}
                 className="text-black bg-white rounded-full"

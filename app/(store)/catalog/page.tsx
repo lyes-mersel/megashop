@@ -143,8 +143,8 @@ export default function CatalogPage() {
     <main className="py-5">
       <div className="max-w-frame mx-auto px-4 xl:px-0">
         <BreadcrumbShop />
-        <div className="flex md:space-x-5 items-start">
-          <div className="hidden md:block min-w-[270px] max-w-[270px] min-h-[1810px] border border-black/10 rounded-[20px] px-5 md:px-6 py-5 space-y-5 md:space-y-6">
+        <div className="flex md:space-x-5 items-stretch">
+          <div className="hidden md:block min-w-[270px] max-w-[270px] border border-black/10 rounded-[20px] px-5 md:px-6 py-5 space-y-5 md:space-y-6">
             <div className="flex items-center justify-between">
               <span className="font-bold text-black text-xl">Filtres</span>
               <FiSliders className="text-2xl text-black/40" />

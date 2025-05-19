@@ -35,30 +35,38 @@ export default function OrderDetailModal({
 
         <div className="space-y-4 sm:space-y-6">
           {/* En-tête de la commande */}
-          <div className="flex justify-between items-center border-b border-gray-200 pb-3 sm:pb-4">
+          <div className="flex justify-between items-center border-b border-gray-200 pb-3 sm:pb-4 mt-1">
             <h3 className="text-xl sm:text-2xl font-bold text-gray-900">
               Commande #{order.id}
             </h3>
+            <span
+              className={`px-3 py-1 rounded-full font-bold ${getStatusColor(
+                order.statut!
+              )}`}
+            >
+              {getStatusLabel(order.statut)}
+            </span>
           </div>
-
           {/* Informations vendeur */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 bg-gray-50 p-3 sm:p-4 rounded-xl">
             <div>
-              <span className="text-gray-700 font-medium text-sm sm:text-base">
+              <span className="text-gray-700 font-semibold text-sm sm:text-base">
+                Client :
+              </span>
+              <span className="text-gray-900 block text-sm sm:text-base font-semibold">
+                {order.client?.prenom} {order.client?.nom}
+              </span>
+            </div>
+
+            <div>
+              <span className="text-gray-700 font-semibold text-sm sm:text-base">
                 Date :
               </span>
-              <span className="text-gray-900 block text-sm sm:text-base">
+              <span className="text-gray-900 block text-sm sm:text-base font-semibold">
                 {extractDateString(order.date)}
               </span>
             </div>
-            <div>
-              <span className="text-gray-700 font-medium text-sm sm:text-base">
-                Articles :
-              </span>
-              <span className="text-gray-900 font-semibold block text-sm sm:text-base">
-                {order.produits.length}
-              </span>
-            </div>
+
             <div>
               <span className="text-gray-700 font-medium text-sm sm:text-base">
                 Adresse :
@@ -67,16 +75,13 @@ export default function OrderDetailModal({
                 {`${order.adresse?.rue}, ${order.adresse?.ville}, ${order.adresse?.wilaya} - ${order.adresse?.codePostal}`}
               </span>
             </div>
+
             <div>
-              <span className="text-gray-700 block  mb-1 font-medium text-sm sm:text-base">
-                Statut :
+              <span className="text-gray-700 font-medium text-sm sm:text-base">
+                Articles :
               </span>
-              <span
-                className={`px-3 py-1 rounded-full font-medium ${getStatusColor(
-                  order.statut!
-                )}`}
-              >
-                {getStatusLabel(order.statut)}
+              <span className="text-gray-900 font-semibold block text-sm sm:text-base">
+                {order.produits.length}
               </span>
             </div>
           </div>

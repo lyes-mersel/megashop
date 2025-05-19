@@ -520,8 +520,8 @@ export default function UsersPage() {
                   <div className="flex items-center gap-3 mb-2">
                     {user.image ? (
                       <Image
-                        width={8}
-                        height={8}
+                        width={32}
+                        height={32}
                         src={user.image}
                         alt={`${user.firstName} ${user.lastName}`}
                         className="w-8 h-8 rounded-full object-cover border border-gray-200"
@@ -724,8 +724,8 @@ export default function UsersPage() {
                         <div className="flex items-center gap-3">
                           {user.image ? (
                             <Image
-                              width={8}
-                              height={8}
+                              width={32}
+                              height={32}
                               src={user.image}
                               alt={`${user.firstName} ${user.lastName}`}
                               className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover border border-gray-200"
@@ -940,8 +940,8 @@ export default function UsersPage() {
                 <div className="flex flex-col items-center">
                   {selectedUser.image ? (
                     <Image
-                      width={32}
-                      height={32}
+                      width={100}
+                      height={100}
                       src={selectedUser.image}
                       alt={`${selectedUser.firstName} ${selectedUser.lastName}`}
                       className="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover border-4 border-gray-200 shadow-lg mb-4"

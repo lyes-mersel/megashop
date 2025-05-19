@@ -14,6 +14,7 @@ export function getReportSelect() {
             id: true,
             nom: true,
             prenom: true,
+            email: true,
             imagePublicId: true,
             role: true,
           },
@@ -38,6 +39,7 @@ export function formatReportData(report: ReportFromDB): ReportFromAPI {
           id: report.client.user.id,
           nom: report.client.user.nom,
           prenom: report.client.user.prenom,
+          email: report.client.user.email,
           imagePublicId: report.client.user.imagePublicId,
           role: report.client.user.role,
         }

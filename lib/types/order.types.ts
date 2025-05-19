@@ -10,7 +10,14 @@ export type OrderFromAPI = {
   date: Date;
   montant: number;
   statut: string;
-  clientId: string | null;
+  client: {
+    id: string;
+    nom: string;
+    prenom: string;
+    email: string;
+    tel: string | null;
+    imagePublicId: string | null;
+  } | null;
   adresse: {
     id: string;
     rue: string;

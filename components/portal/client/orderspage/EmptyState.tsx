@@ -13,8 +13,8 @@ export default function EmptyState({
     <div className="text-center py-12">
       
       <Image
-        height={32}
-        width={32}
+        height={100}
+        width={100}
         src="/images/not-found.png"
         alt="Aucune commande"
         className="mx-auto w-24 sm:w-32 h-24 sm:h-32 mb-4"
