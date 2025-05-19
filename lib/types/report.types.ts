@@ -15,6 +15,7 @@ export type ReportFromAPI = {
     id: string;
     nom: string;
     prenom: string;
+    email: string;
     imagePublicId: string | null;
     role: string;
   } | null;

@@ -8,6 +8,7 @@ import insertOrders from "@/lib/seed/insertOrders";
 import insertProducts from "@/lib/seed/insertProducts";
 import insertSizes from "@/lib/seed/insertSizes";
 import insertUsers from "@/lib/seed/insertUsers";
+import insertReports from "@/lib/seed/insertReports";
 
 const prisma = new PrismaClient();
 
@@ -20,6 +21,7 @@ async function main() {
   await insertProducts();
   await insertOrders();
   await insertNotifications();
+  await insertReports();
 }
 
 main()
