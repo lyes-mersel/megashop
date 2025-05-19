@@ -3,7 +3,7 @@ import { CommandeStatut } from "@prisma/client";
 // Fonction pour déterminer la couleur du statut
 export const getStatusColor = (statut: string): string => {
   switch (statut) {
-    case CommandeStatut.EN_ATTENTE:
+    case CommandeStatut.EN_COURS:
       return "text-amber-600 bg-amber-100";
     case CommandeStatut.EXPEDIEE:
       return "text-blue-600 bg-blue-100";
@@ -19,7 +19,7 @@ export const getStatusColor = (statut: string): string => {
 // Fonction pour obtenir le libellé en français du statut
 export const getStatusLabel = (statut: string): string => {
   switch (statut) {
-    case CommandeStatut.EN_ATTENTE:
+    case CommandeStatut.EN_COURS:
       return "En attente";
     case CommandeStatut.EXPEDIEE:
       return "Expédiée";

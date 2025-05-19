@@ -57,6 +57,26 @@ export async function GET(request: NextRequest) {
             },
           },
         },
+        {
+          client: {
+            user: {
+              nom: {
+                contains: search,
+                mode: Prisma.QueryMode.insensitive,
+              },
+            },
+          },
+        },
+        {
+          client: {
+            user: {
+              prenom: {
+                contains: search,
+                mode: Prisma.QueryMode.insensitive,
+              },
+            },
+          },
+        },
       ],
     }),
   };

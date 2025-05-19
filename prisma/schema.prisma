@@ -62,7 +62,7 @@ model Commande {
   id             String            @id @default(cuid()) @db.VarChar(25)
   date           DateTime          @default(now())
   montant        Decimal           @db.Decimal(10, 2)
-  statut         CommandeStatut    @default(EN_ATTENTE)
+  statut         CommandeStatut    @default(EN_COURS)
   adresseId      String?           @map("adresse_id") @db.VarChar(25)
   panierId       String?           @map("panier_id") @db.VarChar(25)
   clientId       String?           @map("client_id") @db.VarChar(25)
@@ -160,7 +160,7 @@ model Notification {
 model PaiementCommande {
   id         String         @id @default(cuid()) @db.VarChar(25)
   date       DateTime       @default(now())
-  statut     PaiementStatut @default(EN_ATTENTE)
+  statut     PaiementStatut @default(EN_COURS)
   commandeId String         @unique @map("commande_id") @db.VarChar(25)
   commande   Commande       @relation(fields: [commandeId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
@@ -172,7 +172,7 @@ model PaiementVendeur {
   id        String          @id @default(cuid()) @db.VarChar(25)
   montant   Decimal         @db.Decimal(10, 2)
   date      DateTime?       @default(now())
-  statut    PaiementStatut? @default(EN_ATTENTE)
+  statut    PaiementStatut? @default(EN_COURS)
   vendeurId String          @map("vendeur_id") @db.VarChar(25)
   vendeur   Vendeur         @relation(fields: [vendeurId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
@@ -348,7 +348,7 @@ enum PanierStatut {
 }
 
 enum PaiementStatut {
-  EN_ATTENTE
+  EN_COURS
   VALIDE
   ECHOUE
 }
@@ -360,7 +360,7 @@ enum SignalementStatut {
 }
 
 enum CommandeStatut {
-  EN_ATTENTE
+  EN_COURS
   EXPEDIEE
   LIVREE
   ANNULEE

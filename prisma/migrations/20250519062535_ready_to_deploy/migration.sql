@@ -2,13 +2,13 @@
 CREATE TYPE "PanierStatut" AS ENUM ('EN_COURS', 'VALIDE', 'ANNULE');
 
 -- CreateEnum
-CREATE TYPE "PaiementStatut" AS ENUM ('EN_ATTENTE', 'VALIDE', 'ECHOUE');
+CREATE TYPE "PaiementStatut" AS ENUM ('EN_COURS', 'VALIDE', 'ECHOUE');
 
 -- CreateEnum
 CREATE TYPE "SignalementStatut" AS ENUM ('EN_ATTENTE', 'TRAITE', 'REJETE');
 
 -- CreateEnum
-CREATE TYPE "CommandeStatut" AS ENUM ('EN_ATTENTE', 'EXPEDIEE', 'LIVREE', 'ANNULEE');
+CREATE TYPE "CommandeStatut" AS ENUM ('EN_COURS', 'EXPEDIEE', 'LIVREE', 'ANNULEE');
 
 -- CreateEnum
 CREATE TYPE "UserRole" AS ENUM ('CLIENT', 'VENDEUR', 'ADMIN');
@@ -64,7 +64,7 @@ CREATE TABLE "commande" (
     "id" VARCHAR(25) NOT NULL,
     "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "montant" DECIMAL(10,2) NOT NULL,
-    "statut" "CommandeStatut" NOT NULL DEFAULT 'EN_ATTENTE',
+    "statut" "CommandeStatut" NOT NULL DEFAULT 'EN_COURS',
     "adresse_id" VARCHAR(25),
     "panier_id" VARCHAR(25),
     "client_id" VARCHAR(25),
@@ -141,7 +141,7 @@ CREATE TABLE "notification" (
 CREATE TABLE "paiement_commande" (
     "id" VARCHAR(25) NOT NULL,
     "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "statut" "PaiementStatut" NOT NULL DEFAULT 'EN_ATTENTE',
+    "statut" "PaiementStatut" NOT NULL DEFAULT 'EN_COURS',
     "commande_id" VARCHAR(25) NOT NULL,
 
     CONSTRAINT "paiement_commande_pkey" PRIMARY KEY ("id")
@@ -152,7 +152,7 @@ CREATE TABLE "paiement_vendeur" (
     "id" VARCHAR(25) NOT NULL,
     "montant" DECIMAL(10,2) NOT NULL,
     "date" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
-    "statut" "PaiementStatut" DEFAULT 'EN_ATTENTE',
+    "statut" "PaiementStatut" DEFAULT 'EN_COURS',
     "vendeur_id" VARCHAR(25) NOT NULL,
 
     CONSTRAINT "paiement_vendeur_pkey" PRIMARY KEY ("id")

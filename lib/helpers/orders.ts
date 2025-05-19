@@ -6,7 +6,20 @@ export function getOrderSelect() {
     date: true,
     montant: true,
     statut: true,
-    clientId: true,
+    client: {
+      select: {
+        user: {
+          select: {
+            id: true,
+            nom: true,
+            prenom: true,
+            email: true,
+            tel: true,
+            imagePublicId: true,
+          },
+        },
+      },
+    },
     adresse: {
       select: {
         id: true,
@@ -55,10 +68,10 @@ export function formatOrderData(order: OrderFromDB): OrderFromAPI {
     date,
     montant,
     statut,
-    clientId,
     adresse,
     lignesCommande,
     paiement,
+    client,
   } = order;
 
   return {
@@ -66,8 +79,17 @@ export function formatOrderData(order: OrderFromDB): OrderFromAPI {
     date,
     montant: montant.toNumber(),
     statut,
-    clientId,
     adresse,
+    client: client
+      ? {
+          id: client.user.id,
+          nom: client.user.nom,
+          prenom: client.user.prenom,
+          email: client.user.email,
+          tel: client.user.tel,
+          imagePublicId: client.user.imagePublicId,
+        }
+      : null,
     produits: lignesCommande.map((ligne) => ({
       ...ligne,
       prixUnit: ligne.prixUnit.toNumber(),

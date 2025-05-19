@@ -11,7 +11,7 @@ export const REVIEW_SORT_FIELDS = ["date", "note"];
 
 export const NOTIFICATION_SORT_FIELDS = ["date"];
 
-export const ORDER_SORT_FIELDS = ["date", "montant"];
+export const ORDER_SORT_FIELDS = ["date", "montant", "statut"];
 
 export const PEPORT_SORT_FIELDS = ["date", "statut"];
 

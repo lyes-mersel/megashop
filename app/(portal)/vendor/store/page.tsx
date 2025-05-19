@@ -119,8 +119,8 @@ export default function ShopPage() {
         ) : (
           <div className="text-center py-12">
             <Image
-              width={32}
-              height={32}
+              width={100}
+              height={100}
               src="/images/not-found.png"
               alt="Produit non trouvé"
               className="mx-auto w-32 h-32 mb-4"

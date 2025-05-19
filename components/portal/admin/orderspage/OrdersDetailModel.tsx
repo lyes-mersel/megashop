@@ -47,6 +47,7 @@ export default function OrderDetailModal({
               {getStatusLabel(order.statut)}
             </span>
           </div>
+
           {/* Informations vendeur */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 bg-gray-50 p-3 sm:p-4 rounded-xl">
             <div>

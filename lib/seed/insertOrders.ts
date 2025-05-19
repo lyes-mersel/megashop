@@ -121,7 +121,7 @@ const addresses = [
 
 // Available order statuses
 const orderStatuses: CommandeStatut[] = [
-  CommandeStatut.EN_ATTENTE,
+  CommandeStatut.EN_COURS,
   CommandeStatut.EXPEDIEE,
   CommandeStatut.LIVREE,
   CommandeStatut.ANNULEE,
@@ -279,10 +279,10 @@ async function insertOrders() {
   // Generate orders
   const orders = [];
   for (const client of clients) {
-    // Each client gets 6-10 orders
-    const numOrders = Math.floor(Math.random() * 5) + 6;
+    // Each client gets 3-5 orders
+    const numOrders = Math.floor(Math.random() * 3) + 3;
     for (let i = 0; i < numOrders; i++) {
-      // Select 1-5 random products for the order
+      // Select 1-3 random products for the order
       const numItems = Math.floor(Math.random() * 5) + 1;
       const selectedProducts = Array.from({ length: numItems }, () =>
         getRandomElement(productTemplates)

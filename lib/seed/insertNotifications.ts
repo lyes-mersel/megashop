@@ -47,10 +47,15 @@ const productNames = [
 ];
 
 async function insertNotifications() {
-  // Generate client emails
+  // Generate client & vendors emails
   const clientEmails = [
     "client@email.com",
     ...Array.from({ length: 10 }, (_, i) => `client${i + 1}@email.com`),
+  ];
+  const vendorEmails = [
+    "vendeur@email.com",
+    "vendeur1@email.com",
+    "vendeur2@email.com",
   ];
 
   // Fetch all users
@@ -58,14 +63,19 @@ async function insertNotifications() {
     where: { email: { in: clientEmails } },
     select: { id: true, email: true },
   });
-  const vendor = await prisma.user.findUnique({
-    where: { email: "vendeur@email.com" },
+  const vendors = await prisma.user.findMany({
+    where: { email: { in: vendorEmails } },
+    select: { id: true, email: true },
   });
   const admin = await prisma.user.findUnique({
     where: { email: "admin@email.com" },
   });
 
-  if (clients.length !== clientEmails.length || !vendor?.id || !admin?.id) {
+  if (
+    clients.length !== clientEmails.length ||
+    vendorEmails.length !== vendorEmails.length ||
+    !admin?.id
+  ) {
     console.error("Certains utilisateurs n'ont pas été trouvés.");
     return;
   }
@@ -180,8 +190,6 @@ async function insertNotifications() {
               NotificationType.EVALUATION,
             ]).has(t.type) && t.objet !== "Nouvelle évaluation"
         )
-        // Each client gets 6-10 notifications
-        .slice(0, Math.floor(Math.random() * 5) + 6)
         .map((template) => ({
           ...template,
           userId: client.id,
@@ -195,30 +203,32 @@ async function insertNotifications() {
   }
 
   // Vendor notifications
-  notifications.push(
-    ...notificationTemplates
-      .filter(
-        (t) =>
-          new Set<NotificationType>([
-            NotificationType.DEFAULT,
-            NotificationType.COMMANDE,
-            NotificationType.LIVRAISON,
-            NotificationType.MESSAGE,
-            NotificationType.SECURITE,
-            NotificationType.EVALUATION,
-          ]).has(t.type) && t.objet !== "Évaluez votre achat"
-      )
-      .map((template) => ({
-        ...template,
-        userId: vendor.id,
-        estLu: getRandomReadStatus(),
-        date: getPastDate(Math.floor(Math.random() * 30)),
-        text: template.text.replace("Votre", "Une"),
-        urlRedirection: template.urlRedirection
-          ? `${urlPrefixes.vendor}${template.urlRedirection}`
-          : undefined,
-      }))
-  );
+  for (const vendor of vendors) {
+    notifications.push(
+      ...notificationTemplates
+        .filter(
+          (t) =>
+            new Set<NotificationType>([
+              NotificationType.DEFAULT,
+              NotificationType.COMMANDE,
+              NotificationType.LIVRAISON,
+              NotificationType.MESSAGE,
+              NotificationType.SECURITE,
+              NotificationType.EVALUATION,
+            ]).has(t.type) && t.objet !== "Évaluez votre achat"
+        )
+        .map((template) => ({
+          ...template,
+          userId: vendor.id,
+          estLu: getRandomReadStatus(),
+          date: getPastDate(Math.floor(Math.random() * 30)),
+          text: template.text.replace("Votre", "Une"),
+          urlRedirection: template.urlRedirection
+            ? `${urlPrefixes.vendor}${template.urlRedirection}`
+            : undefined,
+        }))
+    );
+  }
 
   // Admin notifications
   notifications.push(
@@ -260,7 +270,10 @@ async function insertNotifications() {
       }`
     );
     console.log(
-      `- Vendor: ${notifications.filter((n) => n.userId === vendor.id).length}`
+      `- Vendor: ${
+        notifications.filter((n) => vendors.some((c) => c.id === n.userId))
+          .length
+      }`
     );
     console.log(
       `- Admin: ${notifications.filter((n) => n.userId === admin.id).length}`

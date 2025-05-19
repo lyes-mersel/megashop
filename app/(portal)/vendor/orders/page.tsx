@@ -403,8 +403,8 @@ export default function OrdersPage() {
           ) : (
             <div className="text-center py-12">
               <Image
-                width={32}
-                height={32}
+                width={100}
+                height={100}
                 src="/images/not-found.png"
                 alt="Aucune commande"
                 className="mx-auto w-24 h-24 sm:w-32 sm:h-32 mb-4"
@@ -602,8 +602,8 @@ export default function OrdersPage() {
         {filteredOrders.length === 0 && (
           <div className="text-center py-12">
             <Image
-              width={32}
-              height={32}
+              width={100}
+              height={100}
               src="/images/not-found.png"
               alt="Aucune commande"
               className="mx-auto w-24 h-24 sm:w-32 sm:h-32 mb-4"
