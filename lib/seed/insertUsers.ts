@@ -2,6 +2,13 @@ import { prisma } from "@/lib/utils/prisma";
 import { UserRole } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
+// Helper function to generate random dates in the past
+function getPastDate(daysBack: number): Date {
+  const date = new Date();
+  date.setDate(date.getDate() - daysBack);
+  return date;
+}
+
 // Création des utilisateurs
 async function insertUsers() {
   const hashedPassword = await bcrypt.hash(process.env.DEFAULT_PASSWORD!, 10);
@@ -16,6 +23,7 @@ async function insertUsers() {
       role: UserRole.CLIENT,
       emailVerifie: true,
       tel: "0555555555",
+      dateCreation: getPastDate(Math.floor(Math.random() * 30)),
       adresse: {
         create: {
           rue: "Rue de la liberté",
@@ -40,6 +48,7 @@ async function insertUsers() {
       role: UserRole.CLIENT,
       emailVerifie: true,
       tel: "0555555555",
+      dateCreation: getPastDate(Math.floor(Math.random() * 30)),
       adresse: {
         create: {
           rue: "Rue Didouche Mourad",
@@ -64,6 +73,7 @@ async function insertUsers() {
       role: UserRole.CLIENT,
       emailVerifie: true,
       tel: "0555555555",
+      dateCreation: getPastDate(Math.floor(Math.random() * 30)),
       adresse: {
         create: {
           rue: "Rue Hassiba Ben Bouali",
@@ -88,6 +98,7 @@ async function insertUsers() {
       role: UserRole.CLIENT,
       emailVerifie: true,
       tel: "0555555555",
+      dateCreation: getPastDate(Math.floor(Math.random() * 30)),
       adresse: {
         create: {
           rue: "Rue Hassiba Ben Bouali",
@@ -112,6 +123,7 @@ async function insertUsers() {
       role: UserRole.CLIENT,
       emailVerifie: true,
       tel: "0555555555",
+      dateCreation: getPastDate(Math.floor(Math.random() * 30)),
       adresse: {
         create: {
           rue: "Rue Hassiba Ben Bouali",
@@ -136,6 +148,7 @@ async function insertUsers() {
       role: UserRole.CLIENT,
       emailVerifie: true,
       tel: "0555555555",
+      dateCreation: getPastDate(Math.floor(Math.random() * 30)),
       adresse: {
         create: {
           rue: "Rue Hassiba Ben Bouali",
@@ -160,6 +173,7 @@ async function insertUsers() {
       role: UserRole.CLIENT,
       emailVerifie: true,
       tel: "0555555555",
+      dateCreation: getPastDate(Math.floor(Math.random() * 30)),
       adresse: {
         create: {
           rue: "Rue Hassiba Ben Bouali",
@@ -184,6 +198,7 @@ async function insertUsers() {
       role: UserRole.CLIENT,
       emailVerifie: true,
       tel: "0555555555",
+      dateCreation: getPastDate(Math.floor(Math.random() * 30)),
       adresse: {
         create: {
           rue: "Rue de la République",
@@ -208,6 +223,7 @@ async function insertUsers() {
       role: UserRole.CLIENT,
       emailVerifie: true,
       tel: "0555555555",
+      dateCreation: getPastDate(Math.floor(Math.random() * 30)),
       adresse: {
         create: {
           rue: "Rue de la République",
@@ -232,6 +248,7 @@ async function insertUsers() {
       role: UserRole.CLIENT,
       emailVerifie: true,
       tel: "0555555555",
+      dateCreation: getPastDate(Math.floor(Math.random() * 30)),
       adresse: {
         create: {
           rue: "Rue de la République",
@@ -256,6 +273,7 @@ async function insertUsers() {
       role: UserRole.CLIENT,
       emailVerifie: true,
       tel: "0555555555",
+      dateCreation: getPastDate(Math.floor(Math.random() * 30)),
       adresse: {
         create: {
           rue: "Rue Hassiba Ben Bouali",
@@ -281,6 +299,7 @@ async function insertUsers() {
       emailVerifie: true,
       tel: "0666666666",
       imagePublicId: "clothes_mqs4nn",
+      dateCreation: getPastDate(Math.floor(Math.random() * 30)),
       adresse: {
         create: {
           rue: "Boulevard de la République",
@@ -328,6 +347,7 @@ async function insertUsers() {
       emailVerifie: true,
       tel: "0777777777",
       imagePublicId: "clothes_mqs4nn",
+      dateCreation: getPastDate(Math.floor(Math.random() * 30)),
       adresse: {
         create: {
           rue: "Boulevard de la République",
@@ -375,6 +395,7 @@ async function insertUsers() {
       emailVerifie: true,
       tel: "0555555555",
       imagePublicId: "clothes_mqs4nn",
+      dateCreation: getPastDate(Math.floor(Math.random() * 30)),
       adresse: {
         create: {
           rue: "Boulevard de la République",
@@ -421,6 +442,7 @@ async function insertUsers() {
       role: UserRole.ADMIN,
       emailVerifie: true,
       tel: "0555555555",
+      dateCreation: getPastDate(Math.floor(Math.random() * 30)),
       adresse: {
         create: {
           rue: "Boulevard de l'ALN",
