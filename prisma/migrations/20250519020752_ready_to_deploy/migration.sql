@@ -13,6 +13,9 @@ CREATE TYPE "CommandeStatut" AS ENUM ('EN_ATTENTE', 'EXPEDIEE', 'LIVREE', 'ANNUL
 -- CreateEnum
 CREATE TYPE "UserRole" AS ENUM ('CLIENT', 'VENDEUR', 'ADMIN');
 
+-- CreateEnum
+CREATE TYPE "NotificationType" AS ENUM ('DEFAULT', 'COMMANDE', 'LIVRAISON', 'PAIEMENT', 'SIGNALEMENT', 'EVALUATION', 'MESSAGE', 'SECURITE');
+
 -- CreateTable
 CREATE TABLE "admin" (
     "user_id" VARCHAR(25) NOT NULL,
@@ -23,10 +26,10 @@ CREATE TABLE "admin" (
 -- CreateTable
 CREATE TABLE "adresse" (
     "id" VARCHAR(25) NOT NULL,
-    "rue" VARCHAR(255),
-    "ville" VARCHAR(100),
-    "code_postal" VARCHAR(20),
-    "pays" VARCHAR(100),
+    "rue" VARCHAR(255) NOT NULL,
+    "ville" VARCHAR(100) NOT NULL,
+    "wilaya" VARCHAR(100) NOT NULL,
+    "code_postal" VARCHAR(20) NOT NULL,
 
     CONSTRAINT "adresse_pkey" PRIMARY KEY ("id")
 );
@@ -59,12 +62,13 @@ CREATE TABLE "client" (
 -- CreateTable
 CREATE TABLE "commande" (
     "id" VARCHAR(25) NOT NULL,
-    "date" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+    "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "montant" DECIMAL(10,2) NOT NULL,
-    "statut" "CommandeStatut" DEFAULT 'EN_ATTENTE',
+    "statut" "CommandeStatut" NOT NULL DEFAULT 'EN_ATTENTE',
     "adresse_id" VARCHAR(25),
     "panier_id" VARCHAR(25),
     "client_id" VARCHAR(25),
+    "paiement_id" VARCHAR(25),
 
     CONSTRAINT "commande_pkey" PRIMARY KEY ("id")
 );
@@ -72,9 +76,9 @@ CREATE TABLE "commande" (
 -- CreateTable
 CREATE TABLE "evaluation" (
     "id" VARCHAR(25) NOT NULL,
-    "note" DECIMAL(2,1) NOT NULL,
-    "text" VARCHAR(500) NOT NULL,
-    "date" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+    "note" DECIMAL(3,2) NOT NULL,
+    "text" VARCHAR(500),
+    "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "user_id" VARCHAR(25) NOT NULL,
     "produit_id" VARCHAR(25) NOT NULL,
 
@@ -95,7 +99,7 @@ CREATE TABLE "ligne_commande" (
     "nom_produit" VARCHAR(100) NOT NULL,
     "quantite" INTEGER NOT NULL,
     "prix_unit" DECIMAL(10,2) NOT NULL,
-    "image_url" VARCHAR(255),
+    "image_public_id" VARCHAR(255),
     "commande_id" VARCHAR(25) NOT NULL,
     "produit_id" VARCHAR(25),
     "couleur_id" VARCHAR(25),
@@ -110,7 +114,7 @@ CREATE TABLE "ligne_panier" (
     "nom_produit" VARCHAR(100) NOT NULL,
     "quantite" INTEGER NOT NULL,
     "prix_unit" DECIMAL(10,2) NOT NULL,
-    "image_url" VARCHAR(255),
+    "image_public_id" VARCHAR(255),
     "panier_id" VARCHAR(25) NOT NULL,
     "produit_id" VARCHAR(25),
     "couleur_id" VARCHAR(25),
@@ -122,12 +126,13 @@ CREATE TABLE "ligne_panier" (
 -- CreateTable
 CREATE TABLE "notification" (
     "id" VARCHAR(25) NOT NULL,
-    "objet" VARCHAR(255),
-    "text" VARCHAR(1000),
-    "date" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+    "type" "NotificationType" NOT NULL DEFAULT 'DEFAULT',
+    "objet" VARCHAR(255) NOT NULL,
+    "text" VARCHAR(1000) NOT NULL,
+    "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "url_redirection" VARCHAR(255),
-    "est_lu" BOOLEAN DEFAULT false,
-    "user_id" VARCHAR(25),
+    "est_lu" BOOLEAN NOT NULL DEFAULT false,
+    "user_id" VARCHAR(25) NOT NULL,
 
     CONSTRAINT "notification_pkey" PRIMARY KEY ("id")
 );
@@ -135,8 +140,8 @@ CREATE TABLE "notification" (
 -- CreateTable
 CREATE TABLE "paiement_commande" (
     "id" VARCHAR(25) NOT NULL,
-    "date" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
-    "statut" "PaiementStatut" DEFAULT 'EN_ATTENTE',
+    "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "statut" "PaiementStatut" NOT NULL DEFAULT 'EN_ATTENTE',
     "commande_id" VARCHAR(25) NOT NULL,
 
     CONSTRAINT "paiement_commande_pkey" PRIMARY KEY ("id")
@@ -173,7 +178,7 @@ CREATE TABLE "produit" (
     "prix" DECIMAL(10,2) NOT NULL,
     "qte_stock" INTEGER NOT NULL,
     "note_moyenne" DECIMAL(2,1) NOT NULL DEFAULT 0.0,
-    "total_notations" INTEGER NOT NULL DEFAULT 0,
+    "total_evaluations" INTEGER NOT NULL DEFAULT 0,
     "date_creation" TIMESTAMP(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "date_modification" TIMESTAMP(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "categorie_id" VARCHAR(25),
@@ -185,7 +190,7 @@ CREATE TABLE "produit" (
 -- CreateTable
 CREATE TABLE "produit_image" (
     "id" VARCHAR(25) NOT NULL,
-    "image_url" VARCHAR(255) NOT NULL,
+    "image_public_id" VARCHAR(255) NOT NULL,
     "produit_id" VARCHAR(25) NOT NULL,
 
     CONSTRAINT "produit_image_pkey" PRIMARY KEY ("id")
@@ -211,7 +216,7 @@ CREATE TABLE "produit_marketplace" (
 CREATE TABLE "reponse_evaluation" (
     "id" VARCHAR(25) NOT NULL,
     "text" VARCHAR(500) NOT NULL,
-    "date" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+    "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "user_id" VARCHAR(25) NOT NULL,
     "evaluation_id" VARCHAR(25) NOT NULL,
 
@@ -258,7 +263,8 @@ CREATE TABLE "user" (
     "prenom" VARCHAR(100) NOT NULL,
     "tel" VARCHAR(20),
     "adresse_id" VARCHAR(25),
-    "url_image" VARCHAR(255),
+    "image_public_id" VARCHAR(255),
+    "email_en_attente" VARCHAR(255),
     "email_verifie" BOOLEAN NOT NULL DEFAULT false,
     "date_creation" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "role" "UserRole" NOT NULL DEFAULT 'CLIENT',
@@ -271,6 +277,7 @@ CREATE TABLE "vendeur" (
     "id" VARCHAR(25) NOT NULL,
     "nom_public" VARCHAR(100) NOT NULL,
     "description" VARCHAR(1000),
+    "nom_banque" VARCHAR(50) NOT NULL,
     "rib" VARCHAR(50) NOT NULL,
 
     CONSTRAINT "vendeur_pkey" PRIMARY KEY ("id")
@@ -327,6 +334,9 @@ CREATE INDEX "index_ligne_panier_produit_id" ON "ligne_panier"("produit_id");
 
 -- CreateIndex
 CREATE INDEX "index_notification_user_id" ON "notification"("user_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "paiement_commande_commande_id_key" ON "paiement_commande"("commande_id");
 
 -- CreateIndex
 CREATE INDEX "index_commande_id" ON "paiement_commande"("commande_id");
