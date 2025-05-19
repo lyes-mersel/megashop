@@ -1,4 +1,5 @@
-// components/store/cartpage/ProductList.tsx
+"use client";
+
 import React from "react";
 import ProductCard from "@/components/store/cartpage/ProductCard";
 import { CartItem } from "@/redux/features/carts/cartsSlice";
