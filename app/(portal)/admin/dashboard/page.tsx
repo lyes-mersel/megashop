@@ -6,7 +6,6 @@ import {
   ShoppingBag,
   Users,
   DollarSign,
-  TrendingUp,
   Package,
   Star,
 } from "lucide-react";
@@ -32,80 +31,143 @@ const montserrat = Montserrat({
   display: "swap",
 });
 
-interface Stats {
-  totalSales: number;
-  totalProducts: number;
-  totalItems: number;
-  totalUsers: { clients: number; vendors: number };
-  topSellingProduct: { name: string; sold: number };
-  mostProfitableProduct: { name: string; profit: number };
-  soldProducts: { products: number; items: number };
-  productRatings: {
-    highest: { name: string; rating: number; reviews: number };
-    lowest: { name: string; rating: number; reviews: number };
+type DashboardStats = {
+  totalVentes: string;
+  totalProduits: number;
+  utilisateurs: {
+    clients: number;
+    vendeurs: number;
   };
-}
+  produitsVendus: number;
+  meilleurProduit: {
+    id: string;
+    nom: string;
+    noteMoyenne: string;
+    prix: string;
+  };
+  pireProduit: {
+    id: string;
+    nom: string;
+    noteMoyenne: string;
+    prix: string;
+  };
+  weekData: {
+    day: string;
+    sales: number;
+    itemsSold: number;
+  }[];
+  monthData: {
+    day: string;
+    sales: number;
+    itemsSold: number;
+  }[];
+  yearData: {
+    month: string;
+    sales: number;
+    itemsSold: number;
+  }[];
+};
 
 export default function DashboardPage() {
-  const [stats] = useState<Stats>({
-    totalSales: 125000,
-    totalProducts: 50,
-    totalItems: 320,
-    totalUsers: { clients: 120, vendors: 15 },
-    topSellingProduct: { name: "T-shirt Vintage", sold: 45 },
-    mostProfitableProduct: { name: "Chaussures Sport", profit: 15000 },
-    soldProducts: { products: 30, items: 150 },
-    productRatings: {
-      highest: { name: "T-shirt Vintage", rating: 4.5, reviews: 123 },
-      lowest: { name: "Casquette Simple", rating: 1, reviews: 100 },
+  const [dashboardData, setDashboardData] = useState<DashboardStats>({
+    totalVentes: "0",
+    totalProduits: 0,
+    utilisateurs: {
+      clients: 0,
+      vendeurs: 0,
     },
+    produitsVendus: 0,
+    meilleurProduit: {
+      id: "",
+      nom: "",
+      noteMoyenne: "0",
+      prix: "0",
+    },
+    pireProduit: {
+      id: "",
+      nom: "",
+      noteMoyenne: "0",
+      prix: "0",
+    },
+    weekData: [],
+    monthData: [],
+    yearData: [],
   });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [selectedPeriod, setSelectedPeriod] = useState("week");
+  const [chartType, setChartType] = useState("line");
 
-  const [selectedPeriod, setSelectedPeriod] = useState<
-    "week" | "month" | "year"
-  >("week");
-  const [chartType, setChartType] = useState<"line" | "bar">("line");
+  useEffect(() => {
+    // Fetch dashboard data when component mounts
+    const fetchDashboardData = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch("/api/dashboard/admin");
+        if (!response.ok) {
+          throw new Error("Failed to fetch dashboard data");
+        }
+        const data = await response.json();
+        setDashboardData(data);
+        setLoading(false);
+      } catch {
+        setError("Erreur de chargement des données du tableau de bord");
+        setLoading(false);
+      }
+    };
 
-  const weekData = [
-    { day: "Lun", sales: 5000, itemsSold: 20 },
-    { day: "Mar", sales: 7000, itemsSold: 30 },
-    { day: "Mer", sales: 3000, itemsSold: 15 },
-    { day: "Jeu", sales: 9000, itemsSold: 40 },
-    { day: "Ven", sales: 6000, itemsSold: 25 },
-    { day: "Sam", sales: 12000, itemsSold: 50 },
-    { day: "Dim", sales: 8000, itemsSold: 35 },
-  ];
+    fetchDashboardData();
+  }, []);
 
-  const monthData = [
-    { day: "1-5", sales: 15000, itemsSold: 60 },
-    { day: "6-10", sales: 20000, itemsSold: 80 },
-    { day: "11-15", sales: 12000, itemsSold: 50 },
-    { day: "16-20", sales: 25000, itemsSold: 100 },
-    { day: "21-25", sales: 18000, itemsSold: 70 },
-    { day: "26-30", sales: 30000, itemsSold: 120 },
-  ];
+  // Return loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-200 flex justify-center items-center">
+        <div className="text-center">
+          <BarChart2 className="h-12 w-12 text-black animate-pulse mx-auto mb-4" />
+          <h2
+            className={`text-xl font-bold text-gray-900 ${montserrat.className}`}
+          >
+            Chargement du tableau de bord...
+          </h2>
+        </div>
+      </div>
+    );
+  }
 
-  const yearData = [
-    { month: "Jan", sales: 40000, itemsSold: 150 },
-    { month: "Fév", sales: 35000, itemsSold: 130 },
-    { month: "Mar", sales: 50000, itemsSold: 200 },
-    { month: "Avr", sales: 45000, itemsSold: 180 },
-    { month: "Mai", sales: 60000, itemsSold: 250 },
-    { month: "Juin", sales: 55000, itemsSold: 220 },
-    { month: "Juil", sales: 70000, itemsSold: 300 },
-    { month: "Août", sales: 65000, itemsSold: 270 },
-    { month: "Sept", sales: 50000, itemsSold: 200 },
-    { month: "Oct", sales: 55000, itemsSold: 220 },
-    { month: "Nov", sales: 60000, itemsSold: 250 },
-    { month: "Déc", sales: 75000, itemsSold: 320 },
-  ];
+  // Return error state
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-200 flex justify-center items-center">
+        <div className="text-center max-w-md mx-auto p-6 bg-white rounded-xl shadow-lg">
+          <div className="text-red-500 text-5xl mb-4">⚠️</div>
+          <h2
+            className={`text-xl font-bold text-gray-900 mb-2 ${montserrat.className}`}
+          >
+            Erreur de chargement
+          </h2>
+          <p className="text-gray-700">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Réessayer
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Return component if data is loaded
+  if (!dashboardData) return null;
 
   const chartData =
     selectedPeriod === "week"
-      ? weekData
+      ? dashboardData.weekData
       : selectedPeriod === "month"
-      ? monthData
-      : yearData;
+      ? dashboardData.monthData
+      : dashboardData.yearData;
+
   const xAxisKey = selectedPeriod === "year" ? "month" : "day";
   const chartTitle =
     selectedPeriod === "week"
@@ -113,43 +175,6 @@ export default function DashboardPage() {
       : selectedPeriod === "month"
       ? "Évolution des ventes et articles vendus (30 derniers jours)"
       : "Évolution des ventes et articles vendus (12 derniers mois)";
-
-  // Animation d'entrée des cartes
-  useEffect(() => {
-    const cards = document.querySelectorAll(".data-card");
-    cards.forEach((card, index) => {
-      card.animate(
-        [
-          { transform: "translateY(50px)", opacity: 0 },
-          { transform: "translateY(0)", opacity: 1 },
-        ],
-        {
-          duration: 600,
-          delay: index * 100,
-          easing: "ease-out",
-          fill: "forwards",
-        }
-      );
-    });
-  }, []);
-
-  // Animation d'entrée pour le message de bienvenue
-  useEffect(() => {
-    const welcomeMessage = document.querySelector(".welcome-message");
-    if (welcomeMessage) {
-      welcomeMessage.animate(
-        [
-          { opacity: 0, transform: "translateY(-20px)" },
-          { opacity: 1, transform: "translateY(0)" },
-        ],
-        {
-          duration: 800,
-          easing: "ease-out",
-          fill: "forwards",
-        }
-      );
-    }
-  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-200 py-6 px-4 sm:px-6 lg:px-10">
@@ -183,7 +208,7 @@ export default function DashboardPage() {
                   Total des ventes
                 </h3>
                 <p className="text-xl sm:text-2xl font-bold text-gray-900 mt-1">
-                  {stats.totalSales.toLocaleString()} DZD
+                  {parseInt(dashboardData.totalVentes).toLocaleString()} DZD
                 </p>
               </div>
             </div>
@@ -197,10 +222,7 @@ export default function DashboardPage() {
                   Total des produits
                 </h3>
                 <p className="text-xl sm:text-2xl font-bold text-gray-900 mt-1">
-                  {stats.totalProducts} produits
-                </p>
-                <p className="text-xs sm:text-sm text-gray-600">
-                  {stats.totalItems} articles au total
+                  {dashboardData.totalProduits} produits
                 </p>
               </div>
             </div>
@@ -214,46 +236,12 @@ export default function DashboardPage() {
                   Utilisateurs
                 </h3>
                 <p className="text-xl sm:text-2xl font-bold text-gray-900 mt-1">
-                  {stats.totalUsers.clients + stats.totalUsers.vendors}
+                  {dashboardData.utilisateurs.clients +
+                    dashboardData.utilisateurs.vendeurs}
                 </p>
                 <p className="text-xs sm:text-sm text-gray-600">
-                  {stats.totalUsers.clients} clients, {stats.totalUsers.vendors}{" "}
-                  vendeurs
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="data-card group bg-white/30 backdrop-blur-lg group-hover:backdrop-blur-none border-2 border-orange-500/50 p-4 sm:p-6 rounded-xl shadow-xl transform transition-all duration-300 sm:hover:scale-105 sm:hover:shadow-orange-500/50 sm:hover:border-orange-500">
-            <div className="flex items-center gap-3 sm:gap-4">
-              <TrendingUp className="h-8 w-8 sm:h-10 sm:w-10 text-orange-500 group-hover:animate-bounce" />
-              <div>
-                <h3 className="text-base sm:text-lg font-semibold text-gray-800">
-                  Produit le plus vendu
-                </h3>
-                <p className="text-lg sm:text-xl font-bold text-gray-900 mt-1">
-                  {stats.topSellingProduct.name}
-                </p>
-                <p className="text-xs sm:text-sm text-gray-600">
-                  {stats.topSellingProduct.sold} unités vendues
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="data-card group bg-white/30 backdrop-blur-lg group-hover:backdrop-blur-none border-2 border-yellow-500/50 p-4 sm:p-6 rounded-xl shadow-xl transform transition-all duration-300 sm:hover:scale-105 sm:hover:shadow-yellow-500/50 sm:hover:border-yellow-500">
-            <div className="flex items-center gap-3 sm:gap-4">
-              <DollarSign className="h-8 w-8 sm:h-10 sm:w-10 text-yellow-500 group-hover:animate-bounce" />
-              <div>
-                <h3 className="text-base sm:text-lg font-semibold text-gray-800">
-                  Produit le plus rentable
-                </h3>
-                <p className="text-lg sm:text-xl font-bold text-gray-900 mt-1">
-                  {stats.mostProfitableProduct.name}
-                </p>
-                <p className="text-xs sm:text-sm text-gray-600">
-                  {stats.mostProfitableProduct.profit.toLocaleString()} DZD de
-                  bénéfice
+                  {dashboardData.utilisateurs.clients} clients,{" "}
+                  {dashboardData.utilisateurs.vendeurs} vendeurs
                 </p>
               </div>
             </div>
@@ -267,10 +255,7 @@ export default function DashboardPage() {
                   Produits vendus
                 </h3>
                 <p className="text-xl sm:text-2xl font-bold text-gray-900 mt-1">
-                  {stats.soldProducts.products} produits
-                </p>
-                <p className="text-xs sm:text-sm text-gray-600">
-                  {stats.soldProducts.items} articles vendus
+                  {dashboardData.produitsVendus} articles vendus
                 </p>
               </div>
             </div>
@@ -287,11 +272,14 @@ export default function DashboardPage() {
                   Meilleur note produit
                 </h3>
                 <p className="text-lg sm:text-xl font-bold text-gray-900 mt-1">
-                  {stats.productRatings.highest.name}
+                  {dashboardData.meilleurProduit.nom}
                 </p>
                 <p className="text-xs sm:text-sm text-gray-600">
-                  {stats.productRatings.highest.rating}/5 (
-                  {stats.productRatings.highest.reviews} avis)
+                  {dashboardData.meilleurProduit.noteMoyenne}/5 •{" "}
+                  {parseInt(
+                    dashboardData.meilleurProduit.prix
+                  ).toLocaleString()}{" "}
+                  DZD
                 </p>
               </div>
             </div>
@@ -305,11 +293,12 @@ export default function DashboardPage() {
                   Pire note produit
                 </h3>
                 <p className="text-lg sm:text-xl font-bold text-gray-900 mt-1">
-                  {stats.productRatings.lowest.name}
+                  {dashboardData.pireProduit.nom}
                 </p>
                 <p className="text-xs sm:text-sm text-gray-600">
-                  {stats.productRatings.lowest.rating}/5 (
-                  {stats.productRatings.lowest.reviews} avis)
+                  {dashboardData.pireProduit.noteMoyenne}/5 •{" "}
+                  {parseInt(dashboardData.pireProduit.prix).toLocaleString()}{" "}
+                  DZD
                 </p>
               </div>
             </div>
@@ -328,9 +317,7 @@ export default function DashboardPage() {
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
               <select
                 value={selectedPeriod}
-                onChange={(e) =>
-                  setSelectedPeriod(e.target.value as "week" | "month" | "year")
-                }
+                onChange={(e) => setSelectedPeriod(e.target.value)}
                 className={`w-full sm:w-auto px-3 py-1 sm:px-4 sm:py-2 bg-white border-2 border-black rounded-lg text-gray-800 font-montserrat text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-black focus:border-black transition-all duration-300 hover:bg-gray-100 hover:border-gray-800 ${montserrat.className}`}
               >
                 <option value="week">Semaine</option>
@@ -339,7 +326,7 @@ export default function DashboardPage() {
               </select>
               <select
                 value={chartType}
-                onChange={(e) => setChartType(e.target.value as "line" | "bar")}
+                onChange={(e) => setChartType(e.target.value)}
                 className={`w-full sm:w-auto px-3 py-1 sm:px-4 sm:py-2 bg-white border-2 border-black rounded-lg text-gray-800 font-montserrat text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-black focus:border-black transition-all duration-300 hover:bg-gray-100 hover:border-gray-800 ${montserrat.className}`}
               >
                 <option value="line">Courbes</option>
@@ -418,7 +405,7 @@ export default function DashboardPage() {
                       fontSize: "10px",
                       padding: "8px",
                     }}
-                    formatter={(value: number, name: string) =>
+                    formatter={(value, name) =>
                       name === "sales" ? `${value} DZD` : `${value}`
                     }
                   />
@@ -536,7 +523,7 @@ export default function DashboardPage() {
                       fontSize: "10px",
                       padding: "8px",
                     }}
-                    formatter={(value: number, name: string) =>
+                    formatter={(value, name) =>
                       name === "sales" ? `${value} DZD` : `${value}`
                     }
                   />
