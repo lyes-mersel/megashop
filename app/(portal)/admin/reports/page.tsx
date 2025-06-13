@@ -175,15 +175,19 @@ export default function ReportsPage() {
   const filteredReports = getFilteredReports();
 
   const handleRespond = (report: ReportFromAPI, responseText: string) => {
-    setReports((prev) =>
-      prev.map((r) =>
+    setReports((prevReports) =>
+      prevReports.map((r) =>
         r.id === report.id
-          ? { ...r, statut: SignalementStatut.TRAITE, response: responseText }
+          ? {
+              ...r,
+              statut: SignalementStatut.TRAITE,
+              reponse: responseText,
+            }
           : r
       )
     );
     setResponseText("");
-    setSelectedReport(null);
+    // setSelectedReport(null);
   };
 
   const handleDelete = async (reportId: string) => {

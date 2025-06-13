@@ -11,6 +11,7 @@ export type ReportFromAPI = {
   text: string | null;
   statut: string;
   date: Date;
+  reponse: string | null;
   client: {
     id: string;
     nom: string;
