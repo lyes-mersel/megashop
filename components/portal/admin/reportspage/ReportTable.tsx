@@ -1,6 +1,6 @@
 import { ReportFromAPI } from "@/lib/types/report.types";
 import { extractDateString } from "@/lib/utils";
-import { SignalementStatut } from "@prisma/client";
+import { getStatusColor, getStatusLabel } from "@/lib/helpers/reportStatus";
 
 const ReportTable = ({
   reports,
@@ -50,15 +50,11 @@ const ReportTable = ({
             </td>
             <td className="px-4 py-2 sm:px-6 sm:py-4 text-xs sm:text-sm">
               <span
-                className={`px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-semibold shadow-md ${
-                  report.statut === SignalementStatut.TRAITE
-                    ? "bg-green-100 text-green-800"
-                    : report.statut === SignalementStatut.REJETE
-                    ? "bg-red-100 text-red-800"
-                    : "bg-yellow-100 text-yellow-800"
-                }`}
+                className={`px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-semibold shadow-md ${getStatusColor(
+                  report.statut
+                )}`}
               >
-                {report.statut}
+                {getStatusLabel(report.statut)}
               </span>
             </td>
           </tr>

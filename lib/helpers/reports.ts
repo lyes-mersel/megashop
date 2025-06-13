@@ -7,6 +7,7 @@ export function getReportSelect() {
     text: true,
     statut: true,
     date: true,
+    reponse: true,
     client: {
       select: {
         user: {
@@ -34,6 +35,7 @@ export function formatReportData(report: ReportFromDB): ReportFromAPI {
     text: report.text ?? null,
     statut: report.statut as string,
     date: report.date!,
+    reponse: report.reponse ?? null,
     client: report.client
       ? {
           id: report.client.user.id,

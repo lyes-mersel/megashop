@@ -123,7 +123,7 @@
 - `GET    /api/reports` - Get all user reports (admin) ✅
 - `POST   /api/reports` - Post a new report (client only) ✅
 - `GET    /api/reports/{reportId}` - Get a specific report (admin) ✅
-- `PATCH  /api/reports/{reportId}` - Modify the status of a report (admin) ✅
+- `PATCH  /api/reports/{reportId}` - Modify the status of a report / Write a response to the user (admin) ✅
 - `DELETE /api/reports/{reportId}` - Delete a report (admin) ✅
 
 ### Payments
