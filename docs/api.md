@@ -113,6 +113,11 @@
 - `PATCH  /api/orders/{orderId}` - Update an order (admin) ✅
 - `DELETE /api/orders/{orderId}` - Delete an order (admin) ✅
 
+### Sells
+
+- `GET    /api/sells` - Get & search for all existing sells (admin) ✅
+- `POST   /api/sells/me` - Get & search for all the sells of a vendor (vendor) ✅
+
 ### Reports
 
 - `GET    /api/reports` - Get all user reports (admin) ✅
