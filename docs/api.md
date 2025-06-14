@@ -53,6 +53,8 @@
 ### Users
 
 - `GET    /api/admin/users` - Get all users (admin) ✅
+- `GET    /api/admin/users/clients` - Get all clients with stats (admin) ✅
+- `GET    /api/admin/users/clients` - Get all vendors with stats (admin) ✅
 - `DELETE /api/admin/users` - Delete all users (admin) ✅
 - `GET    /api/users/{userId}` - Retrieve a user (admin|concernedUser) ✅
 - `PATCH  /api/users/{userId}` - Update a user (concernedUser) ✅
@@ -126,6 +128,10 @@
 - `GET    /api/reports/{reportId}` - Get a specific report (admin) ✅
 - `PATCH  /api/reports/{reportId}` - Modify the status of a report / Write a response to the user (admin) ✅
 - `DELETE /api/reports/{reportId}` - Delete a report (admin) ✅
+
+### Notifications
+
+- `POST    /api/notifications/admin-message` - Send a notification message to a user (admin) ✅
 
 ### Payments
 

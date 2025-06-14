@@ -39,12 +39,46 @@ export async function GET(req: NextRequest) {
       where: {
         role: UserRole.CLIENT,
       },
-      select: getUserSelect(),
+      select: {
+        ...getUserSelect(),
+        client: {
+          select: {
+            vendeur: {
+              select: {
+                nomBoutique: true,
+                description: true,
+                nomBanque: true,
+                rib: true,
+              },
+            },
+            commandes: {
+              select: {
+                montant: true,
+              },
+            },
+          },
+        },
+      },
       take: pageSize,
       skip,
     });
 
-    const data = clients.map(formatUserData);
+    const data = clients.map((client) => {
+      const totalDepenses =
+        client.client?.commandes.reduce(
+          (sum, cmd) => sum + Number(cmd.montant),
+          0
+        ) ?? 0;
+      const totalCommandes = client.client?.commandes.length ?? 0;
+
+      return {
+        ...formatUserData(client),
+        stats: {
+          totalDepenses,
+          totalCommandes,
+        },
+      };
+    });
 
     const pagination = {
       totalUsers,
@@ -56,13 +90,13 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(
       {
         message: "Les clients ont été récupérés avec succès",
-        data,
         pagination,
+        data,
       },
       { status: 200 }
     );
   } catch (error) {
-    console.error("API Error [GET ALL /api/users]:", error);
+    console.error("API Error [GET ALL /api/users/clients]:", error);
     return NextResponse.json(
       { error: ERROR_MESSAGES.INTERNAL_ERROR },
       { status: 500 }

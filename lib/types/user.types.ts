@@ -24,3 +24,18 @@ export type UserFromAPI = {
     rib: string;
   } | null;
 };
+
+export type ClientWithStats = UserFromAPI & {
+  stats: {
+    totalDepenses: number;
+    totalCommandes: number;
+  };
+};
+
+export type VendorWithStats = UserFromAPI & {
+  stats: {
+    totalVentes: number;
+    totalProduits: number;
+    produitsVendus: number;
+  };
+};

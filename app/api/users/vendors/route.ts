@@ -39,12 +39,70 @@ export async function GET(req: NextRequest) {
       where: {
         role: UserRole.VENDEUR,
       },
-      select: getUserSelect(),
+      select: {
+        ...getUserSelect(),
+        client: {
+          select: {
+            vendeur: {
+              select: {
+                nomBoutique: true,
+                description: true,
+                nomBanque: true,
+                rib: true,
+                produitMarketplace: {
+                  select: {
+                    produit: {
+                      select: {
+                        id: true,
+                        lignesCommande: {
+                          select: {
+                            quantite: true,
+                            prixUnit: true,
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
       take: pageSize,
       skip,
     });
 
-    const data = vendors.map(formatUserData);
+    const data = vendors.map((vendor) => {
+      const products = vendor.client?.vendeur?.produitMarketplace ?? [];
+      const totalProduits = products.length;
+
+      const totalVentes = products.reduce((sum, { produit }) => {
+        const productSales = produit.lignesCommande.reduce(
+          (productSum, ligne) =>
+            productSum + Number(ligne.prixUnit) * ligne.quantite,
+          0
+        );
+        return sum + productSales;
+      }, 0);
+
+      const produitsVendus = products.reduce((sum, { produit }) => {
+        const productQuantity = produit.lignesCommande.reduce(
+          (productSum, ligne) => productSum + ligne.quantite,
+          0
+        );
+        return sum + productQuantity;
+      }, 0);
+
+      return {
+        ...formatUserData(vendor),
+        stats: {
+          totalVentes,
+          totalProduits,
+          produitsVendus,
+        },
+      };
+    });
 
     const pagination = {
       totalVendors,
@@ -55,14 +113,14 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(
       {
-        message: "Les vendeur ont été récupérés avec succès",
-        data,
+        message: "Les vendeurs ont été récupérés avec succès",
         pagination,
+        data,
       },
       { status: 200 }
     );
   } catch (error) {
-    console.error("API Error [GET ALL /api/users]:", error);
+    console.error("API Error [GET ALL /api/users/vendors]:", error);
     return NextResponse.json(
       { error: ERROR_MESSAGES.INTERNAL_ERROR },
       { status: 500 }
