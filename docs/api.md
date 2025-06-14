@@ -54,7 +54,7 @@
 
 - `GET    /api/admin/users` - Get all users (admin) ✅
 - `GET    /api/admin/users/clients` - Get all clients with stats (admin) ✅
-- `GET    /api/admin/users/clients` - Get all vendors with stats (admin) ✅
+- `GET    /api/admin/users/vendors` - Get all vendors with stats (admin) ✅
 - `DELETE /api/admin/users` - Delete all users (admin) ✅
 - `GET    /api/users/{userId}` - Retrieve a user (admin|concernedUser) ✅
 - `PATCH  /api/users/{userId}` - Update a user (concernedUser) ✅

@@ -5,6 +5,15 @@ import { auth } from "@/lib/auth";
 import { ERROR_MESSAGES } from "@/lib/constants/settings";
 import { formatUserData, getUserSelect } from "@/lib/helpers/users";
 import { getPaginationParams } from "@/lib/utils/params";
+import { VendorStats, VendorWithStats } from "@/lib/types/user.types";
+
+type SortField =
+  | "name"
+  | "createdAt"
+  | "totalVentes"
+  | "totalProduits"
+  | "produitsVendus";
+type SortOrder = "asc" | "desc";
 
 // Get all vendors (Admin only)
 export async function GET(req: NextRequest) {
@@ -27,6 +36,9 @@ export async function GET(req: NextRequest) {
   }
 
   const { page, pageSize, skip } = getPaginationParams(req);
+  const searchParams = req.nextUrl.searchParams;
+  const sortField = (searchParams.get("sortBy") as SortField) || "createdAt";
+  const sortOrder = (searchParams.get("sortOrder") as SortOrder) || "desc";
 
   try {
     const totalVendors = await prisma.user.count({
@@ -69,6 +81,12 @@ export async function GET(req: NextRequest) {
           },
         },
       },
+      orderBy:
+        sortField === "name"
+          ? { nom: sortOrder }
+          : sortField === "createdAt"
+          ? { dateCreation: sortOrder }
+          : undefined,
       take: pageSize,
       skip,
     });
@@ -77,18 +95,18 @@ export async function GET(req: NextRequest) {
       const products = vendor.client?.vendeur?.produitMarketplace ?? [];
       const totalProduits = products.length;
 
-      const totalVentes = products.reduce((sum, { produit }) => {
+      const totalVentes = products.reduce((sum: number, { produit }) => {
         const productSales = produit.lignesCommande.reduce(
-          (productSum, ligne) =>
+          (productSum: number, ligne) =>
             productSum + Number(ligne.prixUnit) * ligne.quantite,
           0
         );
         return sum + productSales;
       }, 0);
 
-      const produitsVendus = products.reduce((sum, { produit }) => {
+      const produitsVendus = products.reduce((sum: number, { produit }) => {
         const productQuantity = produit.lignesCommande.reduce(
-          (productSum, ligne) => productSum + ligne.quantite,
+          (productSum: number, ligne) => productSum + ligne.quantite,
           0
         );
         return sum + productQuantity;
@@ -101,8 +119,19 @@ export async function GET(req: NextRequest) {
           totalProduits,
           produitsVendus,
         },
-      };
+      } as VendorWithStats;
     });
+
+    // Sort the data array for calculated fields
+    if (
+      ["totalVentes", "totalProduits", "produitsVendus"].includes(sortField)
+    ) {
+      data.sort((a, b) => {
+        const aValue = a.stats[sortField as keyof VendorStats];
+        const bValue = b.stats[sortField as keyof VendorStats];
+        return sortOrder === "asc" ? aValue - bValue : bValue - aValue;
+      });
+    }
 
     const pagination = {
       totalVendors,

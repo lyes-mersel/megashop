@@ -25,17 +25,21 @@ export type UserFromAPI = {
   } | null;
 };
 
+export type ClientStats = {
+  totalDepenses: number;
+  totalCommandes: number;
+};
+
+export type VendorStats = {
+  totalVentes: number;
+  totalProduits: number;
+  produitsVendus: number;
+};
+
 export type ClientWithStats = UserFromAPI & {
-  stats: {
-    totalDepenses: number;
-    totalCommandes: number;
-  };
+  stats: ClientStats;
 };
 
 export type VendorWithStats = UserFromAPI & {
-  stats: {
-    totalVentes: number;
-    totalProduits: number;
-    produitsVendus: number;
-  };
+  stats: VendorStats;
 };
