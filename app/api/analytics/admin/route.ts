@@ -2,14 +2,26 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/utils/prisma";
 import { auth } from "@/lib/auth";
 import { UserRole, CommandeStatut } from "@prisma/client";
+import { ERROR_MESSAGES } from "@/lib/constants/settings";
 
 export async function GET(_req: NextRequest) {
   const session = await auth();
 
-  if (!session || session.user.role !== UserRole.ADMIN) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+  // Check if user is authenticated and has admin role
+  if (!session) {
+    return NextResponse.json(
+      { error: ERROR_MESSAGES.UNAUTHORIZED },
+      { status: 401 }
+    );
+  }
+  if (session.user.role !== UserRole.ADMIN) {
+    return NextResponse.json(
+      { error: ERROR_MESSAGES.FORBIDDEN },
+      { status: 403 }
+    );
   }
 
+  // Get the admin analytics
   try {
     const [
       totalVentes,
@@ -20,6 +32,7 @@ export async function GET(_req: NextRequest) {
       meilleurProduit,
       pireProduit,
       commandes,
+      produitPlusRevenu,
     ] = await Promise.all([
       prisma.commande.aggregate({
         _sum: { montant: true },
@@ -53,7 +66,32 @@ export async function GET(_req: NextRequest) {
         where: { statut: CommandeStatut.LIVREE },
         include: { lignesCommande: true },
       }),
+      prisma.ligneCommande.groupBy({
+        by: ["produitId"],
+        _sum: {
+          quantite: true,
+          prixUnit: true,
+        },
+        orderBy: {
+          _sum: {
+            prixUnit: "desc",
+          },
+        },
+        take: 1,
+      }),
     ]);
+
+    // Get the product details for the highest revenue product
+    const produitPlusRevenuDetails = produitPlusRevenu[0]?.produitId
+      ? await prisma.produit.findUnique({
+          where: { id: produitPlusRevenu[0].produitId },
+          select: {
+            id: true,
+            nom: true,
+            prix: true,
+          },
+        })
+      : null;
 
     // WeekData
     const weekDataMap = new Map();
@@ -149,12 +187,19 @@ export async function GET(_req: NextRequest) {
       produitsVendus: produitsVendus._sum.quantite,
       meilleurProduit,
       pireProduit,
+      produitPlusRevenu: produitPlusRevenuDetails
+        ? {
+            ...produitPlusRevenuDetails,
+            totalRevenu: produitPlusRevenu[0]._sum.prixUnit,
+            quantiteVendue: produitPlusRevenu[0]._sum.quantite,
+          }
+        : null,
       weekData,
       monthData,
       yearData,
     });
   } catch (error) {
-    console.error("Erreur dans /api/stats:", error);
+    console.error("Erreur dans /api/analytics/admin:", error);
     return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
   }
 }
