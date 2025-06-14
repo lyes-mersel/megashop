@@ -108,6 +108,7 @@
 
 - `GET    /api/orders` - Get all orders (admin) ✅
 - `POST   /api/orders` - Make a new order (client) ✅
+- `GET    /api/orders/vendor` - Get all orders with at least one product from this vendor (vendor) ✅
 - `POST   /api/orders/prepare` - Prepare an order (client) ✅
 - `GET    /api/orders/{orderId}` - Get a specific order (admin) ✅
 - `PATCH  /api/orders/{orderId}` - Update an order (admin) ✅
@@ -141,11 +142,6 @@
 - `PATCH  /api/admin/testimonials/{testimonialId}` - Update a testimonial (for admin)
 - `DELETE /api/admin/testimonials/{testimonialId}` - Delete a testimonial (for admin)
 
-### Analytics
-
-- `GET    /api/analytics` - Get analytics (for vendor and admin)
-- `POST   /api/analytics/cron` - An endpoint that should be triggered daily to generate analytics.
-
 ### Metadata
 
 - `GET    /api/metadata/categories` - Get all categories (admin|vendor) ✅
@@ -156,3 +152,9 @@
 ### ChatBot
 
 - `POST    /api/chat` - Send a prompt to the AI agent and receive a response (public) ✅
+
+### Analytics
+
+- `GET    /api/analytics/admin` - Get analytics (admin) ✅
+- `GET    /api/analytics/vendor` - Get analytics (vendor) ✅
+- `POST   /api/analytics/cron` - An endpoint that should be triggered daily by a cronjob to generate analytics. It offers much better performance (Later)
