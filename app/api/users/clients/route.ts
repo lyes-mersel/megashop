@@ -6,6 +6,9 @@ import { ERROR_MESSAGES } from "@/lib/constants/settings";
 import { formatUserData, getUserSelect } from "@/lib/helpers/users";
 import { getPaginationParams } from "@/lib/utils/params";
 
+type SortField = "name" | "createdAt" | "orders" | "expenses";
+type SortOrder = "asc" | "desc";
+
 // Get all users (Admin only)
 export async function GET(req: NextRequest) {
   const session = await auth();
@@ -27,6 +30,9 @@ export async function GET(req: NextRequest) {
   }
 
   const { page, pageSize, skip } = getPaginationParams(req);
+  const searchParams = req.nextUrl.searchParams;
+  const sortBy = (searchParams.get("sortBy") as SortField) || "createdAt";
+  const sortOrder = (searchParams.get("sortOrder") as SortOrder) || "desc";
 
   try {
     const totalUsers = await prisma.user.count({
@@ -39,12 +45,63 @@ export async function GET(req: NextRequest) {
       where: {
         role: UserRole.CLIENT,
       },
-      select: getUserSelect(),
+      select: {
+        ...getUserSelect(),
+        client: {
+          select: {
+            vendeur: {
+              select: {
+                nomBoutique: true,
+                description: true,
+                nomBanque: true,
+                rib: true,
+              },
+            },
+            commandes: {
+              select: {
+                montant: true,
+                date: true,
+              },
+            },
+          },
+        },
+      },
       take: pageSize,
       skip,
+      orderBy: {
+        ...(sortBy === "name" && { nom: sortOrder }),
+        ...(sortBy === "createdAt" && { dateCreation: sortOrder }),
+      },
     });
 
-    const data = clients.map(formatUserData);
+    const data = clients.map((client) => {
+      const totalDepenses = client.client?.commandes.reduce(
+        (sum, cmd) => sum + Number(cmd.montant),
+        0
+      ) ?? 0;
+      const totalCommandes = client.client?.commandes.length ?? 0;
+
+      return {
+        ...formatUserData(client),
+        stats: {
+          totalDepenses,
+          totalCommandes,
+        },
+      };
+    });
+
+    // Simple in-memory sorting for orders and expenses
+    if (sortBy === "orders") {
+      data.sort((a, b) => {
+        const comparison = a.stats.totalCommandes - b.stats.totalCommandes;
+        return sortOrder === "asc" ? comparison : -comparison;
+      });
+    } else if (sortBy === "expenses") {
+      data.sort((a, b) => {
+        const comparison = a.stats.totalDepenses - b.stats.totalDepenses;
+        return sortOrder === "asc" ? comparison : -comparison;
+      });
+    }
 
     const pagination = {
       totalUsers,
@@ -56,13 +113,13 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(
       {
         message: "Les clients ont été récupérés avec succès",
-        data,
         pagination,
+        data,
       },
       { status: 200 }
     );
   } catch (error) {
-    console.error("API Error [GET ALL /api/users]:", error);
+    console.error("API Error [GET ALL /api/users/clients]:", error);
     return NextResponse.json(
       { error: ERROR_MESSAGES.INTERNAL_ERROR },
       { status: 500 }
