@@ -76,7 +76,7 @@ export async function GET(_req: NextRequest) {
           id: true,
           nom: true,
           noteMoyenne: true,
-          prix: true,
+          totalEvaluations: true
         },
       }),
       prisma.produit.findFirst({
@@ -91,7 +91,7 @@ export async function GET(_req: NextRequest) {
           id: true,
           nom: true,
           noteMoyenne: true,
-          prix: true,
+          totalEvaluations: true
         },
       }),
       prisma.commande.findMany({
@@ -241,8 +241,18 @@ export async function GET(_req: NextRequest) {
       totalVentes: totalVentes._sum.montant,
       totalProduits,
       produitsVendus: produitsVendus._sum.quantite,
-      meilleurProduit,
-      pireProduit,
+      meilleurProduit: meilleurProduit ? {
+        id: meilleurProduit.id,
+        nom: meilleurProduit.nom,
+        noteMoyenne: meilleurProduit.noteMoyenne,
+        totalEvaluations: meilleurProduit.totalEvaluations
+      } : null,
+      pireProduit: pireProduit ? {
+        id: pireProduit.id,
+        nom: pireProduit.nom,
+        noteMoyenne: pireProduit.noteMoyenne,
+        totalEvaluations: pireProduit.totalEvaluations
+      } : null,
       produitPlusRevenu: produitPlusRevenuDetails
         ? {
             ...produitPlusRevenuDetails,
