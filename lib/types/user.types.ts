@@ -43,3 +43,20 @@ export type ClientWithStats = UserFromAPI & {
 export type VendorWithStats = UserFromAPI & {
   stats: VendorStats;
 };
+
+export type UserType = "CLIENT" | "VENDEUR" | "ADMIN";
+
+export type SortField =
+  | "name"
+  | "createdAt"
+  | "orders"
+  | "expenses"
+  | "totalVentes"
+  | "totalProduits"
+  | "produitsVendus";
+export type SortOrder = "asc" | "desc";
+
+export interface SortConfig {
+  key: SortField;
+  direction: SortOrder;
+}

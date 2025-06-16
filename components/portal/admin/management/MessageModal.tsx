@@ -1,83 +1,49 @@
 import { useState } from "react";
-import { UserFromAPI } from "@/lib/types/user.types";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { toast } from "sonner";
+import { ClientWithStats, VendorWithStats } from "@/lib/types/user.types";
 
 interface MessageModalProps {
-  user: UserFromAPI | null;
-  isOpen: boolean;
+  user: ClientWithStats | VendorWithStats;
   onClose: () => void;
+  onSend: (userId: string, message: string) => void;
 }
 
-export default function MessageModal({ user, isOpen, onClose }: MessageModalProps) {
+export function MessageModal({ user, onClose, onSend }: MessageModalProps) {
   const [message, setMessage] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async () => {
-    if (!user || !message.trim()) return;
-
-    try {
-      setIsLoading(true);
-      const response = await fetch("/api/notifications/admin-message", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId: user.id,
-          text: message.trim(),
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to send message");
-      }
-
-      toast.success("Message envoyé avec succès");
-      onClose();
-      setMessage("");
-    } catch  {
-      toast.error("Erreur lors de l'envoi du message");
-    } finally {
-      setIsLoading(false);
-    }
+  const handleSend = () => {
+    if (!message.trim()) return;
+    onSend(user.id, message);
+    onClose();
   };
 
-  if (!user) return null;
-
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>
-            Envoyer un message à {user.prenom} {user.nom}
-          </DialogTitle>
-        </DialogHeader>
-        <div className="space-y-4">
-          <Textarea
-            placeholder="Votre message..."
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            className="min-h-[150px]"
-          />
-        </div>
-        <DialogFooter>
-          <Button variant="outline" onClick={onClose}>
+    <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
+      <div className="bg-white rounded-xl p-6 max-w-md w-full">
+        <h3 className="text-xl font-bold">
+          Message à {user.prenom} {user.nom}
+        </h3>
+        <textarea
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          className="w-full mt-2 p-2 border rounded-lg"
+          placeholder="Écrire un message..."
+        />
+        <div className="mt-4 flex gap-2">
+          <button
+            onClick={handleSend}
+            className="px-4 py-2 bg-indigo-600 text-white rounded-lg"
+            disabled={!message.trim()}
+          >
+            Envoyer
+          </button>
+          <button
+            onClick={onClose}
+            className="px-4 py-2 bg-gray-200 rounded-lg"
+          >
             Annuler
-          </Button>
-          <Button onClick={handleSubmit} disabled={isLoading || !message.trim()}>
-            {isLoading ? "Envoi..." : "Envoyer"}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+          </button>
+        </div>
+      </div>
+    </div>
   );
-} 
+}
