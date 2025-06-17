@@ -79,7 +79,7 @@ export async function DELETE(
   }
 
   // Authorization Check
-  if (session.user.id !== userId) {
+  if (session.user.role !== "ADMIN" && session.user.id !== userId) {
     return NextResponse.json(
       { error: ERROR_MESSAGES.FORBIDDEN },
       { status: 403 }

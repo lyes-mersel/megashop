@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 
 // Components
-import { UserFilters } from "@/components/portal/admin/management/UserFilters";
+import { UserManagementHeader } from "@/components/portal/admin/management/UserManagementHeader";
 import { UserTable } from "@/components/portal/admin/management/UserTable";
 import { UserDetailsModal } from "@/components/portal/admin/management/UserDetailsModal";
 import { MessageModal } from "@/components/portal/admin/management/MessageModal";
@@ -39,6 +39,9 @@ export default function ManagementPage() {
   const [users, setUsers] = useState<ClientWithStats[] | VendorWithStats[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedUser, setSelectedUser] = useState<
+    ClientWithStats | VendorWithStats | null
+  >(null);
+  const [userToMessage, setUserToMessage] = useState<
     ClientWithStats | VendorWithStats | null
   >(null);
   const [showMessageModal, setShowMessageModal] = useState(false);
@@ -134,7 +137,7 @@ export default function ManagementPage() {
       className={`min-h-screen bg-gradient-to-br from-gray-50 to-gray-200 py-6 px-4 sm:px-6 lg:px-10 ${montserrat.className}`}
     >
       <div className="max-w-7xl mx-auto">
-        <UserFilters
+        <UserManagementHeader
           userType={userType}
           setUserType={setUserType}
           searchQuery={searchQuery}
@@ -149,11 +152,9 @@ export default function ManagementPage() {
         <UserTable
           users={users}
           userType={userType}
-          sortConfig={sortConfig}
-          onSort={setSortConfig}
           onDelete={handleDelete}
           onMessage={(user) => {
-            setSelectedUser(user);
+            setUserToMessage(user);
             setShowMessageModal(true);
           }}
           onSelectUser={setSelectedUser}
@@ -172,10 +173,13 @@ export default function ManagementPage() {
             onClose={() => setSelectedUser(null)}
           />
         )}
-        {showMessageModal && selectedUser && (
+        {showMessageModal && userToMessage && (
           <MessageModal
-            user={selectedUser}
-            onClose={() => setShowMessageModal(false)}
+            user={userToMessage}
+            onClose={() => {
+              setShowMessageModal(false);
+              setUserToMessage(null);
+            }}
             onSend={handleSendMessage}
           />
         )}
