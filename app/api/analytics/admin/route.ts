@@ -33,6 +33,7 @@ export async function GET(_req: NextRequest) {
       pireProduit,
       commandes,
       produitPlusRevenu,
+      produitPlusVendu,
     ] = await Promise.all([
       prisma.commande.aggregate({
         _sum: { montant: true },
@@ -49,7 +50,7 @@ export async function GET(_req: NextRequest) {
           id: true,
           nom: true,
           noteMoyenne: true,
-          prix: true,
+          totalEvaluations: true
         },
       }),
       prisma.produit.findFirst({
@@ -59,7 +60,7 @@ export async function GET(_req: NextRequest) {
           id: true,
           nom: true,
           noteMoyenne: true,
-          prix: true,
+          totalEvaluations: true
         },
       }),
       prisma.commande.findMany({
@@ -79,12 +80,36 @@ export async function GET(_req: NextRequest) {
         },
         take: 1,
       }),
+      prisma.ligneCommande.groupBy({
+        by: ["produitId"],
+        _sum: {
+          quantite: true,
+        },
+        orderBy: {
+          _sum: {
+            quantite: "desc",
+          },
+        },
+        take: 1,
+      }),
     ]);
 
     // Get the product details for the highest revenue product
     const produitPlusRevenuDetails = produitPlusRevenu[0]?.produitId
       ? await prisma.produit.findUnique({
           where: { id: produitPlusRevenu[0].produitId },
+          select: {
+            id: true,
+            nom: true,
+            prix: true,
+          },
+        })
+      : null;
+
+    // Get the product details for the most sold product
+    const produitPlusVenduDetails = produitPlusVendu[0]?.produitId
+      ? await prisma.produit.findUnique({
+          where: { id: produitPlusVendu[0].produitId },
           select: {
             id: true,
             nom: true,
@@ -185,13 +210,29 @@ export async function GET(_req: NextRequest) {
         vendeurs: totalVendeurs,
       },
       produitsVendus: produitsVendus._sum.quantite,
-      meilleurProduit,
-      pireProduit,
+      meilleurProduit: meilleurProduit ? {
+        id: meilleurProduit.id,
+        nom: meilleurProduit.nom,
+        noteMoyenne: meilleurProduit.noteMoyenne,
+        totalEvaluations: meilleurProduit.totalEvaluations
+      } : null,
+      pireProduit: pireProduit ? {
+        id: pireProduit.id,
+        nom: pireProduit.nom,
+        noteMoyenne: pireProduit.noteMoyenne,
+        totalEvaluations: pireProduit.totalEvaluations
+      } : null,
       produitPlusRevenu: produitPlusRevenuDetails
         ? {
             ...produitPlusRevenuDetails,
             totalRevenu: produitPlusRevenu[0]._sum.prixUnit,
             quantiteVendue: produitPlusRevenu[0]._sum.quantite,
+          }
+        : null,
+      produitPlusVendu: produitPlusVenduDetails
+        ? {
+            ...produitPlusVenduDetails,
+            quantiteVendue: produitPlusVendu[0]._sum.quantite,
           }
         : null,
       weekData,
