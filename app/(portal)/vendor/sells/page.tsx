@@ -2,17 +2,11 @@
 
 import { useState } from "react";
 import { Store, Download, X } from "lucide-react";
-import { Montserrat } from "next/font/google";
+import { montserrat } from "@/styles/fonts";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import * as XLSX from "xlsx";
 import Image from "next/image";
-
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  weight: "800",
-  display: "swap",
-});
 
 interface Variant {
   color: string;
