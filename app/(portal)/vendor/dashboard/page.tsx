@@ -21,14 +21,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { Montserrat } from "next/font/google";
-
-// Configuration de la police Montserrat avec display: "swap"
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
-  display: "swap",
-});
+import { montserrat } from "@/styles/fonts";
 
 interface Stats {
   totalSales: number;

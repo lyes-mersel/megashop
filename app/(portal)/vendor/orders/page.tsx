@@ -2,17 +2,11 @@
 
 import { useState } from "react";
 import { Package, Download, X, Settings } from "lucide-react";
-import { Montserrat } from "next/font/google";
+import { montserrat } from "@/styles/fonts";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import * as XLSX from "xlsx";
 import Image from "next/image";
-
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  weight: "800",
-  display: "swap",
-});
 
 interface OrderItem {
   productName: string;
@@ -42,7 +36,13 @@ export default function OrdersPage() {
       status: "En cours",
       total: 15000,
       items: [
-        { productName: "Produit 1", quantity: 2, color: "Noir", size: "M", price: 7500 },
+        {
+          productName: "Produit 1",
+          quantity: 2,
+          color: "Noir",
+          size: "M",
+          price: 7500,
+        },
       ],
     },
     {
@@ -53,7 +53,13 @@ export default function OrdersPage() {
       status: "En cours",
       total: 7550,
       items: [
-        { productName: "Produit 2", quantity: 1, color: "Blanc", size: "L", price: 7550 },
+        {
+          productName: "Produit 2",
+          quantity: 1,
+          color: "Blanc",
+          size: "L",
+          price: 7550,
+        },
       ],
     },
     {
@@ -64,15 +70,30 @@ export default function OrdersPage() {
       status: "En cours",
       total: 22500,
       items: [
-        { productName: "Produit 3", quantity: 1, color: "Gris", size: "S", price: 7500 },
-        { productName: "Produit 4", quantity: 2, color: "Bleu", size: "M", price: 7500 },
+        {
+          productName: "Produit 3",
+          quantity: 1,
+          color: "Gris",
+          size: "S",
+          price: 7500,
+        },
+        {
+          productName: "Produit 4",
+          quantity: 2,
+          color: "Bleu",
+          size: "M",
+          price: 7500,
+        },
       ],
     },
   ]);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
-  const [sortConfig, setSortConfig] = useState<{ key: string; direction: "asc" | "desc" } | null>(null);
+  const [sortConfig, setSortConfig] = useState<{
+    key: string;
+    direction: "asc" | "desc";
+  } | null>(null);
   const [showConfirm, setShowConfirm] = useState<number | null>(null); // ID de la commande à confirmer
   const [isClientOpen, setIsClientOpen] = useState(false);
   const [isDateOpen, setIsDateOpen] = useState(false);
@@ -80,9 +101,10 @@ export default function OrdersPage() {
   const [isTotalOpen, setIsTotalOpen] = useState(false);
 
   const getFilteredOrders = () => {
-    const filtered = orders.filter((order) =>
-      order.clientName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      order.id.toString().includes(searchQuery)
+    const filtered = orders.filter(
+      (order) =>
+        order.clientName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        order.id.toString().includes(searchQuery)
     );
 
     if (sortConfig) {
@@ -125,24 +147,33 @@ export default function OrdersPage() {
 
   const handleExport = () => {
     const data = filteredOrders.map((order) => ({
-      "ID": order.id,
-      "Client": order.clientName,
-      "Email": order.clientEmail,
-      "Date": order.date,
-      "Statut": order.status,
+      ID: order.id,
+      Client: order.clientName,
+      Email: order.clientEmail,
+      Date: order.date,
+      Statut: order.status,
       "Total (DA)": order.total.toFixed(2),
-      "Articles": order.items.map(item => `${item.productName} (${item.color}, ${item.size}): ${item.quantity} x ${item.price} DA`).join(", "),
+      Articles: order.items
+        .map(
+          (item) =>
+            `${item.productName} (${item.color}, ${item.size}): ${item.quantity} x ${item.price} DA`
+        )
+        .join(", "),
     }));
 
     const worksheet = XLSX.utils.json_to_sheet(data);
-    const headerStyle = { font: { bold: true }, fill: { fgColor: { rgb: "D3D3D3" } }, alignment: { horizontal: "center" } };
+    const headerStyle = {
+      font: { bold: true },
+      fill: { fgColor: { rgb: "D3D3D3" } },
+      alignment: { horizontal: "center" },
+    };
     const range = XLSX.utils.decode_range(worksheet["!ref"] || "A1:G1");
     for (let col = range.s.c; col <= range.e.c; col++) {
       const cellAddress = XLSX.utils.encode_cell({ r: 0, c: col });
       if (!worksheet[cellAddress]) continue;
       worksheet[cellAddress].s = headerStyle;
     }
-    worksheet["!cols"] = [5, 20, 25, 15, 10, 15, 40].map(w => ({ wch: w }));
+    worksheet["!cols"] = [5, 20, 25, 15, 10, 15, 40].map((w) => ({ wch: w }));
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Commandes");
     XLSX.writeFile(workbook, "commandes_chic_et_tendance.xlsx");
@@ -216,7 +247,11 @@ export default function OrdersPage() {
               onClick={() => setIsClientOpen(!isClientOpen)}
               className="w-full px-4 py-2 sm:py-3 bg-gradient-to-r from-white to-gray-100/80 backdrop-blur-md border border-gray-300 rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.1)] text-gray-800 text-xs sm:text-sm hover:shadow-[0_6px_25px_rgba(0,0,0,0.15)] transition-all duration-300 transform hover:-translate-y-1"
             >
-              {sortConfig?.key === "clientName" ? (sortConfig.direction === "asc" ? "A-Z" : "Z-A") : "Client"}
+              {sortConfig?.key === "clientName"
+                ? sortConfig.direction === "asc"
+                  ? "A-Z"
+                  : "Z-A"
+                : "Client"}
             </button>
             {isClientOpen && (
               <motion.div
@@ -226,19 +261,28 @@ export default function OrdersPage() {
                 className="absolute z-10 w-full mt-2 bg-white/95 backdrop-blur-md rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.15)] border border-gray-200 overflow-hidden"
               >
                 <button
-                  onClick={() => { handleSort("clientName", ""); setIsClientOpen(false); }}
+                  onClick={() => {
+                    handleSort("clientName", "");
+                    setIsClientOpen(false);
+                  }}
                   className="w-full px-4 py-2 text-gray-800 text-xs sm:text-sm hover:bg-gray-100 transition-all duration-200"
                 >
                   Client
                 </button>
                 <button
-                  onClick={() => { handleSort("clientName", "asc"); setIsClientOpen(false); }}
+                  onClick={() => {
+                    handleSort("clientName", "asc");
+                    setIsClientOpen(false);
+                  }}
                   className="w-full px-4 py-2 text-gray-800 text-xs sm:text-sm hover:bg-gray-100 transition-all duration-200"
                 >
                   A-Z
                 </button>
                 <button
-                  onClick={() => { handleSort("clientName", "desc"); setIsClientOpen(false); }}
+                  onClick={() => {
+                    handleSort("clientName", "desc");
+                    setIsClientOpen(false);
+                  }}
                   className="w-full px-4 py-2 text-gray-800 text-xs sm:text-sm hover:bg-gray-100 transition-all duration-200"
                 >
                   Z-A
@@ -253,7 +297,11 @@ export default function OrdersPage() {
               onClick={() => setIsDateOpen(!isDateOpen)}
               className="w-full px-4 py-2 sm:py-3 bg-gradient-to-r from-white to-gray-100/80 backdrop-blur-md border border-gray-300 rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.1)] text-gray-800 text-xs sm:text-sm hover:shadow-[0_6px_25px_rgba(0,0,0,0.15)] transition-all duration-300 transform hover:-translate-y-1"
             >
-              {sortConfig?.key === "date" ? (sortConfig.direction === "asc" ? "Ancien" : "Récent") : "Date"}
+              {sortConfig?.key === "date"
+                ? sortConfig.direction === "asc"
+                  ? "Ancien"
+                  : "Récent"
+                : "Date"}
             </button>
             {isDateOpen && (
               <motion.div
@@ -263,19 +311,28 @@ export default function OrdersPage() {
                 className="absolute z-10 w-full mt-2 bg-white/95 backdrop-blur-md rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.15)] border border-gray-200 overflow-hidden"
               >
                 <button
-                  onClick={() => { handleSort("date", ""); setIsDateOpen(false); }}
+                  onClick={() => {
+                    handleSort("date", "");
+                    setIsDateOpen(false);
+                  }}
                   className="w-full px-4 py-2 text-gray-800 text-xs sm:text-sm hover:bg-gray-100 transition-all duration-200"
                 >
                   Date
                 </button>
                 <button
-                  onClick={() => { handleSort("date", "asc"); setIsDateOpen(false); }}
+                  onClick={() => {
+                    handleSort("date", "asc");
+                    setIsDateOpen(false);
+                  }}
                   className="w-full px-4 py-2 text-gray-800 text-xs sm:text-sm hover:bg-gray-100 transition-all duration-200"
                 >
                   Ancien
                 </button>
                 <button
-                  onClick={() => { handleSort("date", "desc"); setIsDateOpen(false); }}
+                  onClick={() => {
+                    handleSort("date", "desc");
+                    setIsDateOpen(false);
+                  }}
                   className="w-full px-4 py-2 text-gray-800 text-xs sm:text-sm hover:bg-gray-100 transition-all duration-200"
                 >
                   Récent
@@ -290,7 +347,11 @@ export default function OrdersPage() {
               onClick={() => setIsStatusOpen(!isStatusOpen)}
               className="w-full px-4 py-2 sm:py-3 bg-gradient-to-r from-white to-gray-100/80 backdrop-blur-md border border-gray-300 rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.1)] text-gray-800 text-xs sm:text-sm hover:shadow-[0_6px_25px_rgba(0,0,0,0.15)] transition-all duration-300 transform hover:-translate-y-1"
             >
-              {sortConfig?.key === "status" ? (sortConfig.direction === "asc" ? "Livré" : "En cours") : "Statut"}
+              {sortConfig?.key === "status"
+                ? sortConfig.direction === "asc"
+                  ? "Livré"
+                  : "En cours"
+                : "Statut"}
             </button>
             {isStatusOpen && (
               <motion.div
@@ -300,19 +361,28 @@ export default function OrdersPage() {
                 className="absolute z-10 w-full mt-2 bg-white/95 backdrop-blur-md rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.15)] border border-gray-200 overflow-hidden"
               >
                 <button
-                  onClick={() => { handleSort("status", ""); setIsStatusOpen(false); }}
+                  onClick={() => {
+                    handleSort("status", "");
+                    setIsStatusOpen(false);
+                  }}
                   className="w-full px-4 py-2 text-gray-800 text-xs sm:text-sm hover:bg-gray-100 transition-all duration-200"
                 >
                   Statut
                 </button>
                 <button
-                  onClick={() => { handleSort("status", "asc"); setIsStatusOpen(false); }}
+                  onClick={() => {
+                    handleSort("status", "asc");
+                    setIsStatusOpen(false);
+                  }}
                   className="w-full px-4 py-2 text-gray-800 text-xs sm:text-sm hover:bg-gray-100 transition-all duration-200"
                 >
                   Livré
                 </button>
                 <button
-                  onClick={() => { handleSort("status", "desc"); setIsStatusOpen(false); }}
+                  onClick={() => {
+                    handleSort("status", "desc");
+                    setIsStatusOpen(false);
+                  }}
                   className="w-full px-4 py-2 text-gray-800 text-xs sm:text-sm hover:bg-gray-100 transition-all duration-200"
                 >
                   En cours
@@ -327,7 +397,11 @@ export default function OrdersPage() {
               onClick={() => setIsTotalOpen(!isTotalOpen)}
               className="w-full px-4 py-2 sm:py-3 bg-gradient-to-r from-white to-gray-100/80 backdrop-blur-md border border-gray-300 rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.1)] text-gray-800 text-xs sm:text-sm hover:shadow-[0_6px_25px_rgba(0,0,0,0.15)] transition-all duration-300 transform hover:-translate-y-1"
             >
-              {sortConfig?.key === "total" ? (sortConfig.direction === "asc" ? "Croissant" : "Décroissant") : "Total"}
+              {sortConfig?.key === "total"
+                ? sortConfig.direction === "asc"
+                  ? "Croissant"
+                  : "Décroissant"
+                : "Total"}
             </button>
             {isTotalOpen && (
               <motion.div
@@ -337,19 +411,28 @@ export default function OrdersPage() {
                 className="absolute z-10 w-full mt-2 bg-white/95 backdrop-blur-md rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.15)] border border-gray-200 overflow-hidden"
               >
                 <button
-                  onClick={() => { handleSort("total", ""); setIsTotalOpen(false); }}
+                  onClick={() => {
+                    handleSort("total", "");
+                    setIsTotalOpen(false);
+                  }}
                   className="w-full px-4 py-2 text-gray-800 text-xs sm:text-sm hover:bg-gray-100 transition-all duration-200"
                 >
                   Total
                 </button>
                 <button
-                  onClick={() => { handleSort("total", "asc"); setIsTotalOpen(false); }}
+                  onClick={() => {
+                    handleSort("total", "asc");
+                    setIsTotalOpen(false);
+                  }}
                   className="w-full px-4 py-2 text-gray-800 text-xs sm:text-sm hover:bg-gray-100 transition-all duration-200"
                 >
                   Croissant
                 </button>
                 <button
-                  onClick={() => { handleSort("total", "desc"); setIsTotalOpen(false); }}
+                  onClick={() => {
+                    handleSort("total", "desc");
+                    setIsTotalOpen(false);
+                  }}
                   className="w-full px-4 py-2 text-gray-800 text-xs sm:text-sm hover:bg-gray-100 transition-all duration-200"
                 >
                   Décroissant
@@ -369,7 +452,9 @@ export default function OrdersPage() {
                 onClick={() => setSelectedOrder(order)}
               >
                 <div className="flex justify-between items-center mb-2">
-                  <h3 className="text-sm font-semibold text-gray-900">Commande #{order.id}</h3>
+                  <h3 className="text-sm font-semibold text-gray-900">
+                    Commande #{order.id}
+                  </h3>
                   <span
                     className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold shadow-md ${
                       order.status === "Livré"
@@ -380,9 +465,15 @@ export default function OrdersPage() {
                     {order.status}
                   </span>
                 </div>
-                <div className="text-xs text-gray-600 mb-1">Client: {order.clientName}</div>
-                <div className="text-xs text-gray-600 mb-1">Date: {order.date}</div>
-                <div className="text-xs font-semibold text-green-600 mb-2">Total: {order.total.toFixed(2)} DA</div>
+                <div className="text-xs text-gray-600 mb-1">
+                  Client: {order.clientName}
+                </div>
+                <div className="text-xs text-gray-600 mb-1">
+                  Date: {order.date}
+                </div>
+                <div className="text-xs font-semibold text-green-600 mb-2">
+                  Total: {order.total.toFixed(2)} DA
+                </div>
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
@@ -425,12 +516,24 @@ export default function OrdersPage() {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-black text-white">
                 <tr>
-                  <th className="px-4 py-2 sm:px-6 sm:py-4 text-left text-xs sm:text-sm font-semibold">ID</th>
-                  <th className="px-4 py-2 sm:px-6 sm:py-4 text-left text-xs sm:text-sm font-semibold">Client</th>
-                  <th className="px-4 py-2 sm:px-6 sm:py-4 text-left text-xs sm:text-sm font-semibold hidden md:table-cell">Date</th>
-                  <th className="px-4 py-2 sm:px-6 sm:py-4 text-left text-xs sm:text-sm font-semibold hidden lg:table-cell">Statut</th>
-                  <th className="px-4 py-2 sm:px-6 sm:py-4 text-left text-xs sm:text-sm font-semibold">Total</th>
-                  <th className="px-4 py-2 sm:px-6 sm:py-4 text-left text-xs sm:text-sm font-semibold">Actions</th>
+                  <th className="px-4 py-2 sm:px-6 sm:py-4 text-left text-xs sm:text-sm font-semibold">
+                    ID
+                  </th>
+                  <th className="px-4 py-2 sm:px-6 sm:py-4 text-left text-xs sm:text-sm font-semibold">
+                    Client
+                  </th>
+                  <th className="px-4 py-2 sm:px-6 sm:py-4 text-left text-xs sm:text-sm font-semibold hidden md:table-cell">
+                    Date
+                  </th>
+                  <th className="px-4 py-2 sm:px-6 sm:py-4 text-left text-xs sm:text-sm font-semibold hidden lg:table-cell">
+                    Statut
+                  </th>
+                  <th className="px-4 py-2 sm:px-6 sm:py-4 text-left text-xs sm:text-sm font-semibold">
+                    Total
+                  </th>
+                  <th className="px-4 py-2 sm:px-6 sm:py-4 text-left text-xs sm:text-sm font-semibold">
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
@@ -440,14 +543,22 @@ export default function OrdersPage() {
                     className="hover:bg-gray-50 transition-all duration-200 cursor-pointer"
                     onClick={() => setSelectedOrder(order)}
                   >
-                    <td className="px-4 py-2 sm:px-6 sm:py-4 text-xs sm:text-sm text-gray-900">#{order.id}</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-4 text-xs sm:text-sm text-gray-900">
+                      #{order.id}
+                    </td>
                     <td className="px-4 py-2 sm:px-6 sm:py-4 text-xs sm:text-sm text-gray-900">
                       <div>
-                        <span className="font-semibold">{order.clientName}</span>
-                        <p className="text-xs text-gray-600">{order.clientEmail}</p>
+                        <span className="font-semibold">
+                          {order.clientName}
+                        </span>
+                        <p className="text-xs text-gray-600">
+                          {order.clientEmail}
+                        </p>
                       </div>
                     </td>
-                    <td className="px-4 py-2 sm:px-6 sm:py-4 text-xs sm:text-sm text-gray-900 hidden md:table-cell">{order.date}</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-4 text-xs sm:text-sm text-gray-900 hidden md:table-cell">
+                      {order.date}
+                    </td>
                     <td className="px-4 py-2 sm:px-6 sm:py-4 text-xs sm:text-sm hidden lg:table-cell">
                       <span
                         className={`inline-flex items-center px-3 py-1 rounded-full text-xs sm:text-sm font-semibold shadow-md ${
@@ -459,7 +570,9 @@ export default function OrdersPage() {
                         {order.status}
                       </span>
                     </td>
-                    <td className="px-4 py-2 sm:px-6 sm:py-4 text-xs sm:text-sm font-semibold text-green-600">{order.total.toFixed(2)} DA</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-4 text-xs sm:text-sm font-semibold text-green-600">
+                      {order.total.toFixed(2)} DA
+                    </td>
                     <td className="px-4 py-2 sm:px-6 sm:py-4 text-xs sm:text-sm">
                       <button
                         onClick={(e) => {
@@ -492,7 +605,8 @@ export default function OrdersPage() {
                 Confirmer le changement de statut
               </h3>
               <p className="text-black-600 mb-6 text-sm sm:text-base">
-                Confirmez-vous la livraison de la commande #{showConfirm} au client ?
+                Confirmez-vous la livraison de la commande #{showConfirm} au
+                client ?
               </p>
               <div className="flex justify-end gap-3">
                 <button
@@ -531,7 +645,9 @@ export default function OrdersPage() {
               <div className="space-y-4 sm:space-y-6">
                 {/* En-tête de la commande */}
                 <div className="flex flex-col sm:flex-row justify-between items-center border-b border-gray-200 pb-4">
-                  <h3 className="text-lg sm:text-2xl font-bold text-gray-900">Commande #{selectedOrder.id}</h3>
+                  <h3 className="text-lg sm:text-2xl font-bold text-gray-900">
+                    Commande #{selectedOrder.id}
+                  </h3>
                   <span
                     className={`inline-flex items-center px-3 py-1 rounded-full text-xs sm:text-sm font-semibold shadow-md mt-2 sm:mt-0 ${
                       selectedOrder.status === "Livré"
@@ -546,26 +662,44 @@ export default function OrdersPage() {
                 {/* Informations client */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 bg-gray-50 p-3 sm:p-4 rounded-xl">
                   <div>
-                    <span className="text-gray-700 font-medium text-xs sm:text-sm">Client :</span>
-                    <span className="text-gray-900 font-semibold block text-xs sm:text-sm">{selectedOrder.clientName}</span>
+                    <span className="text-gray-700 font-medium text-xs sm:text-sm">
+                      Client :
+                    </span>
+                    <span className="text-gray-900 font-semibold block text-xs sm:text-sm">
+                      {selectedOrder.clientName}
+                    </span>
                   </div>
                   <div>
-                    <span className="text-gray-700 font-medium text-xs sm:text-sm">Email :</span>
-                    <span className="text-gray-900 block text-xs sm:text-sm">{selectedOrder.clientEmail}</span>
+                    <span className="text-gray-700 font-medium text-xs sm:text-sm">
+                      Email :
+                    </span>
+                    <span className="text-gray-900 block text-xs sm:text-sm">
+                      {selectedOrder.clientEmail}
+                    </span>
                   </div>
                   <div>
-                    <span className="text-gray-700 font-medium text-xs sm:text-sm">Date :</span>
-                    <span className="text-gray-900 block text-xs sm:text-sm">{selectedOrder.date}</span>
+                    <span className="text-gray-700 font-medium text-xs sm:text-sm">
+                      Date :
+                    </span>
+                    <span className="text-gray-900 block text-xs sm:text-sm">
+                      {selectedOrder.date}
+                    </span>
                   </div>
                   <div>
-                    <span className="text-gray-700 font-medium text-xs sm:text-sm">Articles :</span>
-                    <span className="text-gray-900 font-semibold block text-xs sm:text-sm">{selectedOrder.items.length}</span>
+                    <span className="text-gray-700 font-medium text-xs sm:text-sm">
+                      Articles :
+                    </span>
+                    <span className="text-gray-900 font-semibold block text-xs sm:text-sm">
+                      {selectedOrder.items.length}
+                    </span>
                   </div>
                 </div>
 
                 {/* Liste des produits */}
                 <div className="bg-white border border-gray-200 rounded-xl p-3 sm:p-4">
-                  <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-3">Détails des articles</h4>
+                  <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-3">
+                    Détails des articles
+                  </h4>
                   <div className="space-y-3">
                     {selectedOrder.items.map((item, index) => (
                       <div
@@ -573,9 +707,12 @@ export default function OrdersPage() {
                         className="flex justify-between items-center border-b border-gray-100 pb-2 last:border-b-0"
                       >
                         <div className="flex-1">
-                          <span className="text-gray-900 font-medium text-xs sm:text-sm">{item.productName}</span>
+                          <span className="text-gray-900 font-medium text-xs sm:text-sm">
+                            {item.productName}
+                          </span>
                           <p className="text-xs text-gray-600">
-                            {item.color}, {item.size} - Quantité : {item.quantity}
+                            {item.color}, {item.size} - Quantité :{" "}
+                            {item.quantity}
                           </p>
                         </div>
                         <span className="text-gray-900 font-semibold text-xs sm:text-sm">
@@ -588,7 +725,9 @@ export default function OrdersPage() {
 
                 {/* Total */}
                 <div className="bg-green-50 p-3 sm:p-4 rounded-xl flex justify-between items-center">
-                  <span className="text-green-700 font-medium text-sm sm:text-lg">Total de la commande :</span>
+                  <span className="text-green-700 font-medium text-sm sm:text-lg">
+                    Total de la commande :
+                  </span>
                   <span className="text-green-900 font-bold text-lg sm:text-2xl">
                     {selectedOrder.total.toFixed(2)} DA
                   </span>

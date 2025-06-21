@@ -10,20 +10,19 @@ import {
   TrendingUp,
   Trophy,
 } from "lucide-react";
-import { Montserrat } from "next/font/google";
 
+// Components
 import StatsCard from "@/components/portal/admin/dashboard/StatsCard";
 import ProductRatingCard from "@/components/portal/admin/dashboard/ProductRatingCard";
 import DashboardChart from "@/components/portal/admin/dashboard/DashboardChart";
 import LoadingState from "@/components/portal/admin/dashboard/LoadingState";
 import ErrorState from "@/components/portal/admin/dashboard/ErrorState";
+
+// Types
 import { AdminDashboardStats } from "@/lib/types/dashboard.types";
 
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  weight: "800",
-  display: "swap",
-});
+// Fonts
+import { montserrat } from "@/styles/fonts";
 
 export default function DashboardPage() {
   const [dashboardData, setDashboardData] = useState<AdminDashboardStats>({
@@ -189,9 +188,9 @@ export default function DashboardPage() {
           />
         </div>
 
-        <DashboardChart 
-          data={chartData} 
-          period={selectedPeriod} 
+        <DashboardChart
+          data={chartData}
+          period={selectedPeriod}
           onPeriodChange={setSelectedPeriod}
         />
       </div>
