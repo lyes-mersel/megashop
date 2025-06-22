@@ -3,12 +3,12 @@
 import { useState, useEffect } from "react";
 
 // Components
-import { UserManagementHeader } from "@/components/portal/admin/management/UserManagementHeader";
-import { UserTable } from "@/components/portal/admin/management/UserTable";
-import { UserDetailsModal } from "@/components/portal/admin/management/UserDetailsModal";
-import { MessageModal } from "@/components/portal/admin/management/MessageModal";
-import { DeleteConfirmationModal } from "@/components/portal/admin/management/DeleteConfirmationModal";
-import { Pagination } from "@/components/portal/admin/management/Pagination";
+import { UserManagementHeader } from "@/components/portal/admin/managementpage/UserManagementHeader";
+import { UserTable } from "@/components/portal/admin/managementpage/UserTable";
+import { UserDetailsModal } from "@/components/portal/admin/managementpage/UserDetailsModal";
+import { MessageModal } from "@/components/portal/admin/managementpage/MessageModal";
+import { DeleteConfirmationModal } from "@/components/portal/admin/managementpage/DeleteConfirmationModal";
+import { Pagination } from "@/components/portal/admin/managementpage/Pagination";
 import { toast } from "sonner";
 
 // Types
