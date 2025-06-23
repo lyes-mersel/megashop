@@ -240,6 +240,15 @@ The application uses NextAuth.js with the following authentication methods:
 **📅 Year:** 2025  
 **👨‍🏫 Supervisor:** Mr Z.Farah
 
+---
+
+> **Note:** The user experience (UI) and all project documentation are provided in **French**.
+>
+> - 📂 [Diagrams & Models](docs/diagrams/)
+> - 📄 [Final Report (PDF)](docs/final-report.pdf)
+
+---
+
 ## 👨‍💻 Development Team
 
 - **MERSEL Lyes** - [@lyes-mersel](https://github.com/lyes-mersel)
