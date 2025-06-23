@@ -61,13 +61,6 @@ A modern, full-stack e-commerce platform built with Next.js 15, featuring a comp
 - **OpenRouter AI** - AI-powered chat support
 - **Supabase** - Database hosting
 
-### UI Components
-
-- **Radix UI** - Accessible component primitives
-- **Lucide React** - Icon library
-- **Recharts** - Data visualization
-- **Embla Carousel** - Carousel component
-
 ## 📋 Prerequisites
 
 Before you begin, ensure you have the following installed:
@@ -253,6 +246,16 @@ The application uses NextAuth.js with the following authentication methods:
 - **BRAHIMI Rayan** - [@BrahimiRayan](https://github.com/BrahimiRayan)
 - **MECHKOUR Billal** - [@Billalmechekour](https://github.com/Billalmechekour)
 - **MESSAOUDENE Saïd** - [@Messaoudene-Said](https://github.com/Messaoudene-Said)
+
+## 📸 Screenshots
+
+### Hero Section
+
+<img src="docs/screenshots/0-hero-section.png" alt="Hero Section" width="600" />
+
+### View All Screenshots
+
+Explore the complete visual showcase in the [📁 Screenshots Gallery](docs/screenshots/), featuring main store interface, admin portal, vendor portal, client portal, and mobile responsive design.
 
 ## 📖 API Documentation
 
