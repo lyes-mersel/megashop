@@ -2,7 +2,7 @@
 
 [![Academic Project](https://img.shields.io/badge/Academic%20Project-Master%201%20Software%20Engineering-blue?style=for-the-badge&logo=graduation-cap)](https://www.univ-bejaia.dz/)
 
-A modern, full-stack e-commerce platform built with Next.js 15, featuring a comprehensive marketplace with multi-vendor support, real-time chat, and advanced analytics.
+A comprehensive e-commerce platform featuring a multi-vendor marketplace, chatbot support, order tracking, advanced analytics, and full customer, vendor, and admin management.
 
 ## ✨ Features
 
